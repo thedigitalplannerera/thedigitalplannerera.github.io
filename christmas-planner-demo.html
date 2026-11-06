@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Full Christmas Planner — FREE DEMO</title>
+<style>
+:root{--accent:#b71c2e;--accent2:#1e6b3a;--gold:#c9a227;--bg:#fdf6ec;--card:#fff;--text:#2b2118;--muted:#7a6f68;--border:#ead9c8;--shadow:0 4px 14px rgba(0,0,0,.08)}
+body[data-theme="gold"]{--accent:#8a6d1a;--accent2:#7a5b12;--gold:#c9a227;--bg:#fdf9ec;--border:#e6dcc0}
+body[data-theme="winter"]{--accent:#1f5f8b;--accent2:#2e7fa8;--gold:#7fb3d5;--bg:#f2f8fc;--border:#d3e4ef}
+body[data-theme="candy"]{--accent:#c2438f;--accent2:#8e44ad;--gold:#e58bb5;--bg:#fdf2f8;--border:#f0d3e4}
+body[data-theme="evergreen"]{--accent:#14532d;--accent2:#2e7d46;--gold:#9db38a;--bg:#f2f7ee;--border:#d5e2c8}
+body[data-colorful="off"] .badge{background:#8d8175!important}
+body[data-colorful="off"] .hc-bar>div,body[data-colorful="off"] .bar>div,body[data-colorful="off"] .weekblocks span{filter:saturate(.25)}
+body[data-colorful="off"] .card::before,body[data-colorful="off"] .chip::before{background:#b8ab99}
+body[data-colorful="off"] header{background:linear-gradient(135deg,#6f6154,#57493d)}
+body.dark{--bg:#221c18;--card:#2e2620;--text:#f2e9dd;--muted:#b8a99a;--border:#4a3d31}
+body[data-theme="midnight"]{--accent:#d4af37;--accent2:#8a6d1a;--gold:#d4af37;--bg:#14100c;--card:#221c15;--text:#f5ecd7;--muted:#b8a888;--border:#453a28}
+body[data-theme="noel"]{--accent:#e05252;--accent2:#2e9e5b;--gold:#d4af37;--bg:#101a12;--card:#1a261c;--text:#eef5ee;--muted:#a8bfa8;--border:#33473a}
+body[data-theme="frost"]{--accent:#5aa7e0;--accent2:#7fb3d5;--gold:#a8cdea;--bg:#0d1622;--card:#16222f;--text:#e8f2fa;--muted:#9db8cc;--border:#2c4258}
+body[data-theme="plum"]{--accent:#c98ae0;--accent2:#8e44ad;--gold:#d9a8e6;--bg:#1a0f22;--card:#261631;--text:#f4eaf9;--muted:#bfa8cc;--border:#42295a}
+body[data-theme="cocoa"]{--accent:#e0a458;--accent2:#b0713a;--gold:#e8c48a;--bg:#1c130c;--card:#2a1d12;--text:#f7ecdd;--muted:#c4ab8f;--border:#4a3823}
+.ring{width:96px;height:96px;border-radius:50%;margin:4px auto;display:flex;align-items:center;justify-content:center;flex:none}
+.ring .ring-in{width:74px;height:74px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:10px 0}
+.cal .cd-h{text-align:center;font-weight:700;font-size:12px;color:var(--muted)}
+.cal .cd-d{text-align:center;padding:7px 0;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--card)}
+.cal .cd-d.opened{background:var(--accent);color:#fff}
+.cal .cd-d.today{outline:2px solid var(--gold);font-weight:800}
+.cal .cd-d.past-un{border-color:#a33;color:#a33}
+.avatar{width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.25);color:#fff;display:flex;align-items:center;justify-content:center;font-size:23px;font-weight:800;overflow:hidden;border:2px solid rgba(255,255,255,.75);flex:none;cursor:pointer}
+.avatar img{width:100%;height:100%;object-fit:cover}
+#themeBtn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.5);color:#fff;border-radius:20px;padding:8px 14px;cursor:pointer;font-size:14px;font-weight:700;flex:none}
+#themePanel{position:absolute;top:66px;right:14px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:10px;width:238px;display:none;z-index:60;max-height:70vh;overflow:auto}
+#themePanel button{display:block;width:100%;text-align:left;background:transparent;color:var(--text);border:1px solid var(--border);border-radius:8px;margin:4px 0;padding:8px 10px;cursor:pointer;font-size:14px}
+#themePanel button:hover{border-color:var(--accent)}
+#themePanel .dot{width:14px;height:14px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:6px;border:1px solid rgba(0,0,0,.15)}
+.hero{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:18px;margin-bottom:16px;text-align:center;box-shadow:var(--shadow)}
+.hero h2{font-size:29px;margin:4px 0}
+.hero p{color:var(--muted);margin:3px 0}
+.hero .ring{margin:8px auto 2px}
+@media(max-width:800px){.avatar{width:46px;height:46px;font-size:19px}.hero h2{font-size:23px}}
+body.dark{--bg:#221c18;--card:#2e2620;--text:#f2e9dd;--muted:#b8a99a;--border:#4a3d31}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);background-size:cover;background-attachment:fixed}
+body.has-photo{background-size:cover}
+*{box-sizing:border-box}
+header{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
+header h1{margin:0;font-size:22px} header p{margin:2px 0 0;opacity:.9;font-size:14px}
+.spacer{flex:1}
+#backBtn{background:#fff;color:var(--accent);border:0;border-radius:10px;padding:9px 13px;font-weight:800;cursor:pointer}
+#hamburger{display:none;background:rgba(255,255,255,.2);color:#fff;border:0;border-radius:10px;padding:9px 13px;font-size:18px;cursor:pointer}
+.tdots{display:flex;gap:8px;align-items:center}
+.tdot{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.85);cursor:pointer;padding:0;flex:none;box-shadow:0 1px 5px rgba(0,0,0,.25)}
+.tdot.on{outline:2px solid #fff;outline-offset:2px}
+#avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.7);display:none;flex:none}
+#hello{font-weight:700;white-space:nowrap}
+.layout{display:flex;align-items:flex-start}
+#sidebar{width:236px;flex-shrink:0;padding:14px 12px;position:sticky;top:70px;height:calc(100vh - 70px);overflow:auto;background:var(--card);border-right:1px solid var(--border)}
+#sidebar h4{margin:14px 8px 6px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+#sidebar button{display:flex;width:100%;text-align:left;border:0;background:transparent;color:var(--text);padding:9px 10px;border-radius:10px;cursor:pointer;font-size:15px;font-weight:600;position:relative;overflow:hidden;z-index:0;transition:color .2s}
+#sidebar button::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transform-origin:left;transition:transform .25s;z-index:-1}
+#sidebar button:hover{color:#fff} #sidebar button:hover::before{transform:scaleX(1)} #sidebar button.active{background:var(--accent);color:#fff}
+main{flex:1;padding:18px;min-width:0}
+section.sec{display:none} section.sec.show{display:block}
+h2{margin:0 0 4px} h3{margin:18px 0 6px}
+.sub{color:var(--text);opacity:.85;font-size:15px;margin:0 0 12px}
+#homeSub{font-size:16px;font-weight:bold;opacity:1}
+.famhead{font-size:20px;font-weight:800;margin:4px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:14px 0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,var(--accent),var(--gold),var(--accent2));border-radius:14px 14px 0 0}
+.card::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);transition:left .5s}
+.card:hover{transform:translateY(-4px) rotate(-.4deg);box-shadow:0 14px 30px rgba(0,0,0,.18)}
+.card:hover::after{left:130%}
+.card.clickable{cursor:pointer}
+.card .live{color:var(--text);opacity:.85;font-size:14px;margin-top:6px}
+.card .big{font-size:30px;font-weight:800;margin-top:6px}
+#homeGrid{grid-auto-rows:235px}
+#homeGrid .card{height:235px;overflow:hidden;display:flex;flex-direction:column}
+#homeGrid .hc-icon{font-size:32px;line-height:1;margin-top:2px}
+#homeGrid .hc-title{font-size:18px;font-weight:800;margin-top:6px}
+#homeGrid .big{font-size:25px;font-weight:800;margin-top:6px}
+#homeGrid .card .live{font-size:14px}
+.hc-bar{height:10px;background:rgba(0,0,0,.08);border-radius:20px;overflow:hidden;margin-top:auto;display:flex;flex:none}
+.hc-bar>div{height:100%;flex:none}
+.hc-bar.over .seg-spent{background:#a33!important}
+.hc-chart{margin-top:auto}
+.weekblocks{display:flex;gap:3px;margin-top:auto;flex:none}
+.weekblocks span{flex:1;height:10px;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.hc-seg{cursor:pointer}
+.hc-meal{display:flex;align-items:center;gap:8px;font-size:13px;margin-top:4px}
+.hc-meal .hc-bar{flex:1;margin-top:0}
+.hc-meal .hc-mlab{flex:none;min-width:52px}
+.chip .hc-bar{margin:10px 0 6px}
+.chip .live{font-size:14px;opacity:.85}
+.statstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:14px 0}
+.chip{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow);cursor:pointer;font-size:15px;text-align:left;color:var(--text);position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s}
+.chip::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,var(--accent),var(--gold),var(--accent2))}
+.chip:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,.18)}
+.chip b{font-size:30px;display:block;margin-top:6px}
+.clickable{cursor:pointer}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:10px 16px;font-size:15px;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+.btn.small{padding:7px 12px;font-size:14px}
+.btn.danger{background:#a33}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--border);font-size:14px;vertical-align:top}
+th{background:rgba(0,0,0,.05)}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:12px;font-weight:700;color:#fff;background:#777}
+.b-Idea{background:#8e7cc3}.b-Ordered{background:#e67e22}.b-Bought{background:#2980b9}.b-Wrapped{background:#1e7d46}.b-Given{background:#b71c2e}.b-Late{background:#a33}.b-Sent{background:#1e7d46}.b-Pending{background:#e67e22}
+.bar{height:14px;background:rgba(0,0,0,.08);border-radius:20px;overflow:hidden;margin:8px 0}
+.bar>div{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.bar.over>div{background:#a33}
+.pie{width:130px;height:130px;border-radius:50%;margin:10px auto}
+.legend{font-size:14px;text-align:center}
+.legitem{cursor:pointer;border-bottom:1px dashed var(--muted)}
+.legitem:hover{color:var(--accent);border-bottom-style:solid}
+.attnline{cursor:pointer;padding:6px 8px;border-radius:8px}
+.attnline:hover{background:rgba(0,0,0,.06)}
+select,input,textarea{font-size:15px;padding:9px 11px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--text)}
+select:focus,input:focus,textarea:focus{outline:2px solid var(--accent);border-color:transparent}
+.flabel{font-weight:600;font-size:14px;display:block;margin:12px 0 4px}
+.field{width:100%}
+.checkline{display:flex;gap:8px;align-items:center;font-size:15px}
+.doors{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;margin:14px 0}
+.door{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center;cursor:pointer;box-shadow:var(--shadow)}
+.door.opened{opacity:.55}
+.door .dn{font-size:26px;font-weight:800}
+.door .ds{font-size:12px;color:var(--muted)}
+.slip{border:2px dashed var(--accent);border-radius:14px;padding:18px;background:var(--card)}
+.slip .who{font-size:22px;font-weight:800}
+.slip-page{page-break-after:always}
+.slip-page:last-child{page-break-after:auto}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal-bg.open{display:flex}
+.modal{background:var(--card);color:var(--text);border-radius:18px;width:100%;max-width:520px;max-height:90vh;overflow:auto;box-shadow:var(--shadow);animation:pop .18s ease}
+@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-head{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:16px 20px;display:flex;gap:10px;align-items:center;border-radius:18px 18px 0 0}
+.modal-head h3{margin:0;flex:1}
+.modal-icon{font-size:22px}
+.modal-x{background:rgba(255,255,255,.25);color:#fff;border:0;border-radius:50%;width:30px;height:30px;font-size:18px;cursor:pointer;flex:none}
+.modal-body{padding:20px}
+#onboard{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
+#onboard.open{display:flex}
+.onboard-card{background:var(--card);color:var(--text);border-radius:20px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow);animation:pop .2s ease}
+.onboard-head{background:linear-gradient(135deg,var(--accent),var(--accent2),var(--gold));color:#fff;padding:18px 20px;text-align:center}
+.onboard-head h2{margin:0;font-size:21px;font-style:italic}
+.onboard-head p{margin:6px 0 0;opacity:.95;font-size:14px}
+.onboard-body{padding:16px 18px}
+.onboard-body .flabel{margin:9px 0 3px}
+.benefit{display:flex;gap:10px;align-items:flex-start;margin:7px 0;font-size:14px}
+.benefit span{font-size:18px}
+.headerWish{flex:0 1 auto;text-align:center;font-weight:800;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#printArea{display:none}
+@media(max-width:800px){
+  #hamburger{display:block}
+  #sidebar{position:fixed;left:0;top:0;z-index:70;height:100vh;transform:translateX(-105%);transition:.2s;box-shadow:var(--shadow)}
+  #sidebar.open{transform:none}
+  header h1{font-size:18px} .grid{grid-template-columns:1fr} main{padding:12px} .headerWish{display:none}
+}
+@media print{header,.layout,.modal-bg,#onboard{display:none!important} #printArea{display:block!important}}
+</style>
+</head>
+<body><div style="background:#b71c2e;color:#fff;text-align:center;padding:10px 14px;font-size:15px;font-weight:700;position:relative;z-index:99">🎁 FREE DEMO — This trial is filled with sample data so you can try every feature. Nothing you type here is saved: close or refresh and it resets. The full planner (which saves your own data) is available in our Etsy shop. <a href="https://www.etsy.com/uk/listing/4609607630/" target="_blank" rel="noopener" style="display:inline-block;background:#c9a227;color:#12233f;font-weight:800;padding:4px 14px;border-radius:999px;text-decoration:none;margin-left:8px">Get the Full Version on Etsy</a></div>
+<header>
+  <button id="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+  <button id="backBtn" onclick="goBack()">← Back</button>
+  <div><h1>🎄 Full Christmas Planner</h1><p>Every gift, meal, guest and countdown — in one place</p></div>
+  <div class="spacer"></div><div class="headerWish" id="headerWish">Merry Christmas! 🎄</div><div class="spacer"></div><button id="themeBtn" onclick="toggleThemePanel()">🎨 Theme</button><div id="themePanel"></div><div style="display:flex;align-items:center;gap:10px"><div class="avatar" id="headerAvatar" title="Tap to change your profile photo">🎄</div><div id="hello"></div></div>
+</header>
+<div class="layout">
+<aside id="sidebar"></aside>
+<main>
+<!-- HOME -->
+<section class="sec" id="sec-home">
+  <div class="hero">
+    <h2 id="heroGreet">Merry Christmas! 🎄</h2>
+    <p id="heroSub"></p>
+    <svg class="ring" width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="48" fill="none" stroke="rgba(0,0,0,.10)" stroke-width="12"/><circle id="heroRing" cx="60" cy="60" r="48" fill="none" style="stroke:var(--gold)" stroke-width="12" stroke-linecap="round" stroke-dasharray="0 302" transform="rotate(-90 60 60)"/><text id="heroRingText" x="60" y="66" text-anchor="middle" font-size="20" font-weight="800" fill="currentColor">0%</text></svg>
+    <p id="heroNext"></p><p id="todayStrip"></p>
+  </div>
+  <div class="card"><div>⚡ Quick Add &amp; Search</div><div class="row">
+    <button class="btn small" onclick="showSection('gifts');openGiftModal()">+ Gift</button>
+    <button class="btn small" onclick="showSection('budget');openExpenseModal()">+ Expense</button>
+    <button class="btn small" onclick="showSection('grocery');openGroceryModal()">+ Grocery item</button>
+    <button class="btn small" onclick="showSection('hosting');openGuestModal()">+ Guest</button>
+    <button class="btn small" onclick="showSection('cards');openCardModal()">+ Card</button>
+    <button class="btn small" onclick="showSection('decor');openDecorModal()">+ Decor</button>
+    <button class="btn small" onclick="showSection('travel');openPackModal()">+ Packing</button>
+  </div><div class="row"><input id="homeSearch" placeholder="Search gifts, cards, guests, ideas, grocery, deals, decor, trips…" oninput="homeSearchFn(this.value)" style="flex:1;min-width:160px"></div><div id="homeSearchResults" class="live"></div></div>
+  <div class="card"><div>🖨️ Print / Save as PDF</div><div class="row">
+    <button class="btn small" onclick="printView('gifts')">Gift list</button>
+    <button class="btn small" onclick="printView('budget')">Budget summary</button>
+    <button class="btn small" onclick="openTagStyleDialog()">Gift tags</button>
+    <button class="btn small" onclick="printSlipsView()">Santa slips</button>
+    <button class="btn small" onclick="exportICS()">📅 Calendar (.ics)</button>
+    <button class="btn small" onclick="printView('decor')">Decor &amp; storage</button>
+    <button class="btn small" onclick="printView('travel')">Travel &amp; packing</button>
+    <button class="btn small" onclick="printView('summary')">Full summary</button>
+  </div><div class="live">Opens a clean print-only page. In the print dialog, choose a printer or Save as PDF.</div></div>
+  <h2>Home</h2><p class="sub" id="homeSub"></p>
+  <div id="familyHeader" class="famhead" style="display:none"></div>
+  <div class="grid" id="homeGrid"></div>
+  <p class="sub" style="text-align:center;margin-top:10px">Works fully offline in your browser — no account, no cloud sync. Your data stays on this device only; export a backup from Settings to keep it safe.</p>
+</section>
+<!-- GIFTS -->
+<section class="sec" id="sec-gifts">
+  <h2>Gifts</h2><p class="sub" id="giftsSub"></p>
+  <div class="row">
+    <button class="btn small" onclick="setGiftView('list')">Gift list</button>
+    <button class="btn small ghost" onclick="setGiftView('ideas')">Idea bank</button>
+    <button class="btn small ghost" onclick="setGiftView('wishes')">Wish lists</button>
+    <button class="btn small ghost" onclick="setGiftView('shopping')">Shopping list</button>
+    <button class="btn small ghost" onclick="setGiftView('stocking')">Stocking stuffers</button>
+    <button class="btn" onclick="openGiftModal()">+ Add gift</button>
+  </div>
+  <div id="giftView-list">
+    <div class="row">
+      <select id="fStatus" onchange="renderGifts()"><option value="">All statuses</option><option>Idea</option><option>Ordered</option><option>Bought</option><option>Wrapped</option><option>Given</option><option value="notGiven">Not Given yet</option></select>
+      <select id="fGroup" onchange="renderGifts()"><option value="">All groups</option><option>Family</option><option>Friends</option><option>Colleagues</option><option>Other</option></select>
+      <select id="fRecipient" onchange="renderGifts()"><option value="">All recipients</option></select>
+      <input id="fSearch" placeholder="Search gifts…" oninput="renderGifts()" style="flex:1;min-width:140px"> <button class="btn small ghost" onclick="printView('gifts')">🖨️ Print / Save as PDF</button>
+    </div>
+    <div id="giftTable"></div>
+    <div class="card"><div>✅ Final ready-check</div><div class="live" id="readyCheck"></div></div>
+  </div>
+  <div id="giftView-ideas" style="display:none">
+    <h3>💡 Idea bank</h3><p class="sub">Ideas waiting for a gift — turn any idea into a gift with one tap.</p>
+    <div class="row"><button class="btn small" onclick="openIdeaModal()">+ Add idea</button> <button class="btn small ghost" onclick="printView('ideas')">🖨️ Print / Save as PDF</button></div>
+    <div id="ideaFilterRow"></div><div id="ideaList"></div>
+    <h3>Browse suggestions</h3><p class="sub">Stuck for ideas? Pick a recipient type and a budget band — no internet needed.</p>
+    <div class="row">
+      <select id="sugType"><option>Dad</option><option>Mum</option><option>Kids</option><option>Colleague</option><option>Friend</option></select>
+      <select id="sugBand"><option value="under">Under $25</option><option value="mid">$25–$50</option><option value="over">Over $50</option></select>
+      <button class="btn small" onclick="showSuggestions()">Show ideas</button>
+    </div>
+    <div id="sugList"></div>
+  </div>
+  <div id="giftView-wishes" style="display:none">
+    <h3>💝 Family wish lists</h3><p class="sub">What each person asked for — claim one so nobody buys the same thing twice.</p>
+    <div class="row"><button class="btn small" onclick="openWishModal()">+ Add wish</button> <button class="btn small ghost" onclick="printView('wishes')">🖨️ Print / Save as PDF</button></div>
+    <div id="wishFilterRow"></div><div id="wishList"></div>
+  </div>
+  <div id="giftView-shopping" style="display:none">
+    <h3>🛍️ Shopping list</h3><p class="sub">Built automatically from gifts not bought yet.</p>
+    <div class="row"><button class="btn small ghost" onclick="printView('shopping')">🖨️ Print / Save as PDF</button></div><div id="shopList"></div>
+  </div>
+  <div id="giftView-stocking" style="display:none">
+    <h3>🧦 Stocking stuffers</h3><p class="sub">Small gifts marked as stocking stuffers.</p>
+    <div class="row"><button class="btn small ghost" onclick="printView('stocking')">🖨️ Print / Save as PDF</button></div><div id="stockList"></div>
+  </div>
+  <h3>Last year</h3><p class="sub">What you gave last year — so you never repeat a gift.</p>
+  <div id="lastYear"></div>
+</section>
+<!-- BUDGET -->
+<section class="sec" id="sec-budget">
+  <h2>Budget</h2><p class="sub" id="budgetSub"></p><div class="row"><button class="btn small ghost" onclick="printView('budgetTables')">🖨️ Print / Save as PDF</button></div>
+  <div class="card"><div>💰 Total gift budget vs spent</div><div class="big" id="budgetBig"></div><div class="bar" id="budgetBar"><div></div></div><div class="live" id="budgetLive"></div></div>
+  <div class="card"><div>🍩 Spending by category</div><div class="pie" id="expPie"></div><div class="legend" id="expLegend"></div></div>
+  <h3>Per person</h3><div id="perPerson"></div>
+  <h3>Holiday expense log</h3><div class="row"><button class="btn small" onclick="openExpenseModal()">+ Add expense</button></div><div id="expFilterRow"></div><div id="expTable"></div>
+</section>
+<!-- CARDS -->
+<section class="sec" id="sec-cards">
+  <h2>Cards</h2><p class="sub" id="cardsSub"></p>
+  <div class="row"><button class="btn" onclick="openCardModal()">+ Add card</button> <button class="btn small ghost" onclick="printView('cards')">🖨️ Print / Save as PDF</button></div>
+  <div id="cardFilterRow"></div><div id="cardTable"></div>
+  <h3>🙏 Thank-you list</h3><p class="sub">People who still need a thank-you note.</p>
+  <div class="row"><button class="btn small" onclick="openThanksModal()">+ Add thank-you</button></div>
+  <div id="thanksFilterRow"></div><div id="thanksList"></div>
+</section>
+<!-- ADVENT -->
+<section class="sec" id="sec-advent">
+  <h2>Advent</h2><p class="sub" id="adventSub"></p>
+  <div class="row"><button class="btn small ghost" onclick="printView('advent')">🖨️ Print / Save as PDF</button></div>
+  <div class="card"><div>🎄 Countdown to Christmas</div><div class="big" id="advCd"></div><div class="live" id="advCdLive"></div></div>
+  <h3>December doors — tap a door to open it</h3>
+  <div class="doors" id="doors"></div>
+  <h3>December calendar</h3><p class="sub">The week starts on Sunday. Tap any day from 1 to 24 to open its Advent note.</p>
+  <div class="cal" id="decCal"></div>
+  <h3>📅 Important dates</h3><p class="sub">Birthdays, parties, last posting day — anything with a date. The next one also appears on Home as Next up.</p><div class="row"><button class="btn small" onclick="openDateModal()">+ Add date</button></div><div id="datesList"></div><h3>December goal, reflection &amp; wins</h3>
+  <label class="flabel">This December, my goal is…</label><textarea id="decGoal" rows="2" style="width:100%" onchange="saveDecNotes()" placeholder="e.g. Every gift wrapped by Dec 20"></textarea>
+  <label class="flabel">Reflection</label><textarea id="decRefl" rows="2" style="width:100%" onchange="saveDecNotes()" placeholder="How is the season going?"></textarea>
+  <label class="flabel">My wins</label><textarea id="decWins" rows="2" style="width:100%" onchange="saveDecNotes()" placeholder="Small wins worth celebrating…"></textarea>
+</section>
+<!-- MEALS -->
+<section class="sec" id="sec-meals">
+  <h2>Meals</h2><p class="sub">Christmas-week meal plan. Ingredients flow into your Grocery list.</p>
+  <div class="row"><button class="btn" onclick="openMealModal()">+ Add meal</button> <button class="btn small ghost" onclick="printView('meals')">🖨️ Print / Save as PDF</button></div>
+  <div id="mealFilterRow"></div><div id="mealTable"></div>
+</section>
+<!-- BAKING -->
+<section class="sec" id="sec-baking">
+  <h2>Baking</h2><p class="sub">What to bake, how much, and when.</p>
+  <div class="row"><button class="btn" onclick="openBakeModal()">+ Add baking item</button> <button class="btn small ghost" onclick="printView('baking')">🖨️ Print / Save as PDF</button></div>
+  <div id="bakeFilterRow"></div><div id="bakeTable"></div>
+</section>
+<!-- GROCERY -->
+<section class="sec" id="sec-grocery">
+  <h2>Grocery</h2><p class="sub">Grouped by aisle. Check items off as you shop — checked items stay visible.</p>
+  <div class="row">
+    <button class="btn small" onclick="openGroceryModal()">+ Add item</button>
+    <button class="btn small ghost" onclick="importMealBaking()">Add from meals &amp; baking</button>
+    <button class="btn small ghost" onclick="clearCheckedGrocery()">Clear checked</button> <button class="btn small ghost" onclick="printView('grocery')">🖨️ Print / Save as PDF</button>
+  </div>
+  <div id="grocFilterRow"></div><div id="groceryList"></div>
+</section>
+<!-- HOSTING -->
+<section class="sec" id="sec-hosting">
+  <h2>Hosting</h2><p class="sub">Guests, tasks, and seating for the big day.</p>
+  <h3>Guests</h3><div class="row"><button class="btn small" onclick="openGuestModal()">+ Add guest</button> <button class="btn small ghost" onclick="printView('guests')">🖨️ Print / Save as PDF</button></div><div id="guestFilterRow"></div><div id="guestTable"></div>
+  <h3>Hosting tasks</h3><div class="row"><button class="btn small" onclick="openTaskModal()">+ Add task</button> <button class="btn small ghost" onclick="printView('tasks')">🖨️ Print / Save as PDF</button></div><div id="taskFilterRow"></div><div id="taskList"></div>
+  <h3>Seating notes</h3><p class="sub">Free text — who sits where, or which table needs what.</p>
+  <textarea id="seatingNotes" rows="4" style="width:100%" onchange="saveSeating(this.value)" placeholder="e.g. Ami and Abu at the head table, kids at the small table…"></textarea>
+</section>
+<!-- DECOR -->
+<section class="sec" id="sec-decor">
+  <h2>✨ Decor</h2><p class="sub">Room-by-room decorating plan — and, after Christmas, exactly where everything is stored.</p>
+  <h3>Decorating plan</h3>
+  <div class="row"><button class="btn" onclick="openDecorModal()">+ Add decor item</button> <button class="btn small ghost" onclick="printView('decor')">🖨️ Print / Save as PDF</button></div>
+  <div id="decorFilterRow"></div><div id="decorTable"></div>
+  <h3>📦 Storage inventory</h3><p class="sub">When the decorations come down, record the box and the place — next December you will thank yourself.</p>
+  <div class="row"><button class="btn small" onclick="openStorageModal()">+ Add storage item</button></div>
+  <div id="storageTable"></div>
+</section>
+<!-- TRAVEL -->
+<section class="sec" id="sec-travel">
+  <h2>🧳 Travel &amp; Packing</h2><p class="sub">Christmas trips — and the packing list that makes sure no gift gets left behind.</p>
+  <h3>Trips</h3>
+  <div class="row"><button class="btn" onclick="openTripModal()">+ Add trip</button> <button class="btn small ghost" onclick="printView('travel')">🖨️ Print / Save as PDF</button></div>
+  <div id="tripList"></div>
+  <h3>🎒 Packing list</h3><p class="sub">Tick things off as they go into the bag.</p>
+  <div class="row"><button class="btn small" onclick="openPackModal()">+ Add packing item</button></div>
+  <div id="packFilterRow"></div><div id="packList"></div>
+</section>
+<!-- SECRET SANTA -->
+<section class="sec" id="sec-santa">
+  <h2>Secret Santa</h2><p class="sub" id="santaSub"></p>
+  <div class="card"><div>🎁 Draw status</div><div class="live" id="drawStatus"></div><div class="row">
+    <button class="btn" id="drawBtn" onclick="doDraw()">🎲 Run the draw</button>
+    <button class="btn ghost" onclick="doDraw()">🎲 Draw again</button>
+  </div><div class="live" id="drawError"></div></div>
+  <h3>Event details</h3>
+  <div class="row">
+    <label style="flex:1">Event date <input type="date" id="santaDate" onchange="setSantaEvent()" style="width:100%"></label>
+    <label style="flex:1">Location <input id="santaLoc" onchange="setSantaEvent()" placeholder="e.g. Ami's house" style="width:100%"></label>
+    <label style="flex:1">Price limit <input type="number" id="santaLimit" onchange="setSantaEvent()" placeholder="25" style="width:100%"></label>
+  </div>
+  <h3>Participants</h3><div class="row"><button class="btn small" onclick="openPersonModal()">+ Add person</button> <button class="btn small ghost" onclick="printView('santaPeople')">🖨️ Print / Save as PDF</button></div><div id="santaPeopleFilterRow"></div><div id="personTable"></div>
+  <h3>Wish lists</h3>
+  <div class="row"><select id="santaWishPerson" onchange="renderSantaWishes()"></select><button class="btn small" onclick="openSantaWishModal()">+ Add wish</button> <button class="btn small ghost" onclick="printView('santaWishes')">🖨️ Print / Save as PDF</button></div>
+  <div id="santaWishShowing"></div><div id="santaWishList"></div>
+  <h3>Slips</h3><p class="sub">Pick a giver to see only their slip. Nobody's full list is shown anywhere.</p>
+  <div class="row"><select id="slipGiver" onchange="renderSlipView()"></select>
+    <button class="btn small" id="printOneBtn" onclick="printOneSlip()">🖨️ Print this slip / Save as PDF</button>
+    <button class="btn small" id="printSlipsBtn" onclick="printSlips()">🖨️ Print all slips / Save as PDF</button></div>
+  <div id="slipView"></div>
+</section>
+<!-- DEAL DAYS -->
+<section class="sec" id="sec-deals">
+  <h2>Deal Days</h2><p class="sub">Black Friday &amp; Cyber Monday price watch. Add any gift idea here and watch its price.</p>
+  <div class="row"><button class="btn" onclick="openDealModal()">+ Add deal watch</button> <button class="btn small ghost" onclick="printView('deals')">🖨️ Print / Save as PDF</button></div>
+  <div id="dealFilterRow"></div><div id="dealTable"></div>
+</section>
+<!-- NOTES -->
+<section class="sec" id="sec-notes">
+  <h2>📝 Notes</h2><p class="sub" id="notesSub"></p>
+  <div class="row"><button class="btn" onclick="openNoteModal()">+ Add note</button> <button class="btn small ghost" onclick="printView('notes')">🖨️ Print / Save as PDF</button></div>
+  <div id="notesList"></div>
+</section>
+<!-- SETTINGS -->
+<section class="sec" id="sec-settings">
+  <h2>Settings</h2>
+  <h3>My profile</h3><p class="sub">Your name shows as a greeting in the header. Your photo shows as a round avatar next to it. Everything stays on this device only.</p>
+  <div class="row"><label style="flex:1">Your name <input id="profName" onchange="setProfileName(this.value)" placeholder="e.g. Hafiz" style="width:100%"></label>
+  <label style="flex:1">Family name <input id="famName" onchange="setFamilyName(this.value)" placeholder="e.g. Ahmed" style="width:100%"></label></div>
+  <div class="row"><label>Profile photo <input type="file" accept="image/*" onchange="uploadPhoto(this)"></label>
+  <button class="btn small ghost" onclick="removePhoto()">Remove photo</button></div>
+  <h3>Currency</h3><p class="sub">Symbol only — no conversion. Applied to every money display.</p>
+  <div class="row" id="currencyRow">
+    <label class="checkline"><input type="radio" name="cur" value="$" onchange="setCurrency(this.value)"> $ Dollar</label>
+    <label class="checkline"><input type="radio" name="cur" value="€" onchange="setCurrency(this.value)"> € Euro</label>
+    <label class="checkline"><input type="radio" name="cur" value="£" onchange="setCurrency(this.value)"> £ Pound</label>
+    <label class="checkline"><input type="radio" name="cur" value="₹" onchange="setCurrency(this.value)"> ₹ Rupee</label>
+    <label class="checkline"><input type="radio" name="cur" value="¥" onchange="setCurrency(this.value)"> ¥ Yen</label>
+    <label class="checkline"><input type="radio" name="cur" value="₺" onchange="setCurrency(this.value)"> ₺ Lira</label>
+    <label class="checkline"><input type="radio" name="cur" value="Rs" onchange="setCurrency(this.value)"> Rs Rupees</label>
+  </div>
+  <h3>Theme packs — 10 themes</h3><p class="sub">Light themes</p><div class="row">
+    <button class="btn small" onclick="setTheme('classic')">Classic Red &amp; Green</button>
+    <button class="btn small ghost" onclick="setTheme('gold')">Gold &amp; Cream</button>
+    <button class="btn small ghost" onclick="setTheme('winter')">Winter Blue</button>
+    <button class="btn small ghost" onclick="setTheme('candy')">Candy Pink</button>
+    <button class="btn small ghost" onclick="setTheme('evergreen')">Evergreen</button>
+  </div><p class="sub">Dark themes</p><div class="row">
+    <button class="btn small ghost" onclick="setTheme('midnight')">Midnight Gold</button>
+    <button class="btn small ghost" onclick="setTheme('noel')">Noel Night</button>
+    <button class="btn small ghost" onclick="setTheme('frost')">Frost Night</button>
+    <button class="btn small ghost" onclick="setTheme('plum')">Plum Night</button>
+    <button class="btn small ghost" onclick="setTheme('cocoa')">Cocoa Night</button>
+  </div>
+  <label class="checkline"><input type="checkbox" id="colourfulChk" onchange="setColourful(this.checked)"> Colourful mode ON (off = calm muted colours)</label>
+  <div class="row"><label>Custom accent colour: <input type="color" id="customColor" onchange="setCustomColor(this.value)" style="width:60px"></label>
+  <label class="checkline"><input type="checkbox" id="darkChk" onchange="setDark(this.checked)"> Dark mode</label></div>
+  <h3>Background</h3><div class="row">
+    <button class="btn small ghost" onclick="setBg('none')">Plain</button>
+    <button class="btn small ghost" onclick="setBg('linear-gradient(160deg,#fde8e8,#e4f2e8)')">Festive fade</button>
+    <button class="btn small ghost" onclick="setBg('linear-gradient(160deg,#fdf3d8,#fde8c8)')">Golden glow</button>
+    <button class="btn small ghost" onclick="setBg('linear-gradient(160deg,#e0f0fa,#eef7fb)')">Winter sky</button>
+  </div>
+  <div class="row"><label>Upload your own photo background: <input type="file" accept="image/*" onchange="uploadBg(this)"></label>
+  <button class="btn small ghost" onclick="clearBg()">Remove photo</button></div>
+  <h3>Backup</h3><p class="sub">Your data stays in this browser only — it does not sync to other devices. Use Export/Import to move it.</p>
+  <div class="row"><button class="btn small" onclick="exportData()">⬇ Export backup (JSON)</button>
+  <label class="btn small ghost" style="cursor:pointer">⬆ Import backup <input type="file" accept=".json" onchange="importData(this)" style="display:none"></label></div>
+  <p class="sub" id="backupNudge"></p>
+  <h3>Gift Tracker import</h3><p class="sub">One-time copy from a Gift Tracker backup file. Your existing data is kept — nothing is overwritten.</p>
+  <div class="row"><label class="btn small" style="cursor:pointer">🎁 Import my Gift Tracker backup <input type="file" accept=".json" onchange="importGiftTracker(this)" style="display:none"></label></div>
+  <div class="live" id="gtImportMsg"></div>
+  <h3>Sample data &amp; new year</h3><div class="row">
+    <button class="btn small ghost" onclick="restoreSamples()">Restore sample data</button>
+    <button class="btn small danger" onclick="openResetModal()">New-year reset</button>
+  </div>
+  <p class="sub">Restore sample data replaces the planner content with samples — your name, theme and currency are kept. New-year reset archives the old year, then clears the planner for a fresh year.</p>
+  <p class="sub">Full Christmas Planner v1.9 — one offline HTML file. No account, no sync; your data stays in this browser.</p>
+</section>
+</main>
+</div>
+<div id="printArea"></div>
+<div class="modal-bg" id="modalBg"><div class="modal" id="modalBox"></div></div>
+<div id="onboard"><div class="onboard-card">
+  <div class="onboard-head"><h2>Full Christmas Planner</h2></div>
+  <div class="onboard-body">
+    <div class="benefit"><span>🎁</span><div><b>Everything in one place</b><br><span class="sub">Gifts, budget, cards, advent, meals, hosting, decor, travel and Secret Santa — no juggling files.</span></div></div>
+    <div class="benefit"><span>🔒</span><div><b>Your data stays yours</b><br><span class="sub">Everything lives in your browser on this device only.</span></div></div>
+    <label class="flabel">Your name (optional)</label><input class="field" id="obName" placeholder="e.g. Hafiz">
+    <label class="flabel">Family name (optional)</label><input class="field" id="obFam" placeholder="e.g. Smith family">
+    <label class="flabel">Profile photo (optional)</label><input class="field" type="file" accept="image/*" onchange="uploadPhoto(this)">
+    <label class="flabel">Currency</label>
+    <div class="row">
+      <label class="checkline"><input type="radio" name="obcur" value="$" checked> $ Dollar</label>
+      <label class="checkline"><input type="radio" name="obcur" value="€"> € Euro</label>
+      <label class="checkline"><input type="radio" name="obcur" value="£"> £ Pound</label>
+      <label class="checkline"><input type="radio" name="obcur" value="₹"> ₹ Rupee</label>
+      <label class="checkline"><input type="radio" name="obcur" value="¥"> ¥ Yen</label>
+      <label class="checkline"><input type="radio" name="obcur" value="₺"> ₺ Lira</label>
+      <label class="checkline"><input type="radio" name="obcur" value="Rs"> Rs Rupees</label>
+    </div>
+    <label class="flabel">Pick a theme</label>
+    <select class="field" id="obTheme"><option value="classic">Classic Red & Green</option><option value="gold">Gold & Cream</option><option value="winter">Winter Blue</option><option value="candy">Candy Pink</option><option value="evergreen">Evergreen</option><option value="midnight">Midnight Gold</option><option value="noel">Noel Night</option><option value="frost">Frost Night</option><option value="plum">Plum Night</option><option value="cocoa">Cocoa Night</option></select>
+    <div class="row" style="margin-top:18px"><button class="btn" style="flex:1;padding:13px;font-size:17px" onclick="finishOnboard()">Start planning 🎄</button></div>
+    <div style="text-align:center;margin-top:10px"><a href="#" onclick="closeOnboard();return false;" style="color:var(--accent);font-weight:700">Skip</a></div>
+  </div>
+</div></div>
+<script>
+var KEY='fullChristmasPlannerV1';
+var SECTIONS=[['home','🏠 Home'],['gifts','🎁 Gifts'],['budget','💰 Budget'],['cards','💌 Cards'],['advent','🎄 Advent'],['meals','🍽️ Meals'],['baking','🍪 Baking'],['grocery','🛒 Grocery'],['hosting','🏡 Hosting'],['decor','✨ Decor'],['travel','🧳 Travel'],['santa','🎅 Secret Santa'],['deals','🏷️ Deal Days'],['notes','📝 Notes'],['settings','⚙️ Settings']];
+var STATUSES=['Idea','Ordered','Bought','Wrapped','Given'];
+var GROUPS=['Family','Friends','Colleagues','Other'];
+var AISLES=['Produce','Bakery','Dairy & Eggs','Meat & Seafood','Pantry','Frozen','Drinks','Household','Other'];
+var EXPCATS=['Gifts','Food','Decor','Travel','Other'];
+var ROOMS=['Living room','Dining room','Kitchen','Hallway','Bedroom','Kids room','Bathroom','Tree','Outside','Other'];
+var DECORSTATUSES=['Planned','To buy','Up'];
+var PACKCATS=['Clothes','Gifts','Toiletries','Documents','Kids','Other'];
+var SUGGESTIONS={
+ Dad:{under:['Warm winter scarf','Leather wallet','Coffee mug','Book light'],mid:['Wireless earbuds','Board game','Tool set','Grooming kit'],over:['Smart watch','Noise-cancelling headphones','Weekend bag','Espresso maker']},
+ Mum:{under:['Scented candle','Cozy socks','Hand cream set','Photo frame'],mid:['Silk scarf','Jewellery box','Spa gift set','Cookbook'],over:['Cashmere wrap','Perfume','Weekend spa voucher','Handbag']},
+ Kids:{under:['Puzzle set','Art supplies','Story book','Building blocks'],mid:['Board game','Craft kit','Sports ball','Plush toy'],over:['Bicycle helmet','Tablet stand','Lego set','Science kit']},
+ Colleague:{under:['Desk plant','Notebook set','Coffee beans','Fun mug'],mid:['Desk organiser','Gift hamper','Wireless charger','Lunch box'],over:['Headphones','Backpack','Smart speaker','Watch']},
+ Friend:{under:['Candle','Chocolate box','Phone stand','Keychain'],mid:['Board game','Spa set','Picnic set','Wallet'],over:['Weekend trip voucher','Smart speaker','Perfume','Backpack']}
+};
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function uid(){return 'id'+Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);}
+function num(v){var n=parseFloat(v);return isNaN(n)?0:n;}
+function fmt(v){var n=num(v);return (S.settings.currency||'$')+(n%1?n.toFixed(2):n.toFixed(0));}
+function todayStr(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function christmasDate(){var now=new Date();var today=new Date(now.getFullYear(),now.getMonth(),now.getDate());var d=new Date(now.getFullYear(),11,25);if(today>d)d=new Date(now.getFullYear()+1,11,25);return d;}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function toast(m){var t=document.createElement('div');t.textContent=m;t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2b2118;color:#fff;padding:10px 18px;border-radius:20px;z-index:200;font-size:14px';document.body.appendChild(t);setTimeout(function(){t.remove();},2600);}
+var S=null,currentSec='home',navStack=['home'],giftView='list',santaWishPerson='',santaDrawError='',homeAttn=[];
+var F={expCat:'',cardStatus:'',thanksDone:'',bakeStatus:'',grocAisle:'',grocBought:'',guestRsvp:'',taskDone:'',santaConf:'',dealStatus:'',decorRoom:'',decorStatus:'',packCat:'',packDone:'',ideaPerson:'',wishPerson:'',wishClaim:'',mealDay:''};
+function setF(k,v){F[k]=v;renderAll();}
+function clearF(k){F[k]='';renderAll();}
+function clearF2(a,b){F[a]='';F[b]='';renderAll();}
+function countsFor(list,keyFn){var c={};list.forEach(function(x){var k=keyFn(x);if(k!=null&&k!=='')c[k]=(c[k]||0)+1;});return c;}
+function filterOpts(counts,order,allLabel,current){var tot=0;Object.keys(counts).forEach(function(k){tot+=counts[k];});var h='<option value="">'+allLabel+' ('+tot+')</option>';order.forEach(function(k){if(counts[k])h+='<option value="'+esc(k)+'"'+(current===k?' selected':'')+'>'+esc(k)+' ('+counts[k]+')</option>';});Object.keys(counts).forEach(function(k){if(order.indexOf(k)<0)h+='<option value="'+esc(k)+'"'+(current===k?' selected':'')+'>'+esc(k)+' ('+counts[k]+')</option>';});return h;}
+function filterRowHTML(selectId,current,counts,order,allLabel,onchange,filtered,total,clearCode){var h='<div class="row"><select id="'+selectId+'" onchange="'+onchange+'">'+filterOpts(counts,order,allLabel,current)+'</select>';if(filtered)h+='<button class="btn small ghost" onclick="'+clearCode+'">\u2715 Clear</button><span class="live">Showing '+filtered+' of '+total+' items</span>';h+='</div>';return h;}
+function shortDate(ds){if(!ds)return '';var p=ds.split('-');if(p.length!==3)return ds;var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(p[1],10)-1]||'';return m+' '+parseInt(p[2],10);}
+function resetSectionFilters(sec){
+  if(sec==='gifts'){var a=$('fStatus');if(a)a.value='';var b=$('fGroup');if(b)b.value='';var c=$('fRecipient');if(c)c.value='';var d=$('fSearch');if(d)d.value='';}
+  if(sec==='budget')F.expCat='';
+  if(sec==='cards'){F.cardStatus='';F.thanksDone='';}
+  if(sec==='baking')F.bakeStatus='';
+  if(sec==='meals')F.mealDay='';
+  if(sec==='grocery'){F.grocAisle='';F.grocBought='';}
+  if(sec==='hosting'){F.guestRsvp='';F.taskDone='';}
+  if(sec==='santa'){F.santaConf='';var sp=$('santaWishPerson');if(sp)sp.value='';}
+  if(sec==='deals')F.dealStatus='';
+  if(sec==='decor'){F.decorRoom='';F.decorStatus='';}
+  if(sec==='travel'){F.packCat='';F.packDone='';}
+}
+function homeGo(sec){resetSectionFilters(sec);showSection(sec);}
+function gotoDealStatus(st){showSection('deals',false);F.dealStatus=st;renderDeals();renderNotes();renderBackupNudge();}
+function clearSantaWishFilter(){var sp=$('santaWishPerson');if(sp)sp.value='';renderSantaWishes();}
+function sampleData(){
+  var g=function(id,r,grp,idea,store,b,s,st,dd,ds,wr,hid,stock,hm){return {id:id,recipient:r,group:grp,idea:idea,store:store,budget:b,spent:s,status:st,deliveryDate:dd||'',deliveryStatus:ds||'',wrapped:wr||'Not wrapped',hiding:hid||'',stocking:!!stock,handmade:!!hm,making:'',contributors:[],notes:''};};
+  var p=function(id,n,c,ex){return {id:id,name:n,confirmed:c,exclusions:ex||[]};};
+  var ami=p(uid(),'Sample: Ami',true,[]),abu=p(uid(),'Sample: Abu',true,[]),sara=p(uid(),'Sample: Sara',true,[]),bilal=p(uid(),'Sample: Bilal',false,[]),omar=p(uid(),'Sample: Omar',true,[]);
+  ami.exclusions=[abu.id];abu.exclusions=[ami.id];
+  return {
+    profile:{name:'',photo:''},
+    settings:{familyName:'',currency:'$',theme:'classic',colourful:true,customColor:'#b71c2e',dark:false,background:'none',photo:'',lastBackup:''},
+    gifts:[g(uid(),'Sample: Ami','Family','Warm winter scarf','Winter Shop',50,60,'Bought','2026-12-20','Ordered','Not wrapped','Bedroom closet',false,false),
+      g(uid(),'Sample: Bilal','Family','Board game','Toy Store',30,0,'Idea','','','Not wrapped','',false,false),
+      g(uid(),'Sample: Sara','Family','Scented candle set','Gift Corner',25,25,'Given','','','Wrapped','',false,false),
+      g(uid(),'Sample: Abu','Family','Leather wallet','Leather Co',40,0,'Ordered','2026-12-18','Shipped','Not wrapped','Garage shelf',false,false),
+      g(uid(),'Sample: Sara','Family','Chocolate box','Sweet Shop',15,15,'Wrapped','','','Wrapped','',true,false)],
+    ideas:[{id:uid(),text:'Puzzle set for kids',forWhom:'Sample: Sara',notes:'500 pieces, animal theme'},{id:uid(),text:'Desk plant',forWhom:'Sample: Bilal',notes:'Low maintenance'}],
+    wishes:[{id:uid(),recipient:'Sample: Ami',text:'Silk scarf',claimed:false},{id:uid(),recipient:'Sample: Sara',text:'Cookbook',claimed:true}],
+    expenses:[{id:uid(),desc:'Tree decorations',cat:'Decor',amount:45},{id:uid(),desc:'Christmas dinner groceries',cat:'Food',amount:80},{id:uid(),desc:'Gift wrap paper',cat:'Gifts',amount:12}],
+    cards:[{id:uid(),recipient:'Sample: Ami',address:'1 Street',status:'Sent',postage:'Delivered'},{id:uid(),recipient:'Sample: Bilal',address:'2 Avenue',status:'Not sent',postage:'Not posted'}],
+    thanks:[{id:uid(),recipient:'Sample: Abu',note:'Thank him for the dinner invite',done:false}],
+    adventOpened:[1,2],adventNotes:{1:'Hot chocolate night',2:'Watch a Christmas film'},decNotes:{goal:'',reflection:'',wins:''},
+    meals:[{id:uid(),day:'Dec 24',meal:'Roast dinner',guests:6,dietary:'One vegetarian',ingredients:'Turkey, potatoes, carrots, gravy'},{id:uid(),day:'Dec 25',meal:'Christmas lunch',guests:8,dietary:'Nut allergy',ingredients:'Chicken, rice, salad, bread'}],
+    baking:[{id:uid(),item:'Gingerbread cookies',qty:'2 dozen',bakeDate:'2026-12-22',status:'Planned'},{id:uid(),item:'Fruit cake',qty:'1',bakeDate:'2026-12-20',status:'Baked'}],
+    grocery:[{id:uid(),item:'Milk',aisle:'Dairy & Eggs',qty:'2 litres',checked:false,source:'manual'},{id:uid(),item:'Bread',aisle:'Bakery',qty:'1 loaf',checked:false,source:'manual'},{id:uid(),item:'Wrapping paper',aisle:'Household',qty:'2 rolls',checked:true,source:'manual'}],
+    guests:[{id:uid(),name:'Sample: Ami',rsvp:'Coming',dietary:'Vegetarian',plusOne:'No'},{id:uid(),name:'Sample: Abu',rsvp:'Maybe',dietary:'None',plusOne:'Yes'}],
+    tasks:[{id:uid(),text:'Clean the living room',date:'2026-12-23',done:false},{id:uid(),text:'Set the table',date:'2026-12-24',done:true}],
+    seating:'Sample: Ami and Abu at the head table, kids at the small table.',
+    santa:{participants:[ami,abu,sara,bilal,omar],wishes:[{id:uid(),personId:sara.id,text:'Cookbook',note:''},{id:uid(),personId:bilal.id,text:'Board game',note:''}],draw:null,eventDate:'2026-12-20',location:"Sample: Ami's house",priceLimit:25},
+    deals:[{id:uid(),item:'Wireless earbuds',target:40,sale:0,store:'Tech Store',status:'Watching'},{id:uid(),item:'Board game',target:25,sale:19,store:'Toy Store',status:'Bought'}],
+    archives:[{year:2025,gifts:[{recipient:'Sample: Ami',idea:'Scarf'},{recipient:'Sample: Bilal',idea:'Book'},{recipient:'Sample: Sara',idea:'Mug'}]}]
+  };
+}
+function normalize(){
+  var d=sampleData();
+  if(!S||typeof S!=='object')S=d;
+  Object.keys(d).forEach(function(k){if(S[k]==null)S[k]=d[k];});
+  if(!S.profile)S.profile={name:'',photo:''};
+  if(!S.settings)S.settings=d.settings;
+  Object.keys(d.settings).forEach(function(k){if(S.settings[k]==null)S.settings[k]=d.settings[k];});
+  if(!S.santa)S.santa=d.santa;
+  if(!S.santa.participants)S.santa.participants=[];
+  if(!S.santa.wishes)S.santa.wishes=[];
+  if(S.santa.draw===undefined)S.santa.draw=null;
+  if(!S.dates)S.dates=[];if(!S.notes)S.notes=[];if(!S.decor)S.decor=[];if(!S.storage)S.storage=[];if(!S.trips)S.trips=[];if(!S.packing)S.packing=[];if(!S.decNotes)S.decNotes={goal:'',reflection:'',wins:''};
+  S.gifts.forEach(function(g){if(!g.contributors)g.contributors=[];if(g.wrapped==null)g.wrapped='Not wrapped';if(g.deliveryStatus==null)g.deliveryStatus='';if(g.deliveryDate==null)g.deliveryDate='';});
+}
+function blankData(){return {profile:{name:'',photo:''},settings:{familyName:'',currency:'$',theme:'classic',colourful:true,customColor:'#b71c2e',dark:false,background:'none',photo:'',lastBackup:''},gifts:[],ideas:[],wishes:[],expenses:[],cards:[],thanks:[],adventOpened:[],adventNotes:{},decNotes:{goal:'',reflection:'',wins:''},dates:[],notes:[],meals:[],baking:[],grocery:[],guests:[],tasks:[],decor:[],storage:[],trips:[],packing:[],seating:'',santa:{participants:[],wishes:[],draw:null,eventDate:'',location:'',priceLimit:''},deals:[],archives:[]};}
+function load(){ S=sampleData(); seedNewSamples(); normalize(); }
+function save(){}
+var THEMES=[['classic','Classic Red & Green','#b71c2e'],['gold','Gold & Cream','#c9a227'],['winter','Winter Blue','#1f5f8b'],['candy','Candy Pink','#c2438f'],['evergreen','Evergreen','#14532d'],['midnight','Midnight Gold','#d4af37'],['noel','Noel Night','#e05252'],['frost','Frost Night','#5aa7e0'],['plum','Plum Night','#c98ae0'],['cocoa','Cocoa Night','#e0a458']];
+function toggleThemePanel(){
+  var panel=$('themePanel');if(!panel)return;
+  if(panel.style.display==='block'){panel.style.display='none';return;}
+  panel.innerHTML='<h4 style="margin:0 0 8px">Choose a theme</h4>'+THEMES.map(function(x){
+    var on=(S.settings.theme||'classic')===x[0];
+    return '<button onclick="pickTheme(\''+x[0]+'\')"><span class="dot" style="background:'+x[2]+'"></span>'+x[1]+(on?' ✓':'')+'</button>';
+  }).join('');
+  panel.style.display='block';
+}
+function pickTheme(k){setTheme(k);$('themePanel').style.display='none';}
+function applyTheme(){
+  var st=S.settings;
+  document.body.setAttribute('data-theme',st.theme||'classic');
+  document.body.setAttribute('data-colorful',st.colourful?'on':'off');
+  document.body.classList.toggle('dark',!!st.dark);
+  document.body.style.setProperty('--accent',st.customColor||'#b71c2e');
+  if(st.photo){document.body.style.backgroundImage='url('+st.photo+')';document.body.classList.add('has-photo');}
+  else if(st.background&&st.background!=='none'){document.body.style.backgroundImage=st.background;document.body.classList.remove('has-photo');}
+  else{document.body.style.backgroundImage='';document.body.classList.remove('has-photo');}
+  $('hello').textContent=S.profile.name?('Hello, '+S.profile.name):'';
+  var av=$('headerAvatar');
+  if(av){
+    if(S.profile.photo){av.innerHTML='<img src="'+S.profile.photo+'" alt="Profile photo">';}
+    else{av.textContent=(S.profile.name&&S.profile.name.trim())?S.profile.name.trim().charAt(0).toUpperCase():'🎄';}
+    av.onclick=function(){
+      var inp=$('avatarFile');
+      if(!inp){inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.id='avatarFile';inp.style.display='none';document.body.appendChild(inp);inp.onchange=function(){uploadPhoto(this);};}
+      inp.click();
+    };
+  }
+  var pn=$('profName');if(pn)pn.value=S.profile.name||'';
+  var fi=$('famName');if(fi)fi.value=S.settings.familyName||'';
+  var cr=document.querySelector('input[name="cur"][value="'+st.currency+'"]');if(cr)cr.checked=true;
+  $('colourfulChk').checked=!!st.colourful;
+  $('darkChk').checked=!!st.dark;
+  $('customColor').value=st.customColor||'#b71c2e';
+}
+function setTheme(t){S.settings.theme=t;save();applyTheme();}
+function setCurrency(v){S.settings.currency=v;save();applyTheme();renderAll();}
+function setColourful(v){S.settings.colourful=v;save();applyTheme();}
+function setDark(v){S.settings.dark=v;save();applyTheme();}
+function setCustomColor(v){S.settings.customColor=v;save();applyTheme();}
+function setBg(v){S.settings.background=v;S.settings.photo='';save();applyTheme();}
+function clearBg(){S.settings.photo='';S.settings.background='none';save();applyTheme();}
+function uploadBg(input){var f=input.files&&input.files[0];if(!f)return;var r=new FileReader();r.onload=function(){var img=new Image();img.onload=function(){var c=document.createElement('canvas');var s=Math.min(1,1200/img.width);c.width=img.width*s;c.height=img.height*s;c.getContext('2d').drawImage(img,0,0,c.width,c.height);S.settings.photo=c.toDataURL('image/jpeg',0.8);save();applyTheme();toast('Background photo set.');};img.src=r.result;};r.readAsDataURL(f);}
+function setProfileName(v){S.profile.name=v;save();applyTheme();}
+function setFamilyName(v){S.settings.familyName=v;save();renderHome();}
+function uploadPhoto(input){var f=input.files&&input.files[0];if(!f)return;var r=new FileReader();r.onload=function(){var img=new Image();img.onload=function(){var c=document.createElement('canvas');var s=Math.min(1,400/img.width);c.width=img.width*s;c.height=img.height*s;c.getContext('2d').drawImage(img,0,0,c.width,c.height);S.profile.photo=c.toDataURL('image/jpeg',0.85);save();applyTheme();toast('Profile photo set.');};img.src=r.result;};r.readAsDataURL(f);}
+function removePhoto(){S.profile.photo='';save();applyTheme();}
+function buildSidebar(){
+  $('sidebar').innerHTML='<h4>Sections</h4>'+SECTIONS.map(function(s){return '<button data-sec="'+s[0]+'" onclick="showSection(\''+s[0]+'\')">'+s[1]+'</button>';}).join('');
+}
+function showSection(id,push){
+  currentSec=id;
+  try{localStorage.setItem(KEY+'Sec',id);}catch(e){}
+  SECTIONS.forEach(function(s){var el=$('sec-'+s[0]);if(el)el.classList.toggle('show',s[0]===id);});
+  document.querySelectorAll('#sidebar button').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-sec')===id);});
+  if(id==='home'){$('sidebar').style.display='none';}else{$('sidebar').style.display='';}
+  $('sidebar').classList.remove('open');
+  if(push!==false){if(navStack[navStack.length-1]!==id)navStack.push(id);}
+  renderAll();window.scrollTo(0,0);
+}
+function goBack(){
+  if(navStack.length>1){navStack.pop();var prev=navStack[navStack.length-1];showSection(prev,false);}
+  else showSection('home',false);
+}
+function openModal(icon,title,body){
+  $('modalBox').innerHTML='<div class="modal-head"><span class="modal-icon">'+icon+'</span><h3>'+esc(title)+'</h3><button class="modal-x" onclick="closeModal()">×</button></div><div class="modal-body">'+body+'</div>';
+  $('modalBg').classList.add('open');
+}
+function closeModal(){$('modalBg').classList.remove('open');}
+var pendingDelete=null;
+function askDelete(label,fn){pendingDelete=fn;openModal('🗑️','Delete '+label+'?','<p class="live">This will be removed. This cannot be undone.</p><div class="row" style="margin-top:14px"><button class="btn danger" onclick="doPendingDelete()">Delete</button><button class="btn ghost" onclick="closeModal()">Keep it</button></div>');}
+function doPendingDelete(){var f=pendingDelete;pendingDelete=null;closeModal();if(f)f();}
+$('modalBg').addEventListener('click',function(e){if(e.target.id==='modalBg'&&!drawCounting)closeModal();});
+function finishOnboard(){
+  var n=$('obName').value.trim();if(n)S.profile.name=n;
+  var fn=$('obFam')?$('obFam').value.trim():'';if(fn)S.settings.familyName=fn;
+  var c=document.querySelector('input[name="obcur"]:checked');if(c)S.settings.currency=c.value;
+  var th=$('obTheme');if(th)S.settings.theme=th.value;
+  save();applyTheme();closeOnboard();renderAll();toast('Welcome! Your planner starts blank — add your first gift whenever you are ready.');
+}
+function closeOnboard(){save();$('onboard').classList.remove('open');}
+function renderAll(){applyTheme();renderHome();renderGifts();renderBudget();renderCards();renderAdvent();renderMeals();renderBaking();renderGrocery();renderHosting();renderDecor();renderTravel();renderSanta();renderDeals();renderNotes();renderBackupNudge();}
+function showCountdownDialog(){
+  var cd=christmasDate();
+  var now=new Date();var today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  var days=Math.ceil((cd-today)/86400000);
+  var wd=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][cd.getDay()];
+  var wks=Math.floor(days/7),rem=days%7;
+  var body=days>0?('<div style="text-align:center"><div style="font-size:42px;font-weight:800;line-height:1.1">'+days+' day'+(days===1?'':'s')+'</div><div class="live" style="margin:6px 0 12px">Until Christmas Day</div><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><span style="background:rgba(0,0,0,.06);border-radius:20px;padding:6px 12px;font-weight:700">'+wks+' week'+(wks===1?'':'s')+'</span><span style="background:rgba(0,0,0,.06);border-radius:20px;padding:6px 12px;font-weight:700">'+rem+' day'+(rem===1?'':'s')+'</span></div><p class="live" style="margin-top:14px">🎄 Christmas Day: '+wd+', Dec 25, '+cd.getFullYear()+'</p></div>'):('<div style="text-align:center"><div style="font-size:42px;font-weight:800;line-height:1.1">Merry Christmas! 🎄</div><p class="live" style="margin-top:12px">Today is Christmas Day.</p></div>');
+  openModal('🎄','Countdown to Christmas',body+'<div class="row" style="margin-top:16px;justify-content:center"><button class="btn" onclick="closeModal()">Close</button></div>');
+}
+function showAttentionDialog(){
+  var list=homeAttn||[];
+  var body=list.length?list.map(function(a){return '<div class="attnline" onclick="closeModal();showSection(\''+a.sec+'\')">⚠️ '+esc(a.t)+'</div>';}).join(''):'<div class="live">All clear! Nothing needs attention.</div>';
+  openModal('⚠️','Attention needed',body+'<div class="row" style="margin-top:16px"><button class="btn" onclick="closeModal()">Close</button></div>');
+}
+function showStatusDetail(st){
+  var sd=$('statusDetail');if(!sd)return;
+  var list=S.gifts.filter(function(g){return g.status===st;});
+  sd.innerHTML=list.length?('<b>'+st+' ('+list.length+'):</b><br>'+list.map(function(g){return '• '+esc(g.recipient)+' — '+esc(g.idea)+' ('+fmt(g.spent)+' of '+fmt(g.budget)+')';}).join('<br>')):('<b>'+st+':</b> No gifts in this status yet.');
+}
+function gotoStatus(st){
+  showSection('gifts',false);
+  var f=$('fStatus');if(f){f.value=st;}
+  renderGifts();
+}
+function gotoNotGiven(){
+  showSection('gifts');
+  var f=$('fStatus');if(f){f.value='notGiven';}
+  renderGifts();
+}
+function showLastYearDialog(year){
+  var a=(S.archives||[]).filter(function(x){return String(x.year)===String(year);})[0];
+  if(!a)return;
+  var gl=(a.gifts||[]).map(function(g){return '• '+esc(g.recipient)+' — '+esc(g.idea);}).join('<br>')||'No gifts archived.';
+  openModal('🎄','Christmas '+esc(a.year),'<div class="live">'+gl+'</div><div class="row" style="margin-top:14px"><button class="btn" onclick="closeModal()">Close</button></div>');
+}
+function renderHome(){
+  var now=new Date();var cd=christmasDate();
+  var days=Math.ceil((cd-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/86400000);
+  $('homeSub').textContent='Today is '+now.toDateString()+'. '+S.gifts.length+' gifts tracked.';
+  var hw=$('headerWish');if(hw){hw.textContent=days===0?'Merry Christmas! 🎄':days<=7?'Final stretch — you have got this ✨':days<=30?'Nearly there — keep wrapping 🎁':days<=60?'Steady wins the sleigh race 🎄':'Early prep wins Christmas 🎄';}
+  var fh=$('familyHeader');var fn=(S.settings.familyName||'').trim();
+  if(fn){var label=/family\s*$/i.test(fn)?fn:fn+' Family';fh.textContent='🎄 The '+label+' Christmas '+new Date().getFullYear();}
+  else fh.textContent='🎄 Christmas '+new Date().getFullYear();
+  fh.style.display='block';
+  var tb=S.gifts.reduce(function(a,g){return a+num(g.budget);},0);
+  var ts=S.gifts.reduce(function(a,g){return a+num(g.spent);},0);
+  var pend=S.gifts.filter(function(g){return g.status!=='Given';}).length;
+  var pendDel=S.gifts.filter(function(g){return g.deliveryStatus&&g.deliveryStatus!=='Delivered';}).length;
+  var unopened=0;for(var d=1;d<=24;d++){var dt=new Date(now.getFullYear(),11,d);if(dt<new Date(now.getFullYear(),now.getMonth(),now.getDate())&&(S.adventOpened||[]).indexOf(d)<0)unopened++;}
+  var tasksLeft=S.tasks.filter(function(t){return !t.done;}).length;
+  /* v1.4: top strip removed — Home starts with the main cards. */
+  var counts={};STATUSES.forEach(function(s){counts[s]=0;});
+  S.gifts.forEach(function(g){if(counts[g.status]!=null)counts[g.status]++;});
+  var colors={'Idea':'#8e7cc3','Ordered':'#e67e22','Bought':'#2980b9','Wrapped':'#1e7d46','Given':'#b71c2e'};
+  var total=S.gifts.length||1,acc=0,parts=[];
+  STATUSES.forEach(function(s){var p=counts[s]/total*100;if(p>0){parts.push(colors[s]+' '+acc+'% '+(acc+p)+'%');}acc+=p;});
+  var attn=[];
+  S.gifts.forEach(function(g){if(num(g.spent)>num(g.budget))attn.push({t:'Over budget: '+g.recipient+' — '+g.idea+' ('+fmt(g.spent)+' spent of '+fmt(g.budget)+')',sec:'gifts'});});
+  S.gifts.forEach(function(g){if(g.deliveryDate&&g.deliveryDate<todayStr()&&g.deliveryStatus!=='Delivered')attn.push({t:'Late delivery: '+g.recipient+' — '+g.idea+' (expected '+g.deliveryDate+')',sec:'gifts'});});
+  S.gifts.forEach(function(g){if(g.status==='Bought'&&g.wrapped!=='Wrapped')attn.push({t:'Not wrapped yet: '+g.recipient+' — '+g.idea,sec:'gifts'});});
+  var giftedNames=[];S.gifts.forEach(function(g){if(giftedNames.indexOf(g.recipient)<0)giftedNames.push(g.recipient);});
+  S.cards.forEach(function(c){if(c.recipient&&giftedNames.indexOf(c.recipient)<0)attn.push({t:'No gift yet for: '+c.recipient,sec:'gifts'});});
+  S.santa.participants.forEach(function(p){if(!p.confirmed)attn.push({t:'Santa not confirmed: '+p.name,sec:'santa'});});
+  (S.trips||[]).forEach(function(x){if(x.depart){var nd=daysUntil(x.depart);var un=(S.packing||[]).filter(function(p){return !p.packed;}).length;if(nd>=0&&nd<=7&&un>0)attn.push({t:'Trip to '+x.dest+' '+(nd===0?'today':nd===1?'tomorrow':'in '+nd+' days')+' — '+un+' packing item'+(un===1?'':'s')+' not packed',sec:'travel'});}});
+  for(var d2=1;d2<=24;d2++){var dt2=new Date(now.getFullYear(),11,d2);if(dt2<new Date(now.getFullYear(),now.getMonth(),now.getDate())&&(S.adventOpened||[]).indexOf(d2)<0)attn.push({t:'Advent door Dec '+d2+' still unopened',sec:'advent'});}
+  homeAttn=attn;
+  var cardsSent=S.cards.filter(function(c){return c.status==='Sent';}).length;
+  var bakedCount=S.baking.filter(function(b){return b.status==='Baked';}).length;
+  var grocUnchecked=S.grocery.filter(function(g){return !g.checked;}).length;
+  var dealsWatching=S.deals.filter(function(d){return d.status==='Watching';}).length;
+  var decorUp=(S.decor||[]).filter(function(x){return x.status==='Up';}).length;
+  var decorToBuy=(S.decor||[]).filter(function(x){return x.status==='To buy';}).length;
+  var packDoneN=(S.packing||[]).filter(function(x){return x.packed;}).length;
+  var nextTrip=(S.trips||[]).filter(function(x){return x.depart&&x.depart>=todayStr();}).slice().sort(function(a,b){return a.depart<b.depart?-1:1;})[0];
+  var dealsBought=S.deals.filter(function(d){return d.status==='Bought';}).length;
+  var themeNames={classic:'Classic Red & Green',gold:'Gold & Cream',winter:'Winter Blue',candy:'Candy Pink',evergreen:'Evergreen',midnight:'Midnight Gold',noel:'Noel Night',frost:'Frost Night',plum:'Plum Night',cocoa:'Cocoa Night'};
+  var pct=function(a,b){return b>0?Math.min(100,Math.round(a/b*100)):0;};
+  var pctExact=function(a,b){return b>0?Math.min(100,a/b*100):0;};
+  var segBar=function(segs,clickFn){return '<div class="hc-bar">'+segs.map(function(x){return '<div class="hc-seg" style="width:'+x.w+'%;background:'+x.c+';cursor:'+(clickFn&&x.v?'pointer':'default')+'" title="'+esc(x.l)+'"'+(clickFn&&x.v?' onclick="event.stopPropagation();'+clickFn+'(\''+x.v+'\')"':'')+'></div>';}).join('')+'</div>';};
+  var progBar=function(p,over){return '<div class="hc-bar'+(over?' over':'')+'"><div class="seg-spent" style="width:'+p+'%;background:linear-gradient(90deg,var(--accent),var(--accent2))"></div></div>';};
+  var giftSegs=STATUSES.map(function(x){return {v:x,w:pctExact(counts[x],total),c:colors[x],l:x+': '+counts[x]};});
+  var budgetPctExact=pctExact(ts,tb);
+  var budgetBar='<div class="hc-bar'+(ts>tb?' over':'')+'"><div class="seg-spent" style="width:'+budgetPctExact+'%;background:linear-gradient(90deg,var(--accent),var(--accent2))"></div><div class="seg-left" style="width:'+(tb>0?Math.max(0,100-budgetPctExact):100)+'%;background:#d8cfae"></div></div>';
+  var santaConf=S.santa.participants.filter(function(x){return x.confirmed;}).length;
+  var grocBought=S.grocery.filter(function(x){return x.checked;}).length;
+  var tasksDone=S.tasks.filter(function(x){return x.done;}).length;
+  var weeksLeft=Math.ceil(days/7);
+  var pendDelList=S.gifts.filter(function(g){return g.deliveryStatus&&g.deliveryStatus!=='Delivered';});
+  var lateDelList=pendDelList.filter(function(g){return g.deliveryDate&&g.deliveryDate<todayStr();});
+  var pendDelSorted=pendDelList.slice().sort(function(a,b){if(!a.deliveryDate)return 1;if(!b.deliveryDate)return -1;return a.deliveryDate<b.deliveryDate?-1:1;});
+  var delivLine=pendDelList.length?('<div class="live">\uD83D\uDE9A '+pendDelList.length+' pending deliver'+(pendDelList.length===1?'y':'ies')+(pendDelSorted[0].deliveryDate?' \u00B7 next '+shortDate(pendDelSorted[0].deliveryDate):'')+(lateDelList.length?' \u00B7 <span style="color:#a33;font-weight:700">'+lateDelList.length+' late</span>':'')+'</div>'):('<div class="live" style="opacity:.75">All deliveries arrived \u2713</div>');
+  var wbHtml='';if(weeksLeft>0){wbHtml='<div class="weekblocks">';for(var wi=0;wi<weeksLeft;wi++)wbHtml+='<span></span>';wbHtml+='</div>';}
+  var maxGuests=S.meals.reduce(function(m,x){return Math.max(m,num(x.guests));},0)||1;
+  var mealChart='<div class="hc-chart">'+S.meals.map(function(x){return '<div class="hc-meal"><span class="hc-mlab">'+esc(x.day)+'</span><div class="hc-bar"><div style="width:'+(num(x.guests)/maxGuests*100)+'%;background:linear-gradient(90deg,var(--accent),var(--accent2))"></div></div><span>'+num(x.guests)+' guests</span></div>';}).join('')+'</div>';
+  var rp=[];
+  if(S.gifts.length)rp.push(counts['Given']/S.gifts.length*100);
+  if(S.cards.length)rp.push(cardsSent/S.cards.length*100);
+  if(S.tasks.length)rp.push(tasksDone/S.tasks.length*100);
+  if(S.grocery.length)rp.push(grocBought/S.grocery.length*100);
+  if(S.baking.length)rp.push(bakedCount/S.baking.length*100);
+  if((S.packing||[]).length)rp.push(packDoneN/(S.packing||[]).length*100);
+  rp.push((S.adventOpened||[]).length/24*100);
+  var score=rp.length?Math.round(rp.reduce(function(a,b){return a+b;},0)/rp.length):0;
+  var nextCands=[];
+  S.tasks.forEach(function(x){if(!x.done&&x.date&&x.date>=todayStr())nextCands.push({d:x.date,t:'✅ Task: '+x.text+' ('+shortDate(x.date)+')'});});
+  S.gifts.forEach(function(x){if(x.deliveryDate&&x.deliveryDate>=todayStr()&&x.deliveryStatus!=='Delivered')nextCands.push({d:x.deliveryDate,t:'🚚 Delivery: '+x.idea+' for '+x.recipient+' ('+shortDate(x.deliveryDate)+')'});});
+  if(S.santa.eventDate&&S.santa.eventDate>=todayStr())nextCands.push({d:S.santa.eventDate,t:'🎅 Secret Santa ('+shortDate(S.santa.eventDate)+')'});(S.trips||[]).forEach(function(x){if(x.depart&&x.depart>=todayStr())nextCands.push({d:x.depart,t:'🧳 Trip to '+x.dest+' ('+shortDate(x.depart)+')'});});(S.dates||[]).forEach(function(x){if(x.date&&x.date>=todayStr()){var nd=daysUntil(x.date);nextCands.push({d:x.date,t:'📅 '+x.title+' ('+shortDate(x.date)+(nd===0?', today!':nd===1?', tomorrow':', in '+nd+' days')+')'});}});
+  nextCands.sort(function(a,b){return a.d<b.d?-1:1;});
+  var nextUp=nextCands.length?nextCands[0].t:'';
+  var hg=$('heroGreet');if(hg)hg.textContent=S.profile.name?('Merry Christmas, '+S.profile.name+'! 🎄'):'Merry Christmas! 🎄';
+  var hs=$('heroSub');if(hs)hs.textContent=fh.textContent+' — '+days+(days===1?' day':' days')+' until Christmas Day';
+  var hr=$('heroRing');if(hr)hr.setAttribute('stroke-dasharray',Math.round(score/100*302)+' 302');
+  var hrt=$('heroRingText');if(hrt)hrt.textContent=score+'%';
+  var hn=$('heroNext');if(hn)hn.textContent=nextUp?('Next up: '+nextUp):'Nothing scheduled — enjoy the calm 🎄';var tsEl=$('todayStrip');if(tsEl){var bits=[];var tTasks=S.tasks.filter(function(x){return x.date===todayStr()&&!x.done;});if(tTasks.length)bits.push('🏡 '+tTasks.length+' hosting task'+(tTasks.length>1?'s':'')+' today');var tDel=S.gifts.filter(function(x){return x.deliveryDate===todayStr()&&x.deliveryStatus!=='Delivered';});if(tDel.length)bits.push('🚚 '+tDel.length+' deliver'+(tDel.length>1?'ies':'y')+' expected today');if(now.getMonth()===11&&now.getDate()<=24)bits.push('🎄 Today\'s Advent door: Dec '+now.getDate());tsEl.textContent=bits.length?('Today: '+bits.join(' · ')):'Today: nothing scheduled — a calm day 🎄';}
+  fh.style.display='none';
+  var grid=[
+    {ic:'🎄',t:'Countdown to Christmas',b:'<div class="big">'+days+(days===1?' day':' days')+'</div><div class="live">Until Christmas Day, Dec 25, '+cd.getFullYear()+' · '+weeksLeft+' week'+(weeksLeft===1?'':'s')+' left</div>'+wbHtml,click:"showCountdownDialog()",tip:'View countdown details'},
+    {ic:'⚠️',t:'Attention needed',b:'<div class="big">'+attn.length+' item'+(attn.length===1?'':'s')+'</div><div class="live">'+(attn.length?'Tap for details':'All clear! Nothing needs attention.')+'</div>',click:"showAttentionDialog()",tip:'View attention details'},
+    {ic:'🎁',t:'Gifts',b:'<div class="big">'+S.gifts.length+' gifts</div><div class="live">'+STATUSES.map(function(x){return x+': '+counts[x];}).join(' · ')+'</div>'+delivLine+segBar(giftSegs,'gotoStatus'),click:"homeGo('gifts')",tip:'Open Gifts'},
+    {ic:'💰',t:'Budget',b:'<div class="big">'+fmt(ts)+' of '+fmt(tb)+'</div><div class="live">'+pct(ts,tb)+'% spent'+(ts>tb?' — over budget!':'')+' · '+fmt(Math.max(0,tb-ts))+' left</div>'+budgetBar,click:"homeGo('budget')",tip:'Open Budget'},
+    {ic:'💌',t:'Cards',b:'<div class="big">'+S.cards.length+' cards</div><div class="live">'+cardsSent+' sent · '+(S.cards.length-cardsSent)+' to go</div>'+progBar(pct(cardsSent,S.cards.length),false),click:"homeGo('cards')",tip:'Open Cards'},
+    {ic:'🎄',t:'Advent',b:'<div class="big">'+(S.adventOpened||[]).length+' of 24 doors</div><div class="live">'+unopened+' unopened so far</div>'+progBar(pct((S.adventOpened||[]).length,24),false),click:"showSection('advent')",tip:'Open Advent'},
+    {ic:'🍽️',t:'Meals',b:'<div class="big">'+S.meals.length+' meals planned</div>'+mealChart,click:"showSection('meals')",tip:'Open Meals'},
+    {ic:'🍪',t:'Baking',b:'<div class="big">'+S.baking.length+' baking items</div><div class="live">'+bakedCount+' baked · '+(S.baking.length-bakedCount)+' planned</div>'+progBar(pct(bakedCount,S.baking.length),false),click:"homeGo('baking')",tip:'Open Baking'},
+    {ic:'🛒',t:'Grocery',b:'<div class="big">'+S.grocery.length+' grocery items</div><div class="live">'+grocUnchecked+' still to buy</div>'+progBar(pct(grocBought,S.grocery.length),false),click:"homeGo('grocery')",tip:'Open Grocery'},
+    {ic:'🏡',t:'Hosting',b:'<div class="big">'+S.guests.length+' guests</div><div class="live">'+tasksLeft+' hosting task'+(tasksLeft===1?'':'s')+' left · '+pct(tasksDone,S.tasks.length)+'% tasks done</div>'+progBar(pct(tasksDone,S.tasks.length),false),click:"homeGo('hosting')",tip:'Open Hosting'},
+    {ic:'✨',t:'Decor',b:'<div class="big">'+(S.decor||[]).length+' decor items</div><div class="live">'+decorUp+' up \u00B7 '+decorToBuy+' to buy \u00B7 '+(S.storage||[]).length+' in storage</div>'+progBar(pct(decorUp,(S.decor||[]).length),false),click:"homeGo('decor')",tip:'Open Decor'},
+    {ic:'🧳',t:'Travel & Packing',b:'<div class="big">'+(S.trips||[]).length+' trip'+((S.trips||[]).length===1?'':'s')+'</div><div class="live">'+(nextTrip?('Next: '+esc(nextTrip.dest)+' \u00B7 '+shortDate(nextTrip.depart)+'<br>'):'')+'Packing: '+packDoneN+' of '+(S.packing||[]).length+' packed</div>'+progBar(pct(packDoneN,(S.packing||[]).length),false),click:"homeGo('travel')",tip:'Open Travel'},
+    {ic:'🎅',t:'Secret Santa',b:'<div class="big">'+S.santa.participants.length+' participants</div><div class="live">'+santaConf+' confirmed · '+(S.santa.draw?'Drawn 🎲':'Not drawn yet')+'</div>'+progBar(pct(santaConf,S.santa.participants.length),false),click:"homeGo('santa')",tip:'Open Secret Santa'},
+    {ic:'🏷️',t:'Deal Days',b:'<div class="big">'+S.deals.length+' deal watches</div><div class="live">'+dealsWatching+' watching · '+dealsBought+' bought</div>'+segBar([{v:'Watching',w:pctExact(dealsWatching,S.deals.length),c:'#c9a227',l:'Watching: '+dealsWatching},{v:'Bought',w:pctExact(dealsBought,S.deals.length),c:'#1e7d46',l:'Bought: '+dealsBought}],'gotoDealStatus'),click:"homeGo('deals')",tip:'Open Deal Days'},
+    {ic:'⚙️',t:'Settings',b:'<div class="live">Theme: '+(themeNames[S.settings.theme]||S.settings.theme)+'<br>Currency: '+(S.settings.currency||'$')+'</div>',click:"showSection('settings')",tip:'Open Settings'}
+  ];
+  $('homeGrid').innerHTML=grid.map(function(c){
+    var attr=c.click?('class="card clickable" title="'+c.tip+'" onclick="'+c.click+'"'):'class="card"';
+    return '<div '+attr+'><div class="hc-icon">'+(c.ic||'')+'</div><div class="hc-title">'+c.t+'</div>'+c.b+'</div>';
+  }).join('');
+  var up=S.gifts.filter(function(g){return g.deliveryStatus&&g.deliveryStatus!=='Delivered';}).sort(function(a,b){return a.deliveryDate<b.deliveryDate?-1:1;}).slice(0,5);
+  var upEl=$('upcomingDelHome');
+  if(upEl){upEl.innerHTML=up.length?up.map(function(g){var late=(g.deliveryDate<todayStr())?' <span class="badge b-Late">Late</span>':'';return '• '+esc(g.recipient)+' — '+esc(g.idea)+' (expected '+esc(g.deliveryDate||'—')+')'+late;}).join('<br>'):'No upcoming deliveries.';}
+  var notReady=S.gifts.filter(function(g){return g.status!=='Given';});
+  var rc=$('readyCheckHome');
+  if(rc){rc.innerHTML=notReady.length?(notReady.length+' gift(s) not Given yet:<br>'+notReady.slice(0,6).map(function(g){return '• '+esc(g.recipient)+' — '+esc(g.idea)+' ('+esc(g.status)+')';}).join('<br>')+(notReady.length>6?'<br>…and '+(notReady.length-6)+' more':'')):'All gifts are Given. Merry Christmas! 🎄';}
+}
+function setGiftView(v){
+  giftView=v;
+  ['list','ideas','wishes','shopping','stocking'].forEach(function(x){var el=$('giftView-'+x);if(el)el.style.display=(x===v?'':'none');});
+  renderGifts();
+}
+function renderGifts(){
+  var fs=$('fStatus').value,fg=$('fGroup').value,fq=($('fSearch').value||'').toLowerCase(),fr=$('fRecipient').value;
+  var recSel=$('fRecipient');
+  var recs=[];S.gifts.forEach(function(g){if(recs.indexOf(g.recipient)<0)recs.push(g.recipient);});
+  recSel.innerHTML='<option value="">All recipients</option>'+recs.map(function(r){return '<option'+(r===fr?' selected':'')+'>'+esc(r)+'</option>';}).join('');
+  var list=S.gifts.filter(function(g){
+    return (!fs||(fs==='notGiven'?g.status!=='Given':g.status===fs))&&(!fg||g.group===fg)&&(!fr||g.recipient===fr)&&
+      (!fq||(g.recipient+' '+g.idea+' '+g.store).toLowerCase().indexOf(fq)>=0);
+  });
+  $('giftsSub').textContent=list.length+' of '+S.gifts.length+' gifts shown (cap: 200).';
+  $('giftTable').innerHTML=list.length?('<table><tr><th>Gift</th><th>Store</th><th>Budget / Spent</th><th>Status</th><th>Delivery</th><th>Wrapping</th><th></th></tr>'+list.map(function(g){
+    var st='<span class="badge b-'+g.status+'">'+g.status+'</span>';
+    var dl=g.deliveryStatus?esc(g.deliveryStatus)+(g.deliveryDate?' ('+esc(g.deliveryDate)+')':''):'—';
+    if(g.deliveryDate&&g.deliveryDate<todayStr()&&g.deliveryStatus!=='Delivered')dl+=' <span class="badge b-Late">Late</span>';
+    var grp=g.contributors&&g.contributors.length?('<br><small>Group: '+g.contributors.map(function(c){return esc(c.name)+' '+fmt(c.amount);}).join(', ')+'</small>'):'';
+    var hm=g.handmade?'<br><small>✂️ Handmade'+(g.making?' — '+esc(g.making):'')+'</small>':'';var sk=g.stocking?'<br><small>🧦 Stocking</small>':'';
+    return '<tr><td><b>'+esc(g.recipient)+'</b> <small>('+esc(g.group)+')</small><br>'+esc(g.idea)+grp+hm+sk+'</td><td>'+esc(g.store||'—')+'</td><td>'+fmt(g.budget)+' / '+fmt(g.spent)+'</td><td>'+st+'</td><td>'+dl+'</td><td>'+esc(g.wrapped)+'</td><td><button class="btn small ghost" onclick="openGiftModal(\''+g.id+'\')">Edit</button> <button class="btn small danger" onclick="deleteGift(\''+g.id+'\')">Delete</button><br><button class="btn small ghost" style="margin-top:6px" onclick="giftToDeal(\''+g.id+'\')">→ Deal watch</button></td></tr>';
+  }).join('')+'</table>'):'<p class="sub">No gifts match. Add your first gift above.</p>';
+  var notReady=S.gifts.filter(function(g){return g.status!=='Given';});
+  $('readyCheck').innerHTML=notReady.length?(notReady.length+' gift(s) not Given yet:<br>'+notReady.slice(0,6).map(function(g){return '• '+esc(g.recipient)+' — '+esc(g.idea)+' ('+esc(g.status)+')';}).join('<br>')+(notReady.length>6?'<br>…and '+(notReady.length-6)+' more':'')):'All gifts are Given. Merry Christmas! 🎄';
+  var ideaCounts=countsFor(S.ideas,function(i){return i.forWhom;});
+  var ideaFiltered=F.ideaPerson?S.ideas.filter(function(i){return i.forWhom===F.ideaPerson;}):S.ideas;
+  $('ideaFilterRow').innerHTML=filterRowHTML('fIdeaPerson',F.ideaPerson,ideaCounts,[],'All people',"setF('ideaPerson',this.value)",F.ideaPerson?ideaFiltered.length:0,S.ideas.length,"clearF('ideaPerson')");
+  $('ideaList').innerHTML=ideaFiltered.length?ideaFiltered.map(function(i){return '<div class="card" style="margin:8px 0"><b>'+esc(i.text)+'</b> <small>for '+esc(i.forWhom)+'</small><br><span class="live">'+esc(i.notes||'')+'</span><div class="row"><button class="btn small" onclick="ideaToGift(\''+i.id+'\')">Make it a gift</button> <button class="btn small danger" onclick="deleteIdea(\''+i.id+'\')">Delete</button></div></div>';}).join(''):(S.ideas.length?'<p class="sub">No items in this category \u2014 tap All to see everything.</p>':'<p class="sub">No ideas yet.</p>');
+  var wishCounts=countsFor(S.wishes,function(w){return w.recipient;});
+  var wishClaimCounts=countsFor(S.wishes,function(w){return w.claimed?'Claimed':'Unclaimed';});
+  var wishFiltered=S.wishes.filter(function(w){return (!F.wishPerson||w.recipient===F.wishPerson)&&(!F.wishClaim||(w.claimed?'Claimed':'Unclaimed')===F.wishClaim);});
+  $('wishFilterRow').innerHTML='<div class="row"><select id="fWishPerson" onchange="setF(\'wishPerson\',this.value)">'+filterOpts(wishCounts,[],'All recipients',F.wishPerson)+'</select><select id="fWishClaim" onchange="setF(\'wishClaim\',this.value)">'+filterOpts(wishClaimCounts,['Unclaimed','Claimed'],'All wishes',F.wishClaim)+'</select>'+((F.wishPerson||F.wishClaim)?'<button class="btn small ghost" onclick="clearF2(\'wishPerson\',\'wishClaim\')">\u2715 Clear</button><span class="live">Showing '+wishFiltered.length+' of '+S.wishes.length+' items</span>':'')+'</div>';
+  $('wishList').innerHTML=wishFiltered.length?('<table><tr><th>For</th><th>Wish</th><th>Claimed</th><th></th></tr>'+wishFiltered.map(function(w){return '<tr><td>'+esc(w.recipient)+'</td><td>'+esc(w.text)+'</td><td>'+(w.claimed?'✅ Claimed':'—')+'</td><td><button class="btn small ghost" onclick="toggleClaim(\''+w.id+'\')">'+(w.claimed?'Unclaim':'Claim')+'</button> <button class="btn small danger" onclick="deleteWish(\''+w.id+'\')">Delete</button></td></tr>';}).join('')+'</table>'):(S.wishes.length?'<p class="sub">No items in this category \u2014 tap All to see everything.</p>':'<p class="sub">No wishes yet.</p>');
+  var shop=S.gifts.filter(function(g){return g.status==='Idea'||g.status==='Ordered';});
+  $('shopList').innerHTML=shop.length?shop.map(function(g){return '• '+esc(g.recipient)+' — '+esc(g.idea)+' ('+esc(g.store||'any store')+', '+fmt(g.budget)+')';}).join('<br>'):'Nothing left to shop for — everything is bought or given!';
+  var stk=S.gifts.filter(function(g){return g.stocking;});
+  $('stockList').innerHTML=stk.length?stk.map(function(g){return '• '+esc(g.recipient)+' — '+esc(g.idea)+' ('+esc(g.status)+')';}).join('<br>'):'No stocking stuffers marked yet. Tick "Stocking stuffer" when adding a gift.';
+  var arch=S.archives||[];var ly=$('lastYear');
+  if(!arch.length){ly.innerHTML='<p class="sub">No archived year yet - use New-year reset in Settings after Christmas to archive this year.</p>';}
+  else{ly.innerHTML=arch.slice().reverse().map(function(a){var gl=(a.gifts||[]).map(function(g){return '• '+esc(g.recipient)+' - '+esc(g.idea);}).join('<br>')||'<span class="sub">No gifts archived.</span>';return '<div class="clickable" title="View full year" onclick="showLastYearDialog(\''+a.year+'\')"><h3>🎄 '+esc(a.year)+'</h3><div class="live">'+gl+'</div></div>';}).join('');}
+}
+function giftFormHtml(g){
+  g=g||{recipient:'',group:'Family',idea:'',store:'',budget:'',spent:'',status:'Idea',deliveryDate:'',deliveryStatus:'',wrapped:'Not wrapped',hiding:'',stocking:false,handmade:false,making:'',notes:''};
+  return '<label class="flabel">Recipient</label><input class="field" id="gfRec" value="'+esc(g.recipient)+'">'
+  +'<label class="flabel">Group</label><select class="field" id="gfGroup">'+GROUPS.map(function(x){return '<option'+(x===g.group?' selected':'')+'>'+x+'</option>';}).join('')+'</select>'
+  +'<label class="flabel">Gift idea</label><input class="field" id="gfIdea" value="'+esc(g.idea)+'">'
+  +'<label class="flabel">Store</label><input class="field" id="gfStore" value="'+esc(g.store)+'">'
+  +'<div class="row"><label style="flex:1">Budget <input class="field" type="number" id="gfBudget" value="'+esc(g.budget)+'"></label><label style="flex:1">Spent <input class="field" type="number" id="gfSpent" value="'+esc(g.spent)+'"></label></div>'
+  +'<label class="flabel">Status</label><select class="field" id="gfStatus">'+STATUSES.map(function(x){return '<option'+(x===g.status?' selected':'')+'>'+x+'</option>';}).join('')+'</select>'
+  +'<div class="row"><label style="flex:1">Delivery date <input class="field" type="date" id="gfDelDate" value="'+esc(g.deliveryDate)+'"></label><label style="flex:1">Delivery status <input class="field" id="gfDelStatus" value="'+esc(g.deliveryStatus)+'" placeholder="Ordered / Shipped / Delivered"></label></div>'
+  +'<label class="flabel">Wrapping</label><select class="field" id="gfWrapped"><option>Not wrapped</option><option>Wrapped</option></select>'
+  +'<label class="flabel">Hiding place</label><input class="field" id="gfHiding" value="'+esc(g.hiding)+'">'
+  +'<div class="row"><label class="checkline"><input type="checkbox" id="gfStock" '+(g.stocking?'checked':'')+'> Stocking stuffer</label><label class="checkline"><input type="checkbox" id="gfHand" '+(g.handmade?'checked':'')+'> Handmade gift</label></div>'
+  +'<label class="flabel">Handmade notes (what you are making)</label><input class="field" id="gfMaking" value="'+esc(g.making)+'">'
+  +'<label class="flabel">Notes</label><textarea class="field" id="gfNotes" rows="2">'+esc(g.notes)+'</textarea>';
+}
+function openGiftModal(id){
+  var g=id?S.gifts.filter(function(x){return x.id===id;})[0]:null;
+  var body=giftFormHtml(g);
+  if(g){var w=$('gfWrapped');}
+  openModal('🎁',g?'Edit gift':'Add gift',body+'<div class="row" style="margin-top:16px"><button class="btn" onclick="saveGift(\''+(g?g.id:'')+'\')">Save gift</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');
+  if(g){$('gfWrapped').value=g.wrapped;}
+}
+function saveGift(id){
+  if(S.gifts.length>=200&&!id){toast('Gift cap reached (200).');return;}
+  var g=id?S.gifts.filter(function(x){return x.id===id;})[0]:{id:uid(),contributors:[]};
+  if(!g)return;
+  g.recipient=$('gfRec').value.trim();g.group=$('gfGroup').value;g.idea=$('gfIdea').value.trim();g.store=$('gfStore').value.trim();
+  g.budget=num($('gfBudget').value);g.spent=num($('gfSpent').value);g.status=$('gfStatus').value;
+  g.deliveryDate=$('gfDelDate').value;g.deliveryStatus=$('gfDelStatus').value.trim();g.wrapped=$('gfWrapped').value;
+  g.hiding=$('gfHiding').value.trim();g.stocking=$('gfStock').checked;g.handmade=$('gfHand').checked;g.making=$('gfMaking').value.trim();g.notes=$('gfNotes').value.trim();
+  if(!g.recipient||!g.idea){toast('Recipient and idea are needed.');return;}
+  if(!id)S.gifts.push(g);
+  save();closeModal();renderAll();toast('Gift saved.');
+}
+function deleteGift(id){openModal('🗑️','Delete gift?','<p class="live">This gift will be removed. This cannot be undone.</p><div class="row" style="margin-top:14px"><button class="btn danger" onclick="confirmDeleteGift(\''+id+'\')">Delete</button><button class="btn ghost" onclick="closeModal()">Keep it</button></div>');}
+function confirmDeleteGift(id){S.gifts=S.gifts.filter(function(g){return g.id!==id;});save();closeModal();renderAll();toast('Gift deleted.');}
+function openIdeaModal(){openModal('💡','Add idea','<label class="flabel">Idea</label><input class="field" id="idText"><label class="flabel">For whom</label><input class="field" id="idFor" placeholder="e.g. Ami"><label class="flabel">Notes</label><input class="field" id="idNotes"><div class="row" style="margin-top:16px"><button class="btn" onclick="saveIdea()">Save idea</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');}
+function saveIdea(){var t=$('idText').value.trim();if(!t){toast('Idea text is needed.');return;}S.ideas.push({id:uid(),text:t,forWhom:$('idFor').value.trim()||'Anyone',notes:$('idNotes').value.trim()});save();closeModal();renderAll();toast('Idea saved.');}
+function deleteIdea(id){askDelete('this idea',function(){S.ideas=S.ideas.filter(function(x){return x.id!==id;});save();renderAll();});}
+function ideaToGift(id){var i=S.ideas.filter(function(x){return x.id===id;})[0];if(!i)return;openGiftModal();$('gfIdea').value=i.text;$('gfRec').value=i.forWhom!=='Anyone'?i.forWhom:'';}
+function showSuggestions(){
+  var ty=$('sugType').value,bd=$('sugBand').value;
+  var items=(SUGGESTIONS[ty]&&SUGGESTIONS[ty][bd])||[];
+  $('sugList').innerHTML=items.map(function(x){return '<div class="card" style="margin:8px 0"><b>'+esc(x)+'</b><div class="row"><button class="btn small" onclick="useSuggestion(\''+esc(x).replace(/'/g,"\\'")+'\',\''+ty+'\')">Use idea</button></div></div>';}).join('');
+}
+function useSuggestion(x,ty){S.ideas.push({id:uid(),text:x,forWhom:ty,notes:'From suggestions'});save();renderAll();toast('Added to idea bank.');}
+function openWishModal(){openModal('💝','Add wish','<label class="flabel">For whom</label><input class="field" id="wRec"><label class="flabel">Wish</label><input class="field" id="wText"><div class="row" style="margin-top:16px"><button class="btn" onclick="saveWish()">Save wish</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');}
+function saveWish(){var r=$('wRec').value.trim(),t=$('wText').value.trim();if(!r||!t){toast('Recipient and wish are needed.');return;}S.wishes.push({id:uid(),recipient:r,text:t,claimed:false});save();closeModal();renderAll();toast('Wish saved.');}
+function toggleClaim(id){var w=S.wishes.filter(function(x){return x.id===id;})[0];if(w)w.claimed=!w.claimed;save();renderAll();}
+function deleteWish(id){askDelete('this wish',function(){S.wishes=S.wishes.filter(function(x){return x.id!==id;});save();renderAll();});}
+function giftToDeal(id){var g=S.gifts.filter(function(x){return x.id===id;})[0];if(!g)return;S.deals.push({id:uid(),item:g.idea,target:num(g.budget),sale:0,store:g.store||'',status:'Watching'});save();renderAll();toast('Added to Deal Days watch.');}
+function renderBudget(){
+  var tb=S.gifts.reduce(function(a,g){return a+num(g.budget);},0);
+  var ts=S.gifts.reduce(function(a,g){return a+num(g.spent);},0);
+  var te=S.expenses.reduce(function(a,e){return a+num(e.amount);},0);
+  $('budgetSub').textContent='Gifts '+fmt(ts)+' of '+fmt(tb)+' · Other holiday spending '+fmt(te)+'.';
+  $('budgetBig').textContent=fmt(ts)+' of '+fmt(tb);
+  var pct=tb>0?Math.min(100,Math.round(ts/tb*100)):0;
+  var bar=$('budgetBar');bar.querySelector('div').style.width=pct+'%';bar.classList.toggle('over',ts>tb);
+  $('budgetLive').textContent=pct+'% spent'+(ts>tb?' — over budget!':(tb-ts>0?' — '+fmt(tb-ts)+' left':''));
+  var cats={};EXPCATS.forEach(function(c){cats[c]=0;});
+  S.expenses.forEach(function(e){if(cats[e.cat]!=null)cats[e.cat]+=num(e.amount);else cats[e.cat]=num(e.amount);});
+  var tot=te||1,acc=0,parts=[],cols={'Gifts':'#b71c2e','Food':'#e67e22','Decor':'#8e7cc3','Travel':'#2980b9','Other':'#1e7d46'};
+  EXPCATS.forEach(function(c){var p=cats[c]/tot*100;if(p>0){parts.push(cols[c]+' '+acc+'% '+(acc+p)+'%');}acc+=p;});
+  $('expPie').style.background=parts.length?('conic-gradient('+parts.join(',')+')'):'#ddd';
+  $('expLegend').innerHTML=EXPCATS.map(function(c){return c+': '+fmt(cats[c]);}).join(' · ');
+  var per={};S.gifts.forEach(function(g){if(!per[g.recipient])per[g.recipient]={b:0,s:0};per[g.recipient].b+=num(g.budget);per[g.recipient].s+=num(g.spent);});
+  var names=Object.keys(per);
+  $('perPerson').innerHTML=names.length?('<table><tr><th>Person</th><th>Budget</th><th>Spent</th><th>Left</th></tr>'+names.map(function(n){var o=per[n],left=o.b-o.s;return '<tr><td>'+esc(n)+'</td><td>'+fmt(o.b)+'</td><td>'+fmt(o.s)+'</td><td style="'+(left<0?'color:#a33;font-weight:700':'')+'">'+fmt(left)+(left<0?' — over!':'')+'</td></tr>';}).join('')+'</table>'):'<p class="sub">No gifts yet — per-person budgets appear here.</p>';
+  var expCounts=countsFor(S.expenses,function(e){return e.cat;});
+  var expFiltered=F.expCat?S.expenses.filter(function(e){return e.cat===F.expCat;}):S.expenses;
+  $('expFilterRow').innerHTML=filterRowHTML('fExpCat',F.expCat,expCounts,EXPCATS,'All categories',"setF('expCat',this.value)",F.expCat?expFiltered.length:0,S.expenses.length,"clearF('expCat')");
+  $('expTable').innerHTML=expFiltered.length?('<table><tr><th>What</th><th>Category</th><th>Amount</th><th></th></tr>'+expFiltered.map(function(e){return '<tr><td>'+esc(e.desc)+'</td><td>'+esc(e.cat)+'</td><td>'+fmt(e.amount)+'</td><td><button class="btn small danger" onclick="deleteExpense(\''+e.id+'\')">Delete</button></td></tr>';}).join('')+'</table>'):(S.expenses.length?'<p class="sub">No items in this category \u2014 tap All to see everything.</p>':'<p class="sub">No expenses logged yet.</p>');
+}
+function openExpenseModal(){openModal('💰','Add expense','<label class="flabel">What</label><input class="field" id="exDesc"><label class="flabel">Category</label><select class="field" id="exCat">'+EXPCATS.map(function(c){return '<option>'+c+'</option>';}).join('')+'</select><label class="flabel">Amount</label><input class="field" type="number" id="exAmt"><div class="row" style="margin-top:16px"><button class="btn" onclick="saveExpense()">Save expense</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');}
+function saveExpense(){var d=$('exDesc').value.trim();if(!d){toast('Description is needed.');return;}S.expenses.push({id:uid(),desc:d,cat:$('exCat').value,amount:num($('exAmt').value)});save();closeModal();renderAll();toast('Expense saved.');}
+function deleteExpense(id){askDelete('this expense',function(){S.expenses=S.expenses.filter(function(x){return x.id!==id;});save();renderAll();});}
+function renderCards(){
+  $('cardsSub').textContent=S.cards.length+' cards · '+S.cards.filter(function(c){return c.status==='Sent';}).length+' sent.';
+  var cardCounts=countsFor(S.cards,function(c){return c.status;});
+  var cardFiltered=F.cardStatus?S.cards.filter(function(c){return c.status===F.cardStatus;}):S.cards;
+  $('cardFilterRow').innerHTML=filterRowHTML('fCardStatus',F.cardStatus,cardCounts,['Sent','Not sent'],'All cards',"setF('cardStatus',this.value)",F.cardStatus?cardFiltered.length:0,S.cards.length,"clearF('cardStatus')");
+  $('cardTable').innerHTML=cardFiltered.length?('<table><tr><th>Recipient</th><th>Address</th><th>Card</th><th>Postage</th><th></th></tr>'+cardFiltered.map(function(c){return '<tr><td>'+esc(c.recipient)+'</td><td>'+esc(c.address||'—')+'</td><td><span class="badge '+(c.status==='Sent'?'b-Sent':'b-Pending')+'">'+esc(c.status)+'</span></td><td>'+esc(c.postage||'—')+'</td><td><button class="btn small ghost" onclick="openCardModal(\''+c.id+'\')">Edit</button> <button class="btn small danger" onclick="deleteCard(\''+c.id+'\')">Delete</button></td></tr>';}).join('')+'</table>'):(S.cards.length?'<p class="sub">No items in this category \u2014 tap All to see everything.</p>':'<p class="sub">No cards yet.</p>');
+  var thanksCounts=countsFor(S.thanks,function(t){return t.done?'Done':'Not done';});
+  var thanksFiltered=F.thanksDone?S.thanks.filter(function(t){return (t.done?'Done':'Not done')===F.thanksDone;}):S.thanks;
+  $('thanksFilterRow').innerHTML=filterRowHTML('fThanksDone',F.thanksDone,thanksCounts,['Not done','Done'],'All thank-yous',"setF('thanksDone',this.value)",F.thanksDone?thanksFiltered.length:0,S.thanks.length,"clearF('thanksDone')");
+  $('thanksList').innerHTML=thanksFiltered.length?thanksFiltered.map(function(t){return '<div class="card" style="margin:8px 0"><b>'+esc(t.recipient)+'</b> — '+esc(t.note||'')+' '+(t.done?'✅ Done':'')+'<div class="row"><button class="btn small ghost" onclick="toggleThanks(\''+t.id+'\')">'+(t.done?'Mark not done':'Mark done')+'</button> <button class="btn small danger" onclick="deleteThanks(\''+t.id+'\')">Delete</button></div></div>';}).join(''):(S.thanks.length?'<p class="sub">No items in this category \u2014 tap All to see everything.</p>':'<p class="sub">Nobody needs a thank-you yet.</p>');
+}
+function openCardModal(id){
+  var c=id?S.cards.filter(function(x){return x.id===id;})[0]:null;
+  openModal('💌',c?'Edit card':'Add card','<label class="flabel">Recipient</label><input class="field" id="cdRec" value="'+esc(c?c.recipient:'')+'"><label class="flabel">Address</label><input class="field" id="cdAddr" value="'+esc(c?c.address:'')+'"><label class="flabel">Card status</label><select class="field" id="cdStatus"><option>Not sent</option><option>Sent</option></select><label class="flabel">Postage</label><select class="field" id="cdPost"><option>Not posted</option><option>Posted</option><option>Delivered</option></select><div class="row" style="margin-top:16px"><button class="btn" onclick="saveCard(\''+(c?c.id:'')+'\')">Save card</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');
+  if(c){$('cdStatus').value=c.status;$('cdPost').value=c.postage||'Not posted';}
+}
+function saveCard(id){
+  var c=id?S.cards.filter(function(x){return x.id===id;})[0]:{id:uid()};
+  if(!c)return;
+  c.recipient=$('cdRec').value.trim();c.address=$('cdAddr').value.trim();c.status=$('cdStatus').value;c.postage=$('cdPost').value;
+  if(!c.recipient){toast('Recipient is needed.');return;}
+  if(!id)S.cards.push(c);
+  save();closeModal();renderAll();toast('Card saved.');
+}
+function deleteCard(id){askDelete('this card',function(){S.cards=S.cards.filter(function(x){return x.id!==id;});save();renderAll();});}
+function openThanksModal(){openModal('🙏','Add thank-you','<label class="flabel">Recipient</label><input class="field" id="thRec"><label class="flabel">Note</label><input class="field" id="thNote"><div class="row" style="margin-top:16px"><button class="btn" onclick="saveThanks()">Save</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');}
+function saveThanks(){var r=$('thRec').value.trim();if(!r){toast('Recipient is needed.');return;}S.thanks.push({id:uid(),recipient:r,note:$('thNote').value.trim(),done:false});save();closeModal();renderAll();toast('Thank-you saved.');}
+function toggleThanks(id){var t=S.thanks.filter(function(x){return x.id===id;})[0];if(t)t.done=!t.done;save();renderAll();}
+function deleteThanks(id){askDelete('this thank-you',function(){S.thanks=S.thanks.filter(function(x){return x.id!==id;});save();renderAll();});}
+function renderAdvent(){
+  var now=new Date();var cd=christmasDate();
+  var days=Math.ceil((cd-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/86400000);
+  $('adventSub').textContent=(S.adventOpened||[]).length+' of 24 doors opened.';
+  $('advCd').textContent=days+(days===1?' day':' days');
+  $('advCdLive').textContent='Until Christmas Day, Dec 25, '+cd.getFullYear();
+  var today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  var html='';
+  for(var d=1;d<=24;d++){
+    var opened=(S.adventOpened||[]).indexOf(d)>=0;
+    var future=new Date(now.getFullYear(),11,d)>today;
+    html+='<div class="door '+(opened?'opened':'')+'" onclick="openDoorDialog('+d+')"><div class="dn">'+d+'</div><div class="ds">'+(opened?'Opened 🎁':(future?'Dec '+d:'Tap to open'))+'</div></div>';
+  }
+  $('doors').innerHTML=html;
+  var cy=now.getFullYear();
+  var firstDow=new Date(cy,11,1).getDay();
+  var ch=['Su','Mo','Tu','We','Th','Fr','Sa'].map(function(h){return '<div class="cd-h">'+h+'</div>';}).join('');
+  for(var bl=0;bl<firstDow;bl++)ch+='<div></div>';
+  var inDec=now.getMonth()===11,todayD=now.getDate();
+  for(var cdd=1;cdd<=31;cdd++){
+    var cls='cd-d';
+    if(cdd<=24&&(S.adventOpened||[]).indexOf(cdd)>=0)cls+=' opened';
+    else if(cdd<=24&&inDec&&cdd<todayD)cls+=' past-un';
+    if(inDec&&cdd===todayD)cls+=' today';
+    ch+='<div class="'+cls+'"'+(cdd<=24?' onclick="openDoorDialog('+cdd+')" style="cursor:pointer" title="Tap for the day note"':'')+'>'+cdd+(cdd===25?' 🎄':'')+'</div>';
+  }
+  $('decCal').innerHTML=ch;renderDates();
+  var dn=S.decNotes||{goal:'',reflection:'',wins:''};
+  var dg=$('decGoal'),drf=$('decRefl'),dwn=$('decWins');
+  if(dg&&document.activeElement!==dg)dg.value=dn.goal||'';
+  if(drf&&document.activeElement!==drf)drf.value=dn.reflection||'';
+  if(dwn&&document.activeElement!==dwn)dwn.value=dn.wins||'';
+}
+function saveDecNotes(){
+  if(!S.decNotes)S.decNotes={goal:'',reflection:'',wins:''};
+  S.decNotes.goal=$('decGoal').value;S.decNotes.reflection=$('decRefl').value;S.decNotes.wins=$('decWins').value;
+  save();
+}
+function openDoorDialog(day){
+  var opened=(S.adventOpened||[]).indexOf(day)>=0;
+  var note=(S.adventNotes||{})[day]||'';
+  openModal('🎄','December '+day,'<label class="flabel">Activity / note</label><textarea class="field" id="doorNote" rows="3">'+esc(note)+'</textarea><div class="row" style="margin-top:16px"><button class="btn" onclick="saveDoor('+day+')">'+(opened?'Save & keep opened':'Mark opened & save')+'</button>'+(opened?'<button class="btn ghost" onclick="unopenDoor('+day+')">Mark unopened</button>':'')+'<button class="btn ghost" onclick="closeModal()">Cancel</button></div>');
+}
+function saveDoor(day){
+  if(!S.adventOpened)S.adventOpened=[];
+  if(S.adventOpened.indexOf(day)<0)S.adventOpened.push(day);
+  if(!S.adventNotes)S.adventNotes={};
+  S.adventNotes[day]=$('doorNote').value.trim();
+  var oc=S.adventOpened.length;
+  save();closeModal();renderAll();
+  if(oc===7||oc===14||oc===24){if(!S.decNotes)S.decNotes={goal:'',reflection:'',wins:''};var winLine='🎄 Opened '+oc+' of 24 Advent doors';if((S.decNotes.wins||'').indexOf(winLine)<0){S.decNotes.wins=(S.decNotes.wins?S.decNotes.wins+'\n':'')+winLine;save();}openModal('🏆','Milestone reached!','<p class="live">'+(oc===24?'All 24 doors opened — Advent complete! 🎉':'You have opened '+oc+' of the 24 Advent doors. Keep going!')+'</p><p class="live">This win was saved to your December wins, in the Advent section.</p><div class="row" style="margin-top:14px"><button class="btn" onclick="closeModal()">Lovely 🎄</button></div>');}else{toast('Door Dec '+day+' saved.');}
+}
+function unopenDoor(day){
+  S.adventOpened=(S.adventOpened||[]).filter(function(x){return x!==day;});
+  save();closeModal();renderAll();
+}
+function renderMeals(){
+  var mealCounts=countsFor(S.meals,function(m){return m.day;});
+  var mealFiltered=F.mealDay?S.meals.filter(function(m){return m.day===F.mealDay;}):S.meals;
+  $('mealFilterRow').innerHTML=filterRowHTML('fMealDay',F.mealDay,mealCounts,[],'All days',"setF('mealDay',this.value)",F.mealDay?mealFiltered.length:0,S.meals.length,"clearF('mealDay')");
+  $('mealTable').innerHTML=mealFiltered.length?('<table><tr><th>Day</th><th>Meal</th><th>Guests</th><th>Dietary</th><th>Ingredients</th><th></th></tr>'+mealFiltered.map(function(m){return '<tr><td>'+esc(m.day)+'</td><td>'+esc(m.meal)+'</td><td>'+esc(m.guests)+'</td><td>'+esc(m.dietary||'—')+'</td><td>'+esc(m.ingredients||'—')+'</td><td><button class="btn small ghost" onclick="openMealModal(\''+m.id+'\')">Edit</button> <button class="btn small danger" onclick="deleteMeal(\''+m.id+'\')">Delete</button></td></tr>';}).join('')+'</table>'):(S.meals.length?'<p class="sub">No items in this category \u2014 tap All to see everything.</p>':'<p class="sub">No meals planned yet.</p>');
+}
+function openMealModal(id){
+  var m=id?S.meals.filter(function(x){return x.id===id;})[0]:null;
+  openModal('🍽️',m?'Edit meal':'Add meal','<label class="flabel">Day</label><input class="field" id="mlDay" value="'+esc(m?m.day:'')+'" placeholder="e.g. Dec 24"><label class="flabel">Meal</label><input class="field" id="mlMeal" value="'+esc(m?m.meal:'')+'"><label class="flabel">Guests</label><input class="field" type="number" id="mlGuests" value="'+esc(m?m.guests:'')+'"><label class="flabel">Dietary notes</label><input class="field" id="mlDiet" value="'+esc(m?m.dietary:'')+'"><label class="flabel">Ingredients (comma separated — feeds Grocery)</label><input class="field" id="mlIng" value="'+esc(m?m.ingredients:'')+'"><div class="row" style="margin-top:16px"><button class="btn" onclick="saveMeal(\''+(m?m.id:'')+'\')">Save meal</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');
+}
+function saveMeal(id){
+  var m=id?S.meals.filter(function(x){return x.id===id;})[0]:{id:uid()};
+  if(!m)return;
+  m.day=$('mlDay').value.trim();m.meal=$('mlMeal').value.trim();m.guests=$('mlGuests').value;m.dietary=$('mlDiet').value.trim();m.ingredients=$('mlIng').value.trim();
+  if(!m.day||!m.meal){toast('Day and meal are needed.');return;}
+  if(!id)S.meals.push(m);
+  save();closeModal();renderAll();toast('Meal saved.');
+}
+function deleteMeal(id){askDelete('this meal',function(){S.meals=S.meals.filter(function(x){return x.id!==id;});save();renderAll();});}
+function renderBaking(){
+  var bakeCounts=countsFor(S.baking,function(b){return b.status;});
+  var bakeFiltered=F.bakeStatus?S.baking.filter(function(b){return b.status===F.bakeStatus;}):S.baking;
+  $('bakeFilterRow').innerHTML=filterRowHTML('fBakeStatus',F.bakeStatus,bakeCounts,['Planned','Baked'],'All baking',"setF('bakeStatus',this.value)",F.bakeStatus?bakeFiltered.length:0,S.baking.length,"clearF('bakeStatus')");
+  $('bakeTable').innerHTML=bakeFiltered.length?('<table><tr><th>Item</th><th>Quantity</th><th>Bake date</th><th>Status</th><th></th></tr>'+bakeFiltered.map(function(b){return '<tr><td>'+esc(b.item)+'</td><td>'+esc(b.qty)+'</td><td>'+esc(b.bakeDate||'—')+'</td><td>'+esc(b.status)+'</td><td><button class="btn small ghost" onclick="toggleBake(\''+b.id+'\')">'+(b.status==='Baked'?'Mark planned':'Mark baked')+'</button> <button class="btn small danger" onclick="deleteBake(\''+b.id+'\')">Delete</button></td></tr>';}).join('')+'</table>'):(S.baking.length?'<p class="sub">No items in this category \u2014 tap All to see everything.</p>':'<p class="sub">Nothing to bake yet.</p>');
+}
+function openBakeModal(){openModal('🍪','Add baking item','<label class="flabel">Item</label><input class="field" id="bkItem"><label class="flabel">Quantity</label><input class="field" id="bkQty" placeholder="e.g. 2 dozen"><label class="flabel">Bake date</label><input class="field" type="date" id="bkDate"><div class="row" style="margin-top:16px"><button class="btn" onclick="saveBake()">Save</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');}
+function saveBake(){var it=$('bkItem').value.trim();if(!it){toast('Item is needed.');return;}S.baking.push({id:uid(),item:it,qty:$('bkQty').value.trim(),bakeDate:$('bkDate').value,status:'Planned'});save();closeModal();renderAll();toast('Baking item saved.');}
+function toggleBake(id){var b=S.baking.filter(function(x){return x.id===id;})[0];if(b)b.status=(b.status==='Baked'?'Planned':'Baked');save();renderAll();}
+function deleteBake(id){askDelete('this baking item',function(){S.baking=S.baking.filter(function(x){return x.id!==id;});save();renderAll();});}
+function renderGrocery(){
+  var grocAisleCounts=countsFor(S.grocery,function(g){return g.aisle;});
+  var grocBoughtCounts=countsFor(S.grocery,function(g){return g.checked?'Bought':'To buy';});
+  var grocFiltered=S.grocery.filter(function(g){return (!F.grocAisle||g.aisle===F.grocAisle)&&(!F.grocBought||(g.checked?'Bought':'To buy')===F.grocBought);});
+  $('grocFilterRow').innerHTML='<div class="row"><select id="fGrocAisle" onchange="setF(\'grocAisle\',this.value)">'+filterOpts(grocAisleCounts,AISLES,'All aisles',F.grocAisle)+'</select><select id="fGrocBought" onchange="setF(\'grocBought\',this.value)">'+filterOpts(grocBoughtCounts,['To buy','Bought'],'All items',F.grocBought)+'</select>'+((F.grocAisle||F.grocBought)?'<button class="btn small ghost" onclick="clearF2(\'grocAisle\',\'grocBought\')">\u2715 Clear</button><span class="live">Showing '+grocFiltered.length+' of '+S.grocery.length+' items</span>':'')+'</div>';
+  var sorted=grocFiltered.slice().sort(function(a,b){var ia=AISLES.indexOf(a.aisle),ib=AISLES.indexOf(b.aisle);if(ia<0)ia=99;if(ib<0)ib=99;if(ia!==ib)return ia-ib;return (a.item||'').localeCompare(b.item||'');});
+  var html=sorted.length?('<table><tr><th></th><th>Item</th><th>Quantity</th><th>Aisle</th><th>Status</th><th></th></tr>'+sorted.map(function(g){return '<tr><td><input type="checkbox" '+(g.checked?'checked':'')+' onchange="toggleGrocery(\''+g.id+'\')"></td><td style="'+(g.checked?'text-decoration:line-through;opacity:.6':'')+'"><b>'+esc(g.item)+'</b>'+(g.source&&g.source!=='manual'?'<br><small>from '+esc(g.source)+'</small>':'')+'</td><td>'+esc(g.qty||'—')+'</td><td>'+esc(g.aisle||'—')+'</td><td>'+(g.checked?'Bought':'To buy')+'</td><td><button class="btn small ghost" onclick="openGroceryModal(\''+g.id+'\')">Edit</button> <button class="btn small danger" onclick="deleteGrocery(\''+g.id+'\')">Delete</button></td></tr>';}).join('')+'</table>'):'';
+  $('groceryList').innerHTML=html||(S.grocery.length?'<p class="sub">No items in this category \u2014 tap All to see everything.</p>':'<p class="sub">Grocery list is empty. Add items, or import them from meals &amp; baking.</p>');
+}
+function openGroceryModal(id){var g=id?S.grocery.filter(function(x){return x.id===id;})[0]:null;openModal('🛒',g?'Edit grocery item':'Add grocery item','<label class="flabel">Item</label><input class="field" id="grItem" value="'+esc(g?g.item:'')+'"><label class="flabel">Aisle</label><select class="field" id="grAisle">'+AISLES.map(function(a){return '<option'+(g&&g.aisle===a?' selected':'')+'>'+a+'</option>';}).join('')+'</select><label class="flabel">Quantity</label><input class="field" id="grQty" value="'+esc(g?g.qty||'':'')+'"><div class="row" style="margin-top:16px"><button class="btn" onclick="saveGrocery(\''+(g?g.id:'')+'\')">Save item</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');}
+function saveGrocery(id){var it=$('grItem').value.trim();if(!it){toast('Item is needed.');return;}if(id){var g=S.grocery.filter(function(x){return x.id===id;})[0];if(g){g.item=it;g.aisle=$('grAisle').value;g.qty=$('grQty').value.trim();}}else{S.grocery.push({id:uid(),item:it,aisle:$('grAisle').value,qty:$('grQty').value.trim(),checked:false,source:'manual'});}save();closeModal();renderAll();toast(id?'Item updated.':'Item added.');}
+function toggleGrocery(id){var g=S.grocery.filter(function(x){return x.id===id;})[0];if(g)g.checked=!g.checked;save();renderAll();}
+function deleteGrocery(id){askDelete('this grocery item',function(){S.grocery=S.grocery.filter(function(x){return x.id!==id;});save();renderAll();});}
+function importMealBaking(){
+  var names=S.grocery.map(function(g){return g.item.toLowerCase();});
+  var added=0;
+  S.meals.forEach(function(m){(m.ingredients||'').split(',').forEach(function(p){var it=p.trim();if(it&&names.indexOf(it.toLowerCase())<0){S.grocery.push({id:uid(),item:it,aisle:'Pantry',qty:'',checked:false,source:'meals'});names.push(it.toLowerCase());added++;}});});
+  S.baking.forEach(function(b){if(names.indexOf(b.item.toLowerCase())<0){S.grocery.push({id:uid(),item:b.item,aisle:'Bakery',qty:b.qty||'',checked:false,source:'baking'});names.push(b.item.toLowerCase());added++;}});
+  save();renderAll();toast(added?added+' item(s) added to Grocery.':'Nothing new to add — all items are already on the list.');
+}
+function clearCheckedGrocery(){S.grocery=S.grocery.filter(function(g){return !g.checked;});save();renderAll();}
+function renderHosting(){
+  var guestCounts=countsFor(S.guests,function(g){return g.rsvp;});
+  var guestFiltered=F.guestRsvp?S.guests.filter(function(g){return g.rsvp===F.guestRsvp;}):S.guests;
+  $('guestFilterRow').innerHTML=filterRowHTML('fGuestRsvp',F.guestRsvp,guestCounts,['Coming','Maybe','Not coming'],'All guests',"setF('guestRsvp',this.value)",F.guestRsvp?guestFiltered.length:0,S.guests.length,"clearF('guestRsvp')");
+  $('guestTable').innerHTML=guestFiltered.length?('<table><tr><th>Guest</th><th>RSVP</th><th>Dietary</th><th>Plus-one</th><th></th></tr>'+guestFiltered.map(function(g){return '<tr><td>'+esc(g.name)+'</td><td>'+esc(g.rsvp)+'</td><td>'+esc(g.dietary||'—')+'</td><td>'+esc(g.plusOne)+'</td><td><button class="btn small danger" onclick="deleteGuest(\''+g.id+'\')">Delete</button></td></tr>';}).join('')+'</table>'):(S.guests.length?'<p class="sub">No items in this category \u2014 tap All to see everything.</p>':'<p class="sub">No guests yet.</p>');
+  var taskCounts=countsFor(S.tasks,function(t){return t.done?'Done':'Not done';});
+  var taskFiltered=F.taskDone?S.tasks.filter(function(t){return (t.done?'Done':'Not done')===F.taskDone;}):S.tasks;
+  $('taskFilterRow').innerHTML=filterRowHTML('fTaskDone',F.taskDone,taskCounts,['Not done','Done'],'All tasks',"setF('taskDone',this.value)",F.taskDone?taskFiltered.length:0,S.tasks.length,"clearF('taskDone')");
+  $('taskList').innerHTML=taskFiltered.length?taskFiltered.map(function(t){return '<div class="row" style="margin:6px 0"><label class="checkline" style="flex:1"><input type="checkbox" '+(t.done?'checked':'')+' onchange="toggleTask(\''+t.id+'\')"> <span style="'+(t.done?'text-decoration:line-through;opacity:.6':'')+'">'+esc(t.text)+' <small>('+(t.date||'no date')+')</small></span></label><button class="btn small danger" onclick="deleteTask(\''+t.id+'\')">Delete</button></div>';}).join(''):(S.tasks.length?'<p class="sub">No items in this category \u2014 tap All to see everything.</p>':'<p class="sub">No hosting tasks yet.</p>');
+  var sn=$('seatingNotes');if(sn&&document.activeElement!==sn)sn.value=S.seating||'';
+}
+function openGuestModal(){openModal('🏡','Add guest','<label class="flabel">Name</label><input class="field" id="guName"><label class="flabel">RSVP</label><select class="field" id="guRsvp"><option>Coming</option><option>Maybe</option><option>Not coming</option></select><label class="flabel">Dietary notes</label><input class="field" id="guDiet"><label class="flabel">Plus-one</label><select class="field" id="guPlus"><option>No</option><option>Yes</option></select><div class="row" style="margin-top:16px"><button class="btn" onclick="saveGuest()">Save guest</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');}
+function saveGuest(){var n=$('guName').value.trim();if(!n){toast('Name is needed.');return;}S.guests.push({id:uid(),name:n,rsvp:$('guRsvp').value,dietary:$('guDiet').value.trim(),plusOne:$('guPlus').value});save();closeModal();renderAll();toast('Guest saved.');}
+function deleteGuest(id){askDelete('this guest',function(){S.guests=S.guests.filter(function(x){return x.id!==id;});save();renderAll();});}
+function openTaskModal(){openModal('✅','Add hosting task','<label class="flabel">Task</label><input class="field" id="taText"><label class="flabel">Date</label><input class="field" type="date" id="taDate"><div class="row" style="margin-top:16px"><button class="btn" onclick="saveTask()">Save task</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');}
+function saveTask(){var t=$('taText').value.trim();if(!t){toast('Task text is needed.');return;}S.tasks.push({id:uid(),text:t,date:$('taDate').value,done:false});save();closeModal();renderAll();toast('Task saved.');}
+function toggleTask(id){var t=S.tasks.filter(function(x){return x.id===id;})[0];if(t)t.done=!t.done;save();renderAll();}
+function deleteTask(id){askDelete('this task',function(){S.tasks=S.tasks.filter(function(x){return x.id!==id;});save();renderAll();});}
+function saveSeating(v){S.seating=v;save();}
+function santaPersonById(id){return S.santa.participants.filter(function(p){return p.id===id;})[0];}
+function renderSanta(){
+  var st=S.santa;
+  $('santaSub').textContent=st.participants.length+' participants · '+(st.draw?'Drawn 🎲':'Not drawn yet')+(st.priceLimit!=null&&st.priceLimit!==''?' · Price limit '+fmt(st.priceLimit):'');
+  $('santaDate').value=st.eventDate||'';$('santaLoc').value=st.location||'';$('santaLimit').value=(st.priceLimit!=null?st.priceLimit:'');
+  $('drawStatus').innerHTML=st.draw?('Drawn 🎲 — slips are ready. Use "Draw again" to replace this draw.'):'Not drawn yet. Add at least 2 participants, then run the draw.';
+  $('drawError').textContent=santaDrawError;
+  var canDraw=st.participants.length>=2;
+  $('drawBtn').disabled=!canDraw;
+  var santaConfCounts=countsFor(st.participants,function(p){return p.confirmed?'Confirmed':'Pending';});
+  var santaPeopleFiltered=F.santaConf?st.participants.filter(function(p){return (p.confirmed?'Confirmed':'Pending')===F.santaConf;}):st.participants;
+  $('santaPeopleFilterRow').innerHTML=filterRowHTML('fSantaConf',F.santaConf,santaConfCounts,['Confirmed','Pending'],'All participants',"setF('santaConf',this.value)",F.santaConf?santaPeopleFiltered.length:0,st.participants.length,"clearF('santaConf')");
+  $('personTable').innerHTML=santaPeopleFiltered.length?('<table><tr><th>Name</th><th>Confirmed</th><th>Will not draw</th><th></th></tr>'+santaPeopleFiltered.map(function(p){
+    var ex=(p.exclusions||[]).map(function(id){var q=santaPersonById(id);return q?esc(q.name):'';}).filter(Boolean).join(', ')||'—';
+    return '<tr><td>'+esc(p.name)+'</td><td>'+(p.confirmed?'✅ Confirmed':'⏳ Pending')+'</td><td>'+ex+'</td><td><button class="btn small ghost" onclick="openPersonModal(\''+p.id+'\')">Edit</button> <button class="btn small ghost" onclick="toggleConfirm(\''+p.id+'\')">'+(p.confirmed?'Mark pending':'Mark confirmed')+'</button> <button class="btn small danger" onclick="deletePerson(\''+p.id+'\')">Delete</button></td></tr>';
+  }).join('')+'</table>'):(st.participants.length?'<p class="sub">No items in this category \u2014 tap All to see everything.</p>':'<p class="sub">No participants yet.</p>');
+  var sel=$('santaWishPerson');
+  var prev=sel.value;
+  sel.innerHTML='<option value="">All people ('+S.santa.wishes.length+')</option>'+st.participants.map(function(p){var c=S.santa.wishes.filter(function(w){return w.personId===p.id;}).length;return c?('<option value="'+p.id+'">'+esc(p.name)+' ('+c+')</option>'):'';}).join('');
+  if(prev&&santaPersonById(prev))sel.value=prev;
+  else sel.value='';
+  renderSantaWishes();
+  renderSlips();
+}
+function renderSantaWishes(){
+  var pid=$('santaWishPerson').value;
+  var ws=pid?S.santa.wishes.filter(function(w){return w.personId===pid;}):S.santa.wishes.slice();
+  var sw=$('santaWishShowing');if(sw)sw.innerHTML=pid?('<div class="row"><span class="live">Showing '+ws.length+' of '+S.santa.wishes.length+' wishes</span><button class="btn small ghost" onclick="clearSantaWishFilter()">\u2715 Clear</button></div>'):'';
+  $('santaWishList').innerHTML=ws.length?ws.map(function(w){var pp=santaPersonById(w.personId);return '<div class="card" style="margin:8px 0">'+(pid?'':'<b>'+esc(pp?pp.name:'Unknown')+'</b> \u2014 ')+'<b>'+esc(w.text)+'</b>'+(w.note?' — '+esc(w.note):'')+'<div class="row"><button class="btn small danger" onclick="deleteSantaWish(\''+w.id+'\')">Delete</button></div></div>';}).join(''):(S.santa.wishes.length?'<p class="sub">No items in this category \u2014 tap All to see everything.</p>':'<p class="sub">No wishes for this person yet.</p>');
+}
+function setSantaEvent(){
+  S.santa.eventDate=$('santaDate').value;S.santa.location=$('santaLoc').value.trim();
+  var pl=$('santaLimit').value;S.santa.priceLimit=(pl===''?'':num(pl));
+  save();renderAll();
+}
+function openPersonModal(id){
+  var p=id?santaPersonById(id):null;
+  var exOpts=S.santa.participants.filter(function(x){return !p||x.id!==p.id;}).map(function(x){return '<label class="checkline"><input type="checkbox" name="excl" value="'+x.id+'" '+((p&&p.exclusions&&p.exclusions.indexOf(x.id)>=0)?'checked':'')+'> '+esc(x.name)+'</label>';}).join('');
+  openModal('🎅',p?'Edit person':'Add person','<label class="flabel">Name</label><input class="field" id="psName" value="'+esc(p?p.name:'')+'"><label class="flabel">Confirmed?</label><select class="field" id="psConf"><option value="yes">Confirmed</option><option value="no">Pending</option></select><label class="flabel">Will NOT draw (exclusions)</label><div>'+(exOpts||'<span class="sub">Add more people first.</span>')+'</div><div class="row" style="margin-top:16px"><button class="btn" onclick="savePerson(\''+(p?p.id:'')+'\')">Save person</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');
+  if(p)$('psConf').value=p.confirmed?'yes':'no';
+}
+function savePerson(id){
+  var p=id?santaPersonById(id):{id:uid()};
+  if(!p)return;
+  p.name=$('psName').value.trim();p.confirmed=$('psConf').value==='yes';
+  p.exclusions=[...document.querySelectorAll('input[name="excl"]:checked')].map(function(c){return c.value;});
+  if(!p.name){toast('Name is needed.');return;}
+  if(!id)S.santa.participants.push(p);
+  var hadDraw=!!S.santa.draw;
+  if(hadDraw){S.santa.draw=null;santaDrawError='';}
+  save();closeModal();renderAll();toast(hadDraw?'Person saved — the draw was cleared, please run it again.':'Person saved.');
+}
+function toggleConfirm(id){var p=santaPersonById(id);if(p)p.confirmed=!p.confirmed;save();renderAll();}
+function deletePerson(id){
+  askDelete('this participant',function(){
+  S.santa.participants=S.santa.participants.filter(function(p){return p.id!==id;});
+  S.santa.participants.forEach(function(p){p.exclusions=(p.exclusions||[]).filter(function(x){return x!==id;});});
+  S.santa.wishes=S.santa.wishes.filter(function(w){return w.personId!==id;});
+  if(S.santa.draw){S.santa.draw=null;santaDrawError='';toast('Draw cleared — participants changed.');}
+  save();renderAll();
+  });
+}
+function openSantaWishModal(){
+  var people=S.santa.participants;
+  if(!people.length){toast('Add a participant first.');return;}
+  var pid=$('santaWishPerson').value;
+  if(!pid||!santaPersonById(pid))pid=people[0].id;
+  openModal('💝','Add wish','<label class="flabel">For whom</label><select class="field" id="swPerson">'+people.map(function(p){return '<option value="'+p.id+'"'+(p.id===pid?' selected':'')+'>'+esc(p.name)+'</option>';}).join('')+'</select><label class="flabel">Wish</label><input class="field" id="swText"><label class="flabel">Note (optional)</label><input class="field" id="swNote"><div class="row" style="margin-top:16px"><button class="btn" onclick="saveSantaWish()">Save wish</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');
+}
+function saveSantaWish(){
+  var t=$('swText').value.trim();if(!t){toast('Wish text is needed.');return;}
+  S.santa.wishes.push({id:uid(),personId:($('swPerson')?$('swPerson').value:$('santaWishPerson').value),text:t,note:$('swNote').value.trim()});
+  save();closeModal();renderAll();toast('Wish saved.');
+}
+function deleteSantaWish(id){askDelete('this wish',function(){S.santa.wishes=S.santa.wishes.filter(function(w){return w.id!==id;});save();renderAll();});}
+function runDraw(){
+  var people=S.santa.participants.slice();
+  function attempt(){
+    var givers=shuffle(people.slice());
+    var used={},pairs={};
+    function bt(i){
+      if(i===givers.length)return pairs;
+      var g=givers[i];
+      var cands=shuffle(people.filter(function(p){return p.id!==g.id&&!used[p.id]&&(g.exclusions||[]).indexOf(p.id)<0;}));
+      for(var c=0;c<cands.length;c++){
+        used[cands[c].id]=true;pairs[g.id]=cands[c].id;
+        var r=bt(i+1);if(r)return r;
+        delete used[cands[c].id];delete pairs[g.id];
+      }
+      return null;
+    }
+    return bt(0);
+  }
+  for(var t=0;t<20;t++){var p=attempt();if(p)return p;}
+  return null;
+}
+var drawCounting=false,drawCountTimer=null;
+function doDraw(){
+  if(S.santa.participants.length<2)return;
+  var pairs=runDraw();
+  if(!pairs){
+    santaDrawError='Draw is not possible with these exclusions — remove an exclusion and try again.'+(S.santa.draw?' Your previous draw is unchanged.':' No draw has been stored.');
+    save();renderAll();toast('Draw not possible — check exclusions.');
+    return;
+  }
+  openDrawCountdown(pairs);
+}
+function openDrawCountdown(pairs){
+  var n=5;drawCounting=true;
+  function renderCount(){
+    $('modalBox').innerHTML='<div style="text-align:center;padding:44px 20px;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--gold));color:#fff;border-radius:18px"><div id="drawCountNum" style="font-size:96px;font-weight:800;line-height:1;animation:pop .5s ease">'+n+'</div></div>';
+    $('modalBg').classList.add('open');
+  }
+  renderCount();
+  drawCountTimer=setInterval(function(){
+    n--;
+    if(n<0){clearInterval(drawCountTimer);drawCountTimer=null;drawCounting=false;finishDraw(pairs);return;}
+    var el=$('drawCountNum');
+    if(el){el.textContent=n;el.style.animation='none';void el.offsetWidth;el.style.animation='';}
+    else{renderCount();}
+    $('modalBg').classList.add('open');
+  },1000);
+}
+function finishDraw(pairs){
+  santaDrawError='';
+  S.santa.draw={pairs:pairs,drawnAt:new Date().toISOString()};
+  save();renderAll();
+  openModal('\u{1F3B2}','Draw done','<div class="live">Draw done, slips are ready. The pairs stay secret — no screen lists them. Print the slips and hand each one to its giver.</div><div class="row" style="margin-top:14px"><button class="btn" onclick="closeModal();printSlips()">🖨️ Print slips / Save as PDF</button><button class="btn ghost" onclick="closeModal()">Close</button></div>');
+}
+function slipHtml(giver){
+  var rec=santaPersonById(S.santa.draw.pairs[giver.id]);
+  if(!rec)return '<div class="slip-page"><div class="slip"><p class="sub">No draw is stored for '+esc(giver.name)+' yet — run the draw again so everyone gets a slip.</p></div></div>';
+  var st=S.santa;
+  var ws=S.santa.wishes.filter(function(w){return w.personId===rec.id;});
+  var wishHtml=ws.length?ws.map(function(w){return '• '+esc(w.text)+(w.note?' — '+esc(w.note):'');}).join('<br>'):'No wishes added yet.';
+  return '<div class="slip-page"><div class="slip"><h3>🎄 Secret Santa slip</h3><p class="sub">For: <b>'+esc(giver.name)+'</b> — keep this slip private.</p><p>You are gifting: <span class="who">'+esc(rec.name)+'</span></p><p class="live">💰 Price limit: '+((st.priceLimit!==''&&st.priceLimit!=null)?fmt(st.priceLimit):'No limit set')+'<br>📅 Event: '+(st.eventDate?esc(st.eventDate):'Date not set yet')+(st.location?' · 📍 '+esc(st.location):'')+'</p><h3>💝 '+esc(rec.name)+' wishes for:</h3><div class="live">'+wishHtml+'</div></div></div>';
+}
+function renderSlips(){
+  var sel=$('slipGiver');
+  var prev=sel.value;
+  sel.innerHTML=S.santa.participants.map(function(p){return '<option value="'+p.id+'">'+esc(p.name)+'</option>';}).join('');
+  if(prev&&santaPersonById(prev))sel.value=prev;
+  else if(S.santa.participants.length)sel.value=S.santa.participants[0].id;
+  var hasDraw=!!S.santa.draw;
+  $('printSlipsBtn').disabled=!hasDraw;$('printOneBtn').disabled=!hasDraw;
+  renderSlipView();
+}
+function renderSlipView(){
+  if(!S.santa.draw){$('slipView').innerHTML='<p class="sub">Run the draw first — then pick a giver to see their slip.</p>';return;}
+  var giver=santaPersonById($('slipGiver').value);
+  if(!giver){$('slipView').innerHTML='<p class="sub">Pick a giver.</p>';return;}
+  $('slipView').innerHTML=slipHtml(giver);
+}
+function clearPrintArea(){var pa=$('printArea');if(pa){pa.innerHTML='';pa.style.display='none';}}
+if(typeof window!=='undefined'&&window.addEventListener){window.addEventListener('afterprint',clearPrintArea);}
+function printOneSlip(){
+  if(!S.santa.draw)return;
+  var giver=santaPersonById($('slipGiver').value);
+  if(!giver)return;
+  var pa=$('printArea');pa.innerHTML=slipHtml(giver);pa.style.display='block';window.print();clearPrintArea();
+}
+function printSlips(){
+  if(!S.santa.draw)return;
+  var pa=$('printArea');pa.innerHTML=S.santa.participants.map(function(p){return slipHtml(p);}).join('');pa.style.display='block';window.print();clearPrintArea();
+}
+function printSlipsView(){
+  if(!S.santa.draw){toast('Run the Santa draw first.');return;}
+  printSlips();
+}
+function renderDeals(){
+  var dealCounts=countsFor(S.deals,function(d){return d.status;});
+  var dealFiltered=F.dealStatus?S.deals.filter(function(d){return d.status===F.dealStatus;}):S.deals;
+  $('dealFilterRow').innerHTML=filterRowHTML('fDealStatus',F.dealStatus,dealCounts,['Watching','Bought','Missed'],'All deal watches',"setF('dealStatus',this.value)",F.dealStatus?dealFiltered.length:0,S.deals.length,"clearF('dealStatus')");
+  $('dealTable').innerHTML=dealFiltered.length?('<table><tr><th>Item</th><th>Target</th><th>Sale</th><th>Store</th><th>Status</th><th></th></tr>'+dealFiltered.map(function(d){return '<tr><td>'+esc(d.item)+'</td><td>'+fmt(d.target)+'</td><td>'+(d.sale?fmt(d.sale):'—')+'</td><td>'+esc(d.store||'—')+'</td><td>'+esc(d.status)+'</td><td><button class="btn small ghost" onclick="openDealModal(\''+d.id+'\')">Edit</button> <button class="btn small danger" onclick="deleteDeal(\''+d.id+'\')">Delete</button></td></tr>';}).join('')+'</table>'):(S.deals.length?'<p class="sub">No items in this category \u2014 tap All to see everything.</p>':'<p class="sub">No deal watches yet.</p>');
+}
+function openDealModal(id){
+  var d=id?S.deals.filter(function(x){return x.id===id;})[0]:null;
+  openModal('🏷️',d?'Edit deal watch':'Add deal watch','<label class="flabel">Item</label><input class="field" id="dlItem" value="'+esc(d?d.item:'')+'"><label class="flabel">Target price</label><input class="field" type="number" id="dlTarget" value="'+esc(d?d.target:'')+'"><label class="flabel">Sale price (0 if not on sale yet)</label><input class="field" type="number" id="dlSale" value="'+esc(d?d.sale:'')+'"><label class="flabel">Store</label><input class="field" id="dlStore" value="'+esc(d?d.store:'')+'"><label class="flabel">Status</label><select class="field" id="dlStatus"><option>Watching</option><option>Bought</option><option>Missed</option></select><div class="row" style="margin-top:16px"><button class="btn" onclick="saveDeal(\''+(d?d.id:'')+'\')">Save</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');
+  if(d)$('dlStatus').value=d.status;
+}
+function saveDeal(id){
+  var d=id?S.deals.filter(function(x){return x.id===id;})[0]:{id:uid()};
+  if(!d)return;
+  d.item=$('dlItem').value.trim();d.target=num($('dlTarget').value);d.sale=num($('dlSale').value);d.store=$('dlStore').value.trim();d.status=$('dlStatus').value;
+  if(!d.item){toast('Item is needed.');return;}
+  if(!id)S.deals.push(d);
+  save();closeModal();renderAll();toast('Deal watch saved.');
+}
+function deleteDeal(id){askDelete('this deal watch',function(){S.deals=S.deals.filter(function(x){return x.id!==id;});save();renderAll();});}
+function homeSearchFn(q){
+  var box=$('homeSearchResults');if(!box)return;
+  q=(q||'').trim().toLowerCase();
+  if(!q){box.innerHTML='';return;}
+  var out=[];
+  S.gifts.forEach(function(g){if((g.recipient+' '+g.idea+' '+(g.store||'')).toLowerCase().indexOf(q)>=0)out.push({t:'🎁 '+g.recipient+' — '+g.idea,sec:'gifts'});});
+  S.cards.forEach(function(c){if((c.recipient+' '+(c.address||'')).toLowerCase().indexOf(q)>=0)out.push({t:'💌 Card: '+c.recipient,sec:'cards'});});
+  S.guests.forEach(function(g){if((g.name||'').toLowerCase().indexOf(q)>=0)out.push({t:'🏡 Guest: '+g.name,sec:'hosting'});});
+  S.ideas.forEach(function(i){if((i.text+' '+i.forWhom).toLowerCase().indexOf(q)>=0)out.push({t:'💡 Idea: '+i.text+' (for '+i.forWhom+')',sec:'gifts'});});
+  S.grocery.forEach(function(g){if((g.item||'').toLowerCase().indexOf(q)>=0)out.push({t:'🛒 Grocery: '+g.item,sec:'grocery'});});
+  S.deals.forEach(function(d){if((d.item||'').toLowerCase().indexOf(q)>=0)out.push({t:'🏷️ Deal: '+d.item,sec:'deals'});});
+  (S.decor||[]).forEach(function(x){if(((x.room||'')+' '+(x.item||'')).toLowerCase().indexOf(q)>=0)out.push({t:'✨ Decor: '+x.item+' ('+x.room+')',sec:'decor'});});
+  (S.storage||[]).forEach(function(x){if(((x.item||'')+' '+(x.box||'')+' '+(x.place||'')).toLowerCase().indexOf(q)>=0)out.push({t:'📦 Storage: '+x.item+' — '+(x.place||''),sec:'decor'});});
+  (S.trips||[]).forEach(function(x){if(((x.dest||'')+' '+(x.transport||'')).toLowerCase().indexOf(q)>=0)out.push({t:'🧳 Trip: '+x.dest,sec:'travel'});});
+  (S.packing||[]).forEach(function(x){if(((x.item||'')+' '+(x.cat||'')).toLowerCase().indexOf(q)>=0)out.push({t:'🎒 Packing: '+x.item,sec:'travel'});});
+  box.innerHTML=out.length?out.slice(0,10).map(function(r){return '<div class="attnline" onclick="showSection(\''+r.sec+'\')">'+esc(r.t)+'</div>';}).join(''):'No matches found.';
+}
+function exportICS(){
+  var ev=[];
+  S.tasks.forEach(function(x){if(x.date)ev.push({d:x.date,s:'Hosting task: '+x.text});});
+  S.baking.forEach(function(x){if(x.bakeDate)ev.push({d:x.bakeDate,s:'Bake: '+x.item});});
+  S.gifts.forEach(function(x){if(x.deliveryDate)ev.push({d:x.deliveryDate,s:'Gift delivery: '+x.recipient+' — '+x.idea});});
+  if(S.santa.eventDate)ev.push({d:S.santa.eventDate,s:'Secret Santa'+(S.santa.location?' at '+S.santa.location:'')});
+  (S.trips||[]).forEach(function(x){if(x.depart)ev.push({d:x.depart,s:'Trip to '+x.dest});if(x.ret&&x.ret!==x.depart)ev.push({d:x.ret,s:'Return from '+x.dest});});(S.dates||[]).forEach(function(x){if(x.date)ev.push({d:x.date,s:x.title});});
+  var cd=christmasDate();
+  ev.push({d:cd.getFullYear()+'-12-25',s:'Christmas Day'});
+  var stamp=new Date().toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+  var out='BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Full Christmas Planner//EN\r\n';
+  ev.forEach(function(e,i){out+='BEGIN:VEVENT\r\nUID:xmas-'+Date.now()+'-'+i+'@christmasplanner\r\nDTSTAMP:'+stamp+'\r\nDTSTART;VALUE=DATE:'+String(e.d).replace(/-/g,'')+'\r\nSUMMARY:'+String(e.s).replace(/,/g,'\\,')+'\r\nEND:VEVENT\r\n';});
+  out+='END:VCALENDAR\r\n';
+  var a=document.createElement('a');a.href='data:text/calendar,'+encodeURIComponent(out);a.download='christmas-planner-calendar.ics';a.click();
+  toast(ev.length+' date(s) exported to calendar file.');
+}
+function exportData(input){toast('This is the free demo — backups is available in the full version.');}
+var pendingImport=null;
+function importData(input){toast('This is the free demo — importing is available in the full version.');}
+function confirmImport(){
+  if(!pendingImport)return;
+  S=pendingImport;pendingImport=null;
+  normalize();save();applyTheme();closeModal();renderAll();toast('Backup imported.');
+}
+function importGiftTracker(input){toast('This is the free demo — importing is available in the full version.');}
+function restoreSamples(){
+  openModal('🎁','Restore sample data?','<p class="live">This replaces ALL current planner content with the sample data. Your name, theme and currency are kept. This cannot be undone.</p><div class="row" style="margin-top:14px"><button class="btn danger" onclick="confirmRestoreSamples()">Restore samples</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');
+}
+function confirmRestoreSamples(){
+  var keepProfile=S.profile,keepSettings=S.settings;
+  S=sampleData();seedNewSamples();S.profile=keepProfile;S.settings=keepSettings;
+  save();applyTheme();closeModal();renderAll();toast('Sample data restored (name, theme and currency kept).');
+}
+function openResetModal(){openModal('🎄','New-year reset?','<p class="live">This archives this year\'s gifts, then clears gifts, expenses, cards, meals, baking, grocery, hosting, decor, travel, deals and Santa data for a fresh year. Your name, theme and currency are kept. A backup file of everything downloads first, so nothing is lost.</p><div class="row" style="margin-top:14px"><button class="btn danger" onclick="doReset()">Archive &amp; reset</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');}
+function doReset(){ exportData();
+  var year=new Date().getFullYear();
+  if(!S.archives)S.archives=[];
+  S.archives.push({year:year,gifts:S.gifts.filter(function(g){return (g.recipient||'').indexOf('Sample:')!==0;}).map(function(g){return {recipient:g.recipient,idea:g.idea};})});
+  var keepProfile=S.profile,keepSettings=S.settings,keepArchives=S.archives;
+  var d=sampleData();
+  S={profile:keepProfile,settings:keepSettings,gifts:[],ideas:[],wishes:[],expenses:[],cards:[],thanks:[],adventOpened:[],adventNotes:{},meals:[],baking:[],grocery:[],guests:[],tasks:[],decor:[],storage:[],trips:[],packing:[],seating:'',santa:{participants:[],wishes:[],draw:null,eventDate:'',location:'',priceLimit:''},deals:[],dates:[],notes:[],decNotes:{goal:'',reflection:'',wins:''},archives:keepArchives};
+  save();closeModal();renderAll();toast('New year started — last year archived.');
+}
+function openTagStyleDialog(){
+  openModal('🏷️','Gift tags','<p class="live">Pick a tag style, then print. One tag per gift.</p><div class="row" style="margin-top:14px"><button class="btn" onclick="printView(\'tags\',\'classic\')">Classic Red</button><button class="btn" onclick="printView(\'tags\',\'gold\')">Gold</button><button class="btn" onclick="printView(\'tags\',\'winter\')">Winter Blue</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');
+}
+function printView(type,style){
+  var pa=$('printArea');
+  if(type==='gifts'){
+    pa.innerHTML='<h2>🎄 Gift list</h2><table border="1" cellpadding="6" cellspacing="0">'+S.gifts.map(function(g){return '<tr><td><b>'+esc(g.recipient)+'</b><br>'+esc(g.idea)+'</td><td>'+esc(g.status)+'</td><td>'+fmt(g.budget)+' / '+fmt(g.spent)+'</td></tr>';}).join('')+'</table>';
+  }else if(type==='budget'){
+    var tb=S.gifts.reduce(function(a,g){return a+num(g.budget);},0),ts=S.gifts.reduce(function(a,g){return a+num(g.spent);},0);
+    pa.innerHTML='<h2>💰 Budget summary</h2><p>Total gift budget: '+fmt(tb)+'<br>Total spent: '+fmt(ts)+'<br>Left: '+fmt(Math.max(0,tb-ts))+'</p>';
+  }else if(type==='summary'){
+    var sTb=S.gifts.reduce(function(a,g){return a+num(g.budget);},0),sTs=S.gifts.reduce(function(a,g){return a+num(g.spent);},0);
+    var givenN=S.gifts.filter(function(g){return g.status==='Given';}).length;
+    pa.innerHTML='<h2>🎄 Full Christmas summary</h2>'
+      +'<p><b>Gifts:</b> '+S.gifts.length+' tracked · '+givenN+' given · '+fmt(sTs)+' spent of '+fmt(sTb)+'</p>'
+      +'<p><b>Cards:</b> '+S.cards.filter(function(c){return c.status==='Sent';}).length+' of '+S.cards.length+' sent</p>'
+      +'<p><b>Advent:</b> '+(S.adventOpened||[]).length+' of 24 doors opened</p>'
+      +'<p><b>Meals:</b> '+S.meals.length+' planned · <b>Baking:</b> '+S.baking.length+' items</p>'
+      +'<p><b>Guests:</b> '+S.guests.length+' · <b>Hosting tasks:</b> '+S.tasks.filter(function(x){return x.done;}).length+' of '+S.tasks.length+' done</p>'
+      +'<p><b>Grocery:</b> '+S.grocery.filter(function(g){return !g.checked;}).length+' items still to buy</p>'
+      +'<p><b>Secret Santa:</b> '+S.santa.participants.length+' participants · '+(S.santa.draw?'drawn':'not drawn yet')+'</p>'
+      +'<p><b>Deal Days:</b> '+S.deals.length+' watches</p>'
+      +'<p><b>Decor:</b> '+(S.decor||[]).length+' items planned \u00B7 '+(S.storage||[]).length+' in storage</p>'
+      +'<p><b>Travel:</b> '+(S.trips||[]).length+' trip(s) \u00B7 Packing '+(S.packing||[]).filter(function(x){return x.packed;}).length+' of '+(S.packing||[]).length+' packed</p>'
+      +(S.decNotes&&S.decNotes.goal?'<p><b>December goal:</b> '+esc(S.decNotes.goal)+'</p>':'')
+      +(S.decNotes&&S.decNotes.wins?'<p><b>My wins:</b> '+esc(S.decNotes.wins)+'</p>':'');
+  }else if(type==='tags'){
+    var bg={classic:'#b71c2e',gold:'#8a6d1a',winter:'#1f5f8b'}[style||'classic'];
+    var list=S.gifts.length?S.gifts:'';
+    pa.innerHTML='<h2>🏷️ Gift tags</h2>'+(list?list.map(function(g){return '<div style="border:2px solid '+bg+';border-radius:12px;padding:14px;margin:10px 0;text-align:center"><b>To: '+esc(g.recipient)+'</b><br>'+esc(g.idea)+'<br><small>Merry Christmas! 🎄</small></div>';}).join(''):'<p>No gifts yet.</p>');
+  }else if(type==='cards'){
+    pa.innerHTML='<h2>💌 Cards</h2>'+(S.cards.length?('<table border="1" cellpadding="6" cellspacing="0"><tr><th>Recipient</th><th>Address</th><th>Card</th><th>Postage</th></tr>'+S.cards.map(function(c){return '<tr><td>'+esc(c.recipient)+'</td><td>'+esc(c.address||'—')+'</td><td>'+esc(c.status)+'</td><td>'+esc(c.postage||'—')+'</td></tr>';}).join('')+'</table>'):'<p>No cards yet.</p>')+'<h2>🙏 Thank-you list</h2>'+(S.thanks.length?S.thanks.map(function(t){return '• '+esc(t.recipient)+' — '+esc(t.note||'')+(t.done?' (done)':'');}).join('<br>'):'<p>Nobody needs a thank-you yet.</p>');
+  }else if(type==='budgetTables'){
+    var per={};S.gifts.forEach(function(g){if(!per[g.recipient])per[g.recipient]={b:0,s:0};per[g.recipient].b+=num(g.budget);per[g.recipient].s+=num(g.spent);});
+    var names=Object.keys(per);
+    pa.innerHTML='<h2>💰 Budget — per person</h2>'+(names.length?('<table border="1" cellpadding="6" cellspacing="0"><tr><th>Person</th><th>Budget</th><th>Spent</th><th>Left</th></tr>'+names.map(function(n){var o=per[n],left=o.b-o.s;return '<tr><td>'+esc(n)+'</td><td>'+fmt(o.b)+'</td><td>'+fmt(o.s)+'</td><td>'+fmt(left)+'</td></tr>';}).join('')+'</table>'):'<p>No gifts yet.</p>')+'<h2>Holiday expense log</h2>'+(S.expenses.length?('<table border="1" cellpadding="6" cellspacing="0"><tr><th>What</th><th>Category</th><th>Amount</th></tr>'+S.expenses.map(function(e){return '<tr><td>'+esc(e.desc)+'</td><td>'+esc(e.cat)+'</td><td>'+fmt(e.amount)+'</td></tr>';}).join('')+'</table>'):'<p>No expenses logged yet.</p>');
+  }else if(type==='advent'){
+    var rows=[];for(var dd=1;dd<=24;dd++){var op=(S.adventOpened||[]).indexOf(dd)>=0;var nt=(S.adventNotes||{})[dd]||'';rows.push('<div>'+(op?'\u2611':'\u2610')+' Dec '+dd+(nt?' \u2014 '+esc(nt):'')+'</div>');}
+    pa.innerHTML='<h2>🎄 Advent doors</h2>'+rows.join('')+((S.dates&&S.dates.length)?('<h3>📅 Important dates</h3>'+S.dates.slice().sort(function(a,b){return a.date<b.date?-1:1;}).map(function(x){return '<div>'+esc(x.title)+' — '+shortDate(x.date)+'</div>';}).join('')):'');
+  }else if(type==='notes'){pa.innerHTML='<h2>📝 Notes</h2>'+((S.notes||[]).length?(S.notes.map(function(n){return '<div style="margin:10px 0"><b>'+esc(n.title||'Untitled')+'</b><div style="white-space:pre-wrap">'+esc(n.body||'')+'</div></div>';}).join('')):'<p>No notes yet.</p>');}else if(type==='meals'){
+    pa.innerHTML='<h2>🍽️ Meals</h2>'+(S.meals.length?('<table border="1" cellpadding="6" cellspacing="0"><tr><th>Day</th><th>Meal</th><th>Guests</th><th>Dietary</th><th>Ingredients</th></tr>'+S.meals.map(function(m){return '<tr><td>'+esc(m.day)+'</td><td>'+esc(m.meal)+'</td><td>'+esc(m.guests)+'</td><td>'+esc(m.dietary||'—')+'</td><td>'+esc(m.ingredients||'—')+'</td></tr>';}).join('')+'</table>'):'<p>No meals planned yet.</p>');
+  }else if(type==='baking'){
+    pa.innerHTML='<h2>🍪 Baking</h2>'+(S.baking.length?('<table border="1" cellpadding="6" cellspacing="0"><tr><th>Item</th><th>Quantity</th><th>Bake date</th><th>Status</th></tr>'+S.baking.map(function(b){return '<tr><td>'+esc(b.item)+'</td><td>'+esc(b.qty)+'</td><td>'+esc(b.bakeDate||'—')+'</td><td>'+esc(b.status)+'</td></tr>';}).join('')+'</table>'):'<p>Nothing to bake yet.</p>');
+  }else if(type==='grocery'){
+    var byAisle={};AISLES.forEach(function(a){byAisle[a]=[];});S.grocery.filter(function(g){return !g.checked;}).forEach(function(g){(byAisle[g.aisle]||(byAisle[g.aisle]=[])).push(g);});
+    var gh='';AISLES.forEach(function(a){var items=byAisle[a]||[];if(!items.length)return;gh+='<h3>'+esc(a)+'</h3>'+items.map(function(g){return '<div>☐ '+esc(g.item)+' ('+esc(g.qty||'')+')</div>';}).join('');});
+    pa.innerHTML='<h2>🛒 Grocery — still to buy</h2>'+(gh||'<p>Nothing left to buy — all grocery items are checked.</p>');
+  }else if(type==='guests'){
+    pa.innerHTML='<h2>🏡 Guests</h2>'+(S.guests.length?('<table border="1" cellpadding="6" cellspacing="0"><tr><th>Guest</th><th>RSVP</th><th>Dietary</th><th>Plus-one</th></tr>'+S.guests.map(function(g){return '<tr><td>'+esc(g.name)+'</td><td>'+esc(g.rsvp)+'</td><td>'+esc(g.dietary||'—')+'</td><td>'+esc(g.plusOne)+'</td></tr>';}).join('')+'</table>'):'<p>No guests yet.</p>');
+  }else if(type==='tasks'){
+    pa.innerHTML='<h2>✅ Hosting tasks</h2>'+(S.tasks.length?S.tasks.map(function(t){return '<div>'+(t.done?'☑ ':'☐ ')+esc(t.text)+' ('+(t.date||'no date')+')</div>';}).join(''):'<p>No hosting tasks yet.</p>');
+  }else if(type==='santaPeople'){
+    pa.innerHTML='<h2>🎅 Secret Santa — participants</h2>'+(S.santa.participants.length?('<table border="1" cellpadding="6" cellspacing="0"><tr><th>Name</th><th>Confirmed</th><th>Will not draw</th></tr>'+S.santa.participants.map(function(p){var ex=(p.exclusions||[]).map(function(id){var q=santaPersonById(id);return q?esc(q.name):'';}).filter(Boolean).join(', ')||'—';return '<tr><td>'+esc(p.name)+'</td><td>'+(p.confirmed?'Confirmed':'Pending')+'</td><td>'+ex+'</td></tr>';}).join('')+'</table>'):'<p>No participants yet.</p>');
+  }else if(type==='santaWishes'){
+    pa.innerHTML='<h2>💝 Secret Santa — wish lists</h2>'+(S.santa.wishes.length?S.santa.wishes.map(function(w){var p=santaPersonById(w.personId);return '• '+(p?esc(p.name):'Unknown')+' — '+esc(w.text)+(w.note?' ('+esc(w.note)+')':'');}).join('<br>'):'<p>No wishes yet.</p>');
+  }else if(type==='deals'){
+    pa.innerHTML='<h2>🏷️ Deal Days</h2>'+(S.deals.length?('<table border="1" cellpadding="6" cellspacing="0"><tr><th>Item</th><th>Target</th><th>Sale</th><th>Store</th><th>Status</th></tr>'+S.deals.map(function(d){return '<tr><td>'+esc(d.item)+'</td><td>'+fmt(d.target)+'</td><td>'+(d.sale?fmt(d.sale):'—')+'</td><td>'+esc(d.store||'—')+'</td><td>'+esc(d.status)+'</td></tr>';}).join('')+'</table>'):'<p>No deal watches yet.</p>');
+  }else if(type==='ideas'){
+    pa.innerHTML='<h2>💡 Idea bank</h2>'+(S.ideas.length?S.ideas.map(function(i){return '• '+esc(i.text)+' (for '+esc(i.forWhom)+')'+(i.notes?' — '+esc(i.notes):'');}).join('<br>'):'<p>No ideas yet.</p>');
+  }else if(type==='wishes'){
+    pa.innerHTML='<h2>💝 Family wish lists</h2>'+(S.wishes.length?('<table border="1" cellpadding="6" cellspacing="0"><tr><th>For</th><th>Wish</th><th>Claimed</th></tr>'+S.wishes.map(function(w){return '<tr><td>'+esc(w.recipient)+'</td><td>'+esc(w.text)+'</td><td>'+(w.claimed?'Claimed':'—')+'</td></tr>';}).join('')+'</table>'):'<p>No wishes yet.</p>');
+  }else if(type==='shopping'){
+    var shop=S.gifts.filter(function(g){return g.status==='Idea'||g.status==='Ordered';});
+    pa.innerHTML='<h2>🛍️ Shopping list</h2>'+(shop.length?shop.map(function(g){return '• '+esc(g.recipient)+' — '+esc(g.idea)+' ('+esc(g.store||'any store')+', '+fmt(g.budget)+')';}).join('<br>'):'<p>Nothing left to shop for.</p>');
+  }else if(type==='stocking'){
+    var stk=S.gifts.filter(function(g){return g.stocking;});
+    pa.innerHTML='<h2>🧦 Stocking stuffers</h2>'+(stk.length?stk.map(function(g){return '• '+esc(g.recipient)+' — '+esc(g.idea)+' ('+esc(g.status)+')';}).join('<br>'):'<p>No stocking stuffers marked yet.</p>');
+  }else if(type==='decor'){
+    var dl=S.decor||[],sl2=S.storage||[];
+    pa.innerHTML='<h2>✨ Decorating plan</h2>'+(dl.length?('<table border="1" cellpadding="6" cellspacing="0"><tr><th>Room</th><th>Item</th><th>Status</th><th>Notes</th></tr>'+dl.map(function(x){return '<tr><td>'+esc(x.room)+'</td><td>'+esc(x.item)+'</td><td>'+esc(x.status)+'</td><td>'+esc(x.notes||'—')+'</td></tr>';}).join('')+'</table>'):'<p>No decorations planned yet.</p>')+'<h2>📦 Storage inventory</h2>'+(sl2.length?('<table border="1" cellpadding="6" cellspacing="0"><tr><th>Item</th><th>Box / bag</th><th>Stored where</th><th>Qty</th></tr>'+sl2.map(function(x){return '<tr><td>'+esc(x.item)+'</td><td>'+esc(x.box||'—')+'</td><td>'+esc(x.place||'—')+'</td><td>'+esc(x.qty||'—')+'</td></tr>';}).join('')+'</table>'):'<p>Nothing recorded in storage yet.</p>');
+  }else if(type==='travel'){
+    var tl2=S.trips||[],pl2=S.packing||[];
+    pa.innerHTML='<h2>🧳 Trips</h2>'+(tl2.length?tl2.map(function(x){return '<div style="margin:8px 0"><b>'+esc(x.dest)+'</b> — '+esc(x.depart||'')+(x.ret?' to '+esc(x.ret):'')+(x.transport?'<br>'+esc(x.transport):'')+(x.stay?'<br>Staying: '+esc(x.stay):'')+(x.notes?'<br>'+esc(x.notes):'')+'</div>';}).join(''):'<p>No trips yet.</p>')+'<h2>🎒 Packing list</h2>'+(pl2.length?pl2.map(function(x){return '<div>'+(x.packed?'\u2611 ':'\u2610 ')+esc(x.item)+' ('+esc(x.cat)+')</div>';}).join(''):'<p>Packing list is empty.</p>');
+  }
+  closeModal();pa.style.display='block';window.print();clearPrintArea();
+}
+load();
+buildSidebar();
+applyTheme();
+var _existed=true;
+var startSec='home';
+try{var savedSec=localStorage.getItem(KEY+'Sec');if(savedSec&&SECTIONS.some(function(s){return s[0]===savedSec;}))startSec=savedSec;}catch(e){}
+navStack=[startSec];
+showSection(startSec,false);
+if(!_existed){$('onboard').classList.add('open');}
+else{var lb=S.settings.lastBackup;if(!lb||(Date.now()-new Date(lb).getTime())>30*86400000){setTimeout(function(){toast('Reminder: export a backup from Settings now and then to keep your data safe.');},1500);}}
+
+function daysUntil(ds){var a=new Date(ds+'T00:00:00');var n=new Date();var td=new Date(n.getFullYear(),n.getMonth(),n.getDate());return Math.round((a-td)/86400000);}
+function renderDates(){var el=$('datesList');if(!el)return;var list=(S.dates||[]).slice().sort(function(a,b){return a.date<b.date?-1:1;});if(!list.length){el.innerHTML='<p class="live">No important dates yet. Add the first one above.</p>';return;}el.innerHTML=list.map(function(x){var n=daysUntil(x.date);var when=n===0?'Today!':n===1?'tomorrow':n>0?('in '+n+' days'):(Math.abs(n)+' days ago');return '<div class="card" style="margin:6px 0"><b>'+esc(x.title)+'</b> — '+shortDate(x.date)+' <span class="live">('+when+')</span><div class="row" style="margin-top:6px"><button class="btn small ghost" onclick="openDateModal(\''+x.id+'\')">Edit</button><button class="btn small danger" onclick="delDate(\''+x.id+'\')">Delete</button></div></div>';}).join('');}
+function openDateModal(id){var x=null;(S.dates||[]).forEach(function(d){if(d.id===id)x=d;});openModal('📅',x?'Edit date':'Add important date','<label class="flabel">What is it?</label><input class="field" id="dateTitle" value="'+(x?esc(x.title):'')+'" placeholder="e.g. Last day to post gifts"><label class="flabel">Date</label><input class="field" type="date" id="dateWhen" value="'+(x?x.date:'')+'"><div class="row" style="margin-top:14px"><button class="btn" onclick="saveDate(\''+(id||'')+'\')">Save</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');}
+function saveDate(id){var title=$('dateTitle').value.trim();var when=$('dateWhen').value;if(!title||!when){toast('Give the date a name and a day.');return;}if(!S.dates)S.dates=[];if(id){S.dates.forEach(function(d){if(d.id===id){d.title=title;d.date=when;}});}else{S.dates.push({id:uid(),title:title,date:when});}save();closeModal();renderAll();toast('Date saved.');}
+function delDate(id){askDelete('this date',function(){S.dates=(S.dates||[]).filter(function(d){return d.id!==id;});save();renderAll();});}
+function renderNotes(){var el=$('notesList');if(!el)return;var list=S.notes||[];var sub=$('notesSub');if(sub)sub.textContent=list.length?(list.length+' note'+(list.length>1?'s':'')+' saved.'):'Brain-dump space for anything that does not fit elsewhere.';if(!list.length){el.innerHTML='<p class="live">No notes yet. Tap + Add note — gift ideas for next year, reminders, anything.</p>';return;}el.innerHTML=list.map(function(n){return '<div class="card" style="margin:8px 0"><b>'+esc(n.title||'Untitled')+'</b><div class="live" style="white-space:pre-wrap;margin-top:4px">'+esc(n.body||'')+'</div><div class="row" style="margin-top:8px"><button class="btn small ghost" onclick="openNoteModal(\''+n.id+'\')">Edit</button><button class="btn small danger" onclick="delNote(\''+n.id+'\')">Delete</button></div></div>';}).join('');}
+function openNoteModal(id){var n=null;(S.notes||[]).forEach(function(x){if(x.id===id)n=x;});openModal('📝',n?'Edit note':'Add note','<label class="flabel">Title</label><input class="field" id="noteTitle" value="'+(n?esc(n.title):'')+'" placeholder="e.g. Ideas for next year"><label class="flabel">Note</label><textarea class="field" id="noteBody" rows="5">'+(n?esc(n.body):'')+'</textarea><div class="row" style="margin-top:14px"><button class="btn" onclick="saveNote(\''+(id||'')+'\')">Save</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');}
+function saveNote(id){var title=$('noteTitle').value.trim();var body=$('noteBody').value;if(!title&&!body.trim()){toast('Write something first.');return;}if(!S.notes)S.notes=[];if(id){S.notes.forEach(function(x){if(x.id===id){x.title=title;x.body=body;}});}else{S.notes.push({id:uid(),title:title,body:body});}save();closeModal();renderAll();toast('Note saved.');}
+function delNote(id){askDelete('this note',function(){S.notes=(S.notes||[]).filter(function(x){return x.id!==id;});save();renderAll();});}
+function seedNewSamples(){
+  S.decor=[{id:uid(),room:'Living room',item:'Christmas tree with warm lights',status:'Up',notes:'Corner by the window'},{id:uid(),room:'Hallway',item:'Wreath on the front door',status:'Up',notes:''},{id:uid(),room:'Dining room',item:'Table garland and gold candles',status:'To buy',notes:'Candles still to buy'},{id:uid(),room:'Outside',item:'Doorstep lanterns',status:'Planned',notes:''}];
+  S.storage=[{id:uid(),item:'Baubles (2 sets)',box:'Red box 1',place:'Attic, left shelf',qty:'2 sets'},{id:uid(),item:'String lights',box:'Red box 2',place:'Attic, left shelf',qty:'3 strands'},{id:uid(),item:'Wreath',box:'Wreath bag',place:'Garage hook',qty:'1'}];
+  S.trips=[{id:uid(),dest:"Sample: Grandma's house",depart:'2026-12-24',ret:'2026-12-26',transport:'By car',stay:'Spare room',notes:'Take the gifts for the kids'}];
+  S.packing=[{id:uid(),item:'Gifts for the kids',cat:'Gifts',packed:true},{id:uid(),item:'Warm jumpers',cat:'Clothes',packed:false},{id:uid(),item:'Phone charger',cat:'Other',packed:false},{id:uid(),item:'ID / documents folder',cat:'Documents',packed:true}];
+}
+function renderDecor(){
+  var list=S.decor||[];
+  var roomCounts=countsFor(list,function(x){return x.room;});
+  var stCounts=countsFor(list,function(x){return x.status;});
+  var filtered=list.filter(function(x){return (!F.decorRoom||x.room===F.decorRoom)&&(!F.decorStatus||x.status===F.decorStatus);});
+  var fr=$('decorFilterRow');
+  if(fr)fr.innerHTML='<div class="row"><select id="fDecorRoom" onchange="setF(\'decorRoom\',this.value)">'+filterOpts(roomCounts,ROOMS,'All rooms',F.decorRoom)+'</select><select id="fDecorStatus" onchange="setF(\'decorStatus\',this.value)">'+filterOpts(stCounts,DECORSTATUSES,'All statuses',F.decorStatus)+'</select>'+((F.decorRoom||F.decorStatus)?'<button class="btn small ghost" onclick="clearF2(\'decorRoom\',\'decorStatus\')">\u2715 Clear</button><span class="live">Showing '+filtered.length+' of '+list.length+' items</span>':'')+'</div>';
+  var el=$('decorTable');if(!el)return;
+  el.innerHTML=filtered.length?('<table><tr><th>Room</th><th>Item</th><th>Status</th><th>Notes</th><th></th></tr>'+filtered.map(function(x){return '<tr><td>'+esc(x.room)+'</td><td>'+esc(x.item)+'</td><td>'+esc(x.status)+'</td><td>'+esc(x.notes||'—')+'</td><td><button class="btn small ghost" onclick="toggleDecor(\''+x.id+'\')">'+(x.status==='Up'?'Mark not up':'Mark up')+'</button> <button class="btn small ghost" onclick="openDecorModal(\''+x.id+'\')">Edit</button> <button class="btn small danger" onclick="deleteDecor(\''+x.id+'\')">Delete</button></td></tr>';}).join('')+'</table>'):(list.length?'<p class="sub">No items match this filter \u2014 tap All to see everything.</p>':'<p class="sub">No decorations planned yet. Add the first one above.</p>');
+  var sl=S.storage||[];var se=$('storageTable');if(!se)return;
+  se.innerHTML=sl.length?('<table><tr><th>Item</th><th>Box / bag</th><th>Stored where</th><th>Qty</th><th></th></tr>'+sl.map(function(x){return '<tr><td>'+esc(x.item)+'</td><td>'+esc(x.box||'—')+'</td><td>'+esc(x.place||'—')+'</td><td>'+esc(x.qty||'—')+'</td><td><button class="btn small ghost" onclick="openStorageModal(\''+x.id+'\')">Edit</button> <button class="btn small danger" onclick="deleteStorage(\''+x.id+'\')">Delete</button></td></tr>';}).join('')+'</table>'):'<p class="sub">Nothing in storage yet. When you pack the decorations away, record them here.</p>';
+}
+function openDecorModal(id){
+  var x=id?(S.decor||[]).filter(function(d){return d.id===id;})[0]:null;
+  openModal('✨',x?'Edit decor item':'Add decor item','<label class="flabel">Room</label><select class="field" id="dcRoom">'+ROOMS.map(function(r){return '<option'+(x&&x.room===r?' selected':'')+'>'+r+'</option>';}).join('')+'</select><label class="flabel">Item</label><input class="field" id="dcItem" value="'+esc(x?x.item:'')+'" placeholder="e.g. Garland for the mantel"><label class="flabel">Status</label><select class="field" id="dcStatus">'+DECORSTATUSES.map(function(s){return '<option'+(x&&x.status===s?' selected':'')+'>'+s+'</option>';}).join('')+'</select><label class="flabel">Notes</label><input class="field" id="dcNotes" value="'+esc(x?x.notes||'':'')+'"><div class="row" style="margin-top:16px"><button class="btn" onclick="saveDecor(\''+(x?x.id:'')+'\')">Save</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');
+}
+function saveDecor(id){
+  var it=$('dcItem').value.trim();if(!it){toast('Item is needed.');return;}
+  if(!S.decor)S.decor=[];
+  if(id){var x=S.decor.filter(function(d){return d.id===id;})[0];if(x){x.room=$('dcRoom').value;x.item=it;x.status=$('dcStatus').value;x.notes=$('dcNotes').value.trim();}}
+  else{S.decor.push({id:uid(),room:$('dcRoom').value,item:it,status:$('dcStatus').value,notes:$('dcNotes').value.trim()});}
+  save();closeModal();renderAll();toast('Decor item saved.');
+}
+function toggleDecor(id){var x=(S.decor||[]).filter(function(d){return d.id===id;})[0];if(x){x.status=(x.status==='Up'?'Planned':'Up');}save();renderAll();}
+function deleteDecor(id){askDelete('this decor item',function(){S.decor=(S.decor||[]).filter(function(d){return d.id!==id;});save();renderAll();});}
+function openStorageModal(id){
+  var x=id?(S.storage||[]).filter(function(d){return d.id===id;})[0]:null;
+  openModal('📦',x?'Edit storage item':'Add storage item','<label class="flabel">Item</label><input class="field" id="stItem" value="'+esc(x?x.item:'')+'" placeholder="e.g. Baubles (2 sets)"><label class="flabel">Box / bag</label><input class="field" id="stBox" value="'+esc(x?x.box||'':'')+'" placeholder="e.g. Red box 1"><label class="flabel">Stored where</label><input class="field" id="stPlace" value="'+esc(x?x.place||'':'')+'" placeholder="e.g. Attic, left shelf"><label class="flabel">Quantity</label><input class="field" id="stQty" value="'+esc(x?x.qty||'':'')+'" placeholder="e.g. 2 sets"><div class="row" style="margin-top:16px"><button class="btn" onclick="saveStorage(\''+(x?x.id:'')+'\')">Save</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');
+}
+function saveStorage(id){
+  var it=$('stItem').value.trim();if(!it){toast('Item is needed.');return;}
+  if(!S.storage)S.storage=[];
+  if(id){var x=S.storage.filter(function(d){return d.id===id;})[0];if(x){x.item=it;x.box=$('stBox').value.trim();x.place=$('stPlace').value.trim();x.qty=$('stQty').value.trim();}}
+  else{S.storage.push({id:uid(),item:it,box:$('stBox').value.trim(),place:$('stPlace').value.trim(),qty:$('stQty').value.trim()});}
+  save();closeModal();renderAll();toast('Storage item saved.');
+}
+function deleteStorage(id){askDelete('this storage item',function(){S.storage=(S.storage||[]).filter(function(d){return d.id!==id;});save();renderAll();});}
+function renderTravel(){
+  var tl=S.trips||[];var el=$('tripList');if(!el)return;
+  el.innerHTML=tl.length?tl.slice().sort(function(a,b){return (a.depart||'')<(b.depart||'')?-1:1;}).map(function(x){var nd=x.depart?daysUntil(x.depart):null;var when=nd==null?'':nd===0?' \u00B7 leaves today!':nd===1?' \u00B7 leaves tomorrow':nd>0?' \u00B7 in '+nd+' days':' \u00B7 done';return '<div class="card" style="margin:8px 0"><b>🧳 '+esc(x.dest)+'</b> <span class="live">'+esc(x.depart||'')+(x.ret?' \u2192 '+esc(x.ret):'')+when+'</span>'+(x.transport?'<div class="live">🚗 '+esc(x.transport)+'</div>':'')+(x.stay?'<div class="live">🛏️ '+esc(x.stay)+'</div>':'')+(x.notes?'<div class="live">'+esc(x.notes)+'</div>':'')+'<div class="row" style="margin-top:8px"><button class="btn small ghost" onclick="openTripModal(\''+x.id+'\')">Edit</button><button class="btn small danger" onclick="deleteTrip(\''+x.id+'\')">Delete</button></div></div>';}).join(''):'<p class="sub">No trips yet. Add the first one above.</p>';
+  var pl=S.packing||[];
+  var catCounts=countsFor(pl,function(x){return x.cat;});
+  var doneCounts=countsFor(pl,function(x){return x.packed?'Packed':'Not packed';});
+  var filtered=pl.filter(function(x){return (!F.packCat||x.cat===F.packCat)&&(!F.packDone||(x.packed?'Packed':'Not packed')===F.packDone);});
+  var fr=$('packFilterRow');
+  if(fr)fr.innerHTML='<div class="row"><select id="fPackCat" onchange="setF(\'packCat\',this.value)">'+filterOpts(catCounts,PACKCATS,'All categories',F.packCat)+'</select><select id="fPackDone" onchange="setF(\'packDone\',this.value)">'+filterOpts(doneCounts,['Not packed','Packed'],'All items',F.packDone)+'</select>'+((F.packCat||F.packDone)?'<button class="btn small ghost" onclick="clearF2(\'packCat\',\'packDone\')">\u2715 Clear</button><span class="live">Showing '+filtered.length+' of '+pl.length+' items</span>':'')+'</div>';
+  var pe=$('packList');if(!pe)return;
+  pe.innerHTML=filtered.length?filtered.map(function(x){return '<div class="row" style="margin:6px 0"><label class="checkline" style="flex:1"><input type="checkbox" '+(x.packed?'checked':'')+' onchange="togglePack(\''+x.id+'\')"> <span style="'+(x.packed?'text-decoration:line-through;opacity:.6':'')+'">'+esc(x.item)+' <small>('+esc(x.cat)+')</small></span></label><button class="btn small danger" onclick="deletePack(\''+x.id+'\')">Delete</button></div>';}).join(''):(pl.length?'<p class="sub">No items match this filter \u2014 tap All to see everything.</p>':'<p class="sub">Packing list is empty. Add what must travel with you.</p>');
+}
+function openTripModal(id){
+  var x=id?(S.trips||[]).filter(function(d){return d.id===id;})[0]:null;
+  openModal('🧳',x?'Edit trip':'Add trip','<label class="flabel">Going to</label><input class="field" id="trDest" value="'+esc(x?x.dest:'')+'" placeholder="e.g. Grandma\'s house"><label class="flabel">Leaving on</label><input class="field" type="date" id="trFrom" value="'+esc(x?x.depart||'':'')+'"><label class="flabel">Coming back</label><input class="field" type="date" id="trTo" value="'+esc(x?x.ret||'':'')+'"><label class="flabel">How are you travelling?</label><input class="field" id="trHow" value="'+esc(x?x.transport||'':'')+'" placeholder="e.g. By car, train, flight BA249"><label class="flabel">Staying at</label><input class="field" id="trStay" value="'+esc(x?x.stay||'':'')+'" placeholder="e.g. Spare room, Hotel name"><label class="flabel">Notes</label><input class="field" id="trNotes" value="'+esc(x?x.notes||'':'')+'"><div class="row" style="margin-top:16px"><button class="btn" onclick="saveTrip(\''+(x?x.id:'')+'\')">Save trip</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');
+}
+function saveTrip(id){
+  var d=$('trDest').value.trim();if(!d){toast('Destination is needed.');return;}
+  if(!S.trips)S.trips=[];
+  if(id){var x=S.trips.filter(function(t){return t.id===id;})[0];if(x){x.dest=d;x.depart=$('trFrom').value;x.ret=$('trTo').value;x.transport=$('trHow').value.trim();x.stay=$('trStay').value.trim();x.notes=$('trNotes').value.trim();}}
+  else{S.trips.push({id:uid(),dest:d,depart:$('trFrom').value,ret:$('trTo').value,transport:$('trHow').value.trim(),stay:$('trStay').value.trim(),notes:$('trNotes').value.trim()});}
+  save();closeModal();renderAll();toast('Trip saved.');
+}
+function deleteTrip(id){askDelete('this trip',function(){S.trips=(S.trips||[]).filter(function(t){return t.id!==id;});save();renderAll();});}
+function openPackModal(){
+  openModal('🎒','Add packing item','<label class="flabel">Item</label><input class="field" id="pkItem" placeholder="e.g. Gifts for the kids"><label class="flabel">Category</label><select class="field" id="pkCat">'+PACKCATS.map(function(c){return '<option>'+c+'</option>';}).join('')+'</select><div class="row" style="margin-top:16px"><button class="btn" onclick="savePack()">Save</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>');
+}
+function savePack(){var it=$('pkItem').value.trim();if(!it){toast('Item is needed.');return;}if(!S.packing)S.packing=[];S.packing.push({id:uid(),item:it,cat:$('pkCat').value,packed:false});save();closeModal();renderAll();toast('Packing item added.');}
+function togglePack(id){var x=(S.packing||[]).filter(function(p){return p.id===id;})[0];if(x)x.packed=!x.packed;save();renderAll();}
+function deletePack(id){askDelete('this packing item',function(){S.packing=(S.packing||[]).filter(function(p){return p.id!==id;});save();renderAll();});}
+function renderBackupNudge(){var el=$('backupNudge');if(!el)return;var lb=S.settings&&S.settings.lastBackup;if(!lb){el.textContent='Backup nudge: you have never exported a backup. Export now — your data lives only in this browser.';return;}var dd=Math.floor((Date.now()-new Date(lb).getTime())/86400000);el.textContent=dd>30?('Backup nudge: more than 30 days since your last backup ('+dd+' days). Export now.'):('Backup is recent — last exported '+dd+(dd===1?' day':' days')+' ago.');}
+</script>
+</body>
+</html>
