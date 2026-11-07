@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Study Planner — FREE DEMO</title>
+<style>
+:root{
+  --bg:#f4f3ff; --card:#ffffff; --ink:#1e1b4b; --muted:#6b7280; --line:#e5e7eb;
+  --pri:#6d28d9; --pri2:#ec4899; --ok:#16a34a; --warn:#d97706; --bad:#dc2626;
+  --radius:16px; --shadow:0 4px 18px rgba(109,40,217,.10);
+}
+body.dark{ --bg:#14112b; --card:#1f1b45; --ink:#f1f0ff; --muted:#a5a3c7; --line:#322d63; --shadow:0 4px 18px rgba(0,0,0,.35); }
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+header{background:linear-gradient(120deg,var(--pri),var(--pri2));color:#fff;padding:22px 20px 18px}
+header h1{margin:0;font-size:24px} header p{margin:4px 0 0;opacity:.9}
+.avatar{width:68px;height:68px;border-radius:50%;background:#fff;color:var(--pri);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;flex-shrink:0;overflow:hidden}
+.avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.wrap{max-width:1080px;margin:0 auto;padding:0 14px 40px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+nav button{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 13px;border-radius:999px;cursor:pointer;font-size:16px;font-weight:600;transition:.15s}
+nav button:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+nav button.active{background:var(--pri);color:#fff;border-color:var(--pri)}
+nav button.back{background:var(--pri);color:#fff;border-color:var(--pri);font-size:14px}
+.modebtn{border:1px solid rgba(255,255,255,.6);background:transparent;color:#fff;padding:10px 18px;border-radius:999px;cursor:pointer;font-weight:800;font-size:15px}
+.modebtn.active{background:#fff;color:var(--pri)}
+section{display:none} section.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.card h2,.card h3{margin:0 0 10px} .muted{color:var(--muted);font-size:14px}
+.bignum{font-size:32px;font-weight:800}
+.bar{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pri),var(--pri2));border-radius:99px}
+input,select,textarea{width:100%;padding:9px 11px;margin:5px 0 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:14px;font-family:inherit}
+textarea{min-height:90px;resize:vertical}
+.btn{background:var(--pri);color:#fff;border:0;padding:10px 16px;border-radius:10px;cursor:pointer;font-weight:700;font-size:14px}
+.btn:hover{opacity:.9} .btn.ghost{background:transparent;color:var(--pri);border:1px solid var(--pri)}
+.btn.small{padding:6px 10px;font-size:13px} .btn.danger{background:var(--bad)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.item{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0;display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.item.done{opacity:.6} .item.done .t{text-decoration:line-through}
+.tag{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700;color:#fff}
+.pill-high{background:var(--bad)} .pill-med{background:var(--warn)} .pill-low{background:var(--ok)}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block;vertical-align:middle}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+th{background:rgba(109,40,217,.08)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal div{border:1px solid var(--line);border-radius:10px;min-height:64px;padding:6px;font-size:13px;background:var(--card)}
+.cal .head{font-weight:800;text-align:center;min-height:0;background:rgba(109,40,217,.10)}
+.cal .today{outline:2px solid var(--pri)}
+.flash{perspective:600px;cursor:pointer}
+.flash .inner{transition:transform .4s;transform-style:preserve-3d;position:relative;min-height:130px}
+.flash.flip .inner{transform:rotateY(180deg)}
+.flash .face{position:absolute;inset:0;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;text-align:center;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--card);font-size:17px;font-weight:600}
+.flash .back{transform:rotateY(180deg);background:rgba(109,40,217,.10)}
+.timer{font-size:56px;font-weight:800;text-align:center;letter-spacing:2px}
+.sticky-note{border-radius:12px;padding:12px;min-height:110px;white-space:pre-wrap}
+.dashgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.dashcard{border:1px solid var(--line);border-top:6px solid #6d28d9;border-radius:var(--radius);padding:18px 10px;text-align:center;cursor:pointer;background:var(--card);box-shadow:var(--shadow);transition:.15s}
+.dashcard:hover{transform:translateY(-3px)}
+.dashcard .ic{font-size:30px} .dashcard .nm{font-weight:800;margin-top:6px;font-size:15px} .dashcard .sb{font-size:12px;color:var(--muted);margin-top:2px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal .box{background:var(--card);border-radius:18px;padding:22px;max-width:430px;width:100%;max-height:92vh;overflow:auto}
+.chart{display:flex;align-items:flex-end;gap:8px;height:170px;margin-top:12px}
+.chart .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;justify-content:flex-end;height:100%}
+.chart .bar2{width:100%;max-width:46px;border-radius:8px 8px 0 0;background:linear-gradient(180deg,var(--pri2),var(--pri));min-height:4px}
+.donut{width:150px;height:150px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.donut-center{background:var(--card);width:96px;height:96px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.chart .lbl{font-size:12px;color:var(--muted)} .chart .val{font-size:12px;font-weight:700}
+.swatch{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer}
+.colorpanel{background:rgba(255,255,255,.18);border-radius:14px;padding:12px;margin-top:12px}
+.colorpanel .swatch{border-color:rgba(255,255,255,.7)}
+/* Hover feedback — every clickable thing reacts */
+.btn,.item,.dashcard,.sticky-note,.swatch,.cal div,.modebtn,nav button,.flash{transition:transform .15s,box-shadow .15s,background .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(109,40,217,.22)}
+.dashcard:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(109,40,217,.18)}
+.item:hover{background:rgba(109,40,217,.05)}
+.sticky-note:hover{transform:translateY(-2px) rotate(-.5deg);box-shadow:0 8px 18px rgba(0,0,0,.15)}
+.swatch:hover{transform:scale(1.15)}
+.modebtn:hover{filter:brightness(1.1)}
+.cal div:hover{background:rgba(109,40,217,.08)}
+.flash:hover{transform:translateY(-2px)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(109,40,217,.15)}
+/* Stylish hover system (v1.4) */
+.btn{position:relative;overflow:hidden;background:linear-gradient(120deg,var(--pri),var(--pri2))}
+.btn::after{content:'';position:absolute;top:0;left:-90%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);transition:left .55s;pointer-events:none}
+.btn:hover::after{left:140%}
+.btn:hover{filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 8px 20px rgba(109,40,217,.28)}
+.btn:active,.dashcard:active{transform:scale(.97)}
+.dashcard{--ac:#6d28d9}
+.dashcard:hover{transform:translateY(-6px);box-shadow:0 14px 30px rgba(109,40,217,.18);box-shadow:0 14px 30px color-mix(in srgb,var(--ac) 38%,transparent)}
+.dashcard .ic{transition:transform .25s;display:inline-block}
+.dashcard:hover .ic{transform:scale(1.25) rotate(-6deg)}
+nav button:hover{background:linear-gradient(120deg,var(--pri),var(--pri2));color:#fff;border-color:transparent}
+.item{position:relative;overflow:hidden}
+.item::before{content:'';position:absolute;left:0;top:12%;height:76%;width:0;background:var(--pri);border-radius:0 4px 4px 0;transition:width .2s}
+.item:hover::before{width:4px}
+.item:hover{background:rgba(109,40,217,.06)}
+.sticky-note{transform:rotate(-1deg)}
+.sticky-note:nth-child(even){transform:rotate(1deg)}
+.sticky-note:hover{transform:rotate(0deg) translateY(-4px);box-shadow:0 12px 22px rgba(0,0,0,.18)}
+.modebtn:hover{filter:brightness(1.15);box-shadow:0 0 0 3px rgba(255,255,255,.35)}
+input:hover,select:hover,textarea:hover{border-color:var(--pri)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.dashgrid.anim .dashcard{animation:rise .45s ease backwards}
+.dashgrid.anim .dashcard:nth-child(3n+2){animation-delay:.06s}
+.dashgrid.anim .dashcard:nth-child(3n+3){animation-delay:.12s}
+.hm{width:100%;aspect-ratio:1;border-radius:3px}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+@media print{ nav,header .row, .noprint{display:none!important} section{display:none!important} section.active{display:block!important} body{background:#fff} }
+@media(max-width:800px){ .dashgrid{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:640px){ header h1{font-size:21px} .timer{font-size:42px} }
+</style>
+</head>
+<body><div style="background:#b71c2e;color:#fff;text-align:center;padding:10px 14px;font-size:15px;font-weight:700;position:relative;z-index:99">🎁 FREE DEMO — This trial is filled with sample subjects, plans and budget entries so you can try every feature. Nothing you type here is saved: close or refresh and it resets. The full planner (which saves your own data) is available in our Etsy shop. <a href="https://www.etsy.com/listing/4611778963/student-planner-interactive-academic" target="_blank" rel="noopener" style="display:inline-block;background:#c9a227;color:#12233f;font-weight:800;padding:4px 14px;border-radius:999px;text-decoration:none;margin-left:8px">Get the Full Version on Etsy</a></div>
+<header>
+  <div class="wrap" style="padding-bottom:0">
+    <div class="row">
+      <div style="flex:1;min-width:200px">
+        <h1 id="greetLine">📚 My Study Planner</h1>
+        <p id="subLine">Your whole semester in one place — no app, no account, works offline.</p>
+      </div>
+      <button class="btn small noprint" onclick="toggleColorPanel()" style="background:#fff;color:var(--pri)">🎨 Colour</button>
+      <button class="btn small noprint" onclick="toggleTheme()" style="background:#fff;color:var(--pri)">🌙 / ☀️ Theme</button>
+      <div class="avatar" id="avatarCircle" title="My profile &amp; settings" onclick="showTab('settings')" style="cursor:pointer">📚</div>
+    </div>
+    <div class="row noprint" style="margin-top:12px">
+      <button class="btn small" onclick="exportData()" style="background:#fff;color:var(--pri)">⬇️ Export backup</button>
+      <label class="btn small" style="background:#fff;color:var(--pri);cursor:pointer">⬆️ Import backup <input type="file" accept=".json" onchange="importData(event)" hidden></label>
+      <button class="btn small noprint" onclick="window.print()" style="background:#fff;color:var(--pri)">🖨️ Print</button>
+    </div>
+    <div class="colorpanel noprint" id="colorPanel" style="display:none">
+      <label class="row" style="cursor:pointer;color:#fff"><input type="checkbox" id="cmColorful2" onchange="setColorful(this.checked)" style="width:auto;margin:0"> Colourful mode (many colours)</label>
+      <div id="cmSingle2" class="row" style="margin-top:8px">
+        <span style="color:#fff">Pick one colour:</span>
+        <button class="swatch" style="background:#2563eb" onclick="setSingleColor('#2563eb')"></button>
+        <button class="swatch" style="background:#16a34a" onclick="setSingleColor('#16a34a')"></button>
+        <button class="swatch" style="background:#db2777" onclick="setSingleColor('#db2777')"></button>
+        <button class="swatch" style="background:#ea580c" onclick="setSingleColor('#ea580c')"></button>
+        <button class="swatch" style="background:#7c3aed" onclick="setSingleColor('#7c3aed')"></button>
+        <button class="swatch" style="background:#0891b2" onclick="setSingleColor('#0891b2')"></button>
+        <input type="color" id="cmCustom2" onchange="setSingleColor(this.value)" style="width:44px;height:38px;padding:2px">
+      </div>
+    </div>
+  </div>
+</header>
+<div class="wrap">
+<div class="row noprint" style="margin:16px 0 0"><input id="globalSearch" placeholder="🔍 Search assignments, notes, exams, subjects, budget..." oninput="renderSearch(this.value)" style="margin:0"></div>
+<div id="searchResults" class="card noprint" style="display:none;margin-top:10px"></div>
+<div class="row noprint" id="modeBar" style="margin:16px 0">
+  <button class="modebtn active" id="modeBtnStudy" onclick="switchMode('study')">📚 Study Planner</button>
+  <button class="modebtn" id="modeBtnBudget" onclick="switchMode('budget')">💰 Budget Tracker</button>
+</div>
+<nav class="noprint" id="tabs" style="display:none"></nav>
+
+<!-- STUDY HOME (no nav line here) -->
+<section id="tab-dashboard" class="active">
+  <div class="card" id="todayStrip"></div>
+  <div class="grid" style="margin-top:14px">
+    <div class="card"><h3>⚡ Next up — do this first</h3><div id="dashNext"></div></div>
+    <div class="card"><h3>⏰ Due this week</h3><div id="dashDue"></div></div>
+    <div class="card"><h3>🎯 Semester goals</h3><div id="dashGoals"></div></div>
+  </div>
+  <div class="card" id="focusCard" style="margin-top:14px"></div>
+  <div class="dashgrid" id="dashGrid" style="margin-top:14px"></div>
+</section>
+
+<!-- BUDGET HOME (no nav line here) -->
+<section id="tab-budget-home">
+  <div class="card" id="budgetStrip"></div>
+  <div class="dashgrid" id="budgetGrid" style="margin-top:14px"></div>
+</section>
+
+<!-- TODAY -->
+<section id="tab-today">
+  <div class="card"><h2>📍 Today</h2><div id="todayBox"></div></div>
+</section>
+
+<!-- SUBJECTS -->
+<section id="tab-subjects">
+  <div class="card"><h2>📚 Subjects</h2>
+    <p class="muted">Everything in your planner hangs off subjects — add yours first. Daily minutes are optional: they build your daily study plan.</p>
+    <div class="row">
+      <input id="suName" placeholder="Subject name, e.g. Mathematics" style="flex:2;min-width:160px">
+      <select id="suColor" style="max-width:150px"><option value="#2563eb">Blue</option><option value="#16a34a">Green</option><option value="#db2777">Pink</option><option value="#ea580c">Orange</option><option value="#7c3aed">Purple</option><option value="#0891b2">Teal</option></select>
+      <input id="suMin" type="number" placeholder="Daily min (optional)" style="max-width:160px">
+      <button class="btn" onclick="addSubjectTab()">+ Add subject</button>
+    </div>
+    <div id="suList"></div>
+  </div>
+</section>
+
+<!-- TIMETABLE -->
+<section id="tab-timetable">
+  <div class="card"><h2>🗓️ Weekly timetable</h2>
+    <div class="row">
+      <select id="ttDay"><option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option><option>Fri</option><option>Sat</option><option>Sun</option></select>
+      <input id="ttStart" type="time" value="09:00" style="max-width:130px">
+      <input id="ttEnd" type="time" value="10:00" style="max-width:130px">
+      <select id="ttSubj"></select>
+      <input id="ttRoom" placeholder="Room (optional)" style="max-width:180px">
+      <button class="btn" onclick="addClass()">+ Add class</button>
+    </div>
+    <div style="overflow-x:auto"><table><thead><tr><th>Day</th><th>Time</th><th>Subject</th><th>Room</th><th></th></tr></thead><tbody id="ttBody"></tbody></table></div>
+  </div>
+</section>
+
+<!-- ASSIGNMENTS -->
+<section id="tab-assignments">
+  <div class="card"><h2>📝 Assignments</h2>
+    <div class="row">
+      <input id="asTitle" placeholder="Assignment title" style="flex:2;min-width:180px">
+      <select id="asSubj" style="max-width:180px"></select>
+      <input id="asDue" type="date" style="max-width:170px">
+      <select id="asPrio" style="max-width:130px"><option>High</option><option>Medium</option><option>Low</option></select>
+      <button class="btn" onclick="addAssignment()">+ Add</button>
+    </div>
+    <div class="row"><label class="muted">Filter:</label>
+      <select id="asFilter" onchange="renderAll()" style="max-width:200px"><option value="all">All</option><option value="open">Open only</option><option value="done">Done only</option></select>
+    </div>
+    <div id="asList"></div>
+  </div>
+</section>
+
+<!-- EXAMS -->
+<section id="tab-exams">
+  <div class="card"><h2>⏳ Exams &amp; countdown</h2>
+    <div class="row">
+      <input id="exTitle" placeholder="Exam name" style="flex:2;min-width:180px">
+      <select id="exSubj" style="max-width:180px"></select>
+      <input id="exDate" type="date" style="max-width:170px">
+      <button class="btn" onclick="addExam()">+ Add exam</button>
+    </div>
+    <div id="exList"></div>
+  </div>
+</section>
+
+<!-- GRADES -->
+<section id="tab-grades">
+  <div class="grid">
+    <div class="card"><h2>🎓 Grades &amp; GPA</h2><div id="gpaBox"></div><div id="grList"></div>
+      <div class="row">
+        <input id="grTitle" placeholder="Test / coursework name" style="flex:2;min-width:160px">
+        <select id="grSubj" style="max-width:160px"></select>
+        <input id="grScore" type="number" placeholder="Score" style="max-width:90px">
+        <input id="grTotal" type="number" placeholder="Out of" value="100" style="max-width:90px"> <input id="grCredits" type="number" placeholder="Credits" value="3" style="max-width:80px">
+        <button class="btn" onclick="addGrade()">+ Add</button>
+      </div>
+    </div>
+    <div class="card"><h3>🧮 What do I need on the final?</h3>
+      <label class="muted">Current grade %</label><input id="fcCur" type="number" value="75">
+      <label class="muted">Final exam weight %</label><input id="fcW" type="number" value="40">
+      <label class="muted">Desired final grade %</label><input id="fcWant" type="number" value="85">
+      <button class="btn" onclick="calcFinal()">Calculate</button>
+      <p id="fcOut" style="font-weight:700"></p>
+    </div>
+  </div>
+</section>
+
+<!-- NOTES -->
+<section id="tab-notes">
+  <div class="card"><h2>📓 Class notes</h2>
+    <div class="row">
+      <input id="ntTitle" placeholder="Note title" style="flex:2;min-width:180px">
+      <select id="ntSubj" style="max-width:180px"></select>
+    </div>
+    <textarea id="ntBody" placeholder="Write your notes here... Use lines, lists, anything."></textarea>
+    <button class="btn" onclick="addNote()">+ Save note</button>
+    <div id="ntList"></div>
+  </div>
+</section>
+
+<!-- FLASHCARDS -->
+<section id="tab-flashcards">
+  <div class="card"><h2>🃏 Flashcards</h2>
+    <div class="row">
+      <input id="fcQ" placeholder="Question" style="flex:1;min-width:160px">
+      <input id="fcA" placeholder="Answer" style="flex:1;min-width:160px">
+      <button class="btn" onclick="addCard()">+ Add card</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button class="btn ghost small" onclick="shuffleCards()">🔀 Shuffle</button>
+      <span class="muted" id="fcProgress"></span>
+    </div>
+    <div id="fcList" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:12px"></div>
+  </div>
+</section>
+
+<!-- FOCUS TIMER -->
+<section id="tab-focus">
+  <div class="card" style="text-align:center"><h2>⏱️ Focus timer (Pomodoro)</h2>
+    <div class="timer" id="tmDisplay">25:00</div>
+    <p class="muted" id="tmMode">Focus session — phone away, deep work.</p>
+    <p class="muted" id="tmRound" style="margin:4px 0 0"></p>
+    <p class="muted" id="tmTarget"></p>
+    <div class="row" style="justify-content:center">
+      <button class="btn" onclick="startTimer()">▶ Start</button>
+      <button class="btn ghost" onclick="pauseTimer()">⏸ Pause</button>
+      <button class="btn ghost" onclick="stopTimer()">⏹ Stop &amp; save time</button>
+      <button class="btn ghost" onclick="resetTimer()">↺ Reset</button>
+      <button class="btn" onclick="openFocusMode()">🎯 Focus Mode</button>
+    </div>
+    <p style="margin-top:14px">📊 Focus today: <b id="tmToday">0 min</b> &nbsp;|&nbsp; Total: <b id="tmTotal">0 min</b></p>
+    <div class="row" style="justify-content:center;margin-top:10px">
+      <label class="muted">Focus on:</label><select id="tmSubj" style="max-width:200px"></select>
+    </div>
+    <div class="row" style="justify-content:center">
+      <label class="muted">Focus length (min):</label><input id="tmFocusMin" type="number" value="25" onchange="saveTimerSettings()" style="max-width:80px">
+      <label class="muted">Break (min):</label><input id="tmBreakMin" type="number" value="5" onchange="saveTimerSettings()" style="max-width:80px">
+    </div>
+    <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+    <p style="margin:0"><b>Studied without the timer?</b></p>
+    <div class="row" style="justify-content:center">
+      <input id="tmManMin" type="number" placeholder="Minutes" style="max-width:110px">
+      <select id="tmManSubj" style="max-width:200px"></select>
+      <button class="btn" onclick="addManual()">+ Add manually</button>
+    </div>
+    <p class="muted">Tip: the timer now runs the full cycle itself — after 4 focus rounds it switches to a long 15-minute break automatically, then starts a fresh cycle. Pause only pauses — Stop saves the minutes you already did.</p>
+  </div>
+</section>
+
+<!-- HABITS & GOALS -->
+<section id="tab-habits">
+  <div class="card" id="achBox" style="margin-bottom:14px"></div>
+  <div class="grid">
+    <div class="card"><h2>🌱 Habits</h2>
+      <div class="row"><input id="hbName" placeholder="New habit, e.g. Read 20 pages" style="flex:2;min-width:160px"><button class="btn" onclick="addHabit()">+ Add</button></div>
+      <div id="hbList"></div>
+      <p class="muted">Tap “Done today” every day to build your streak.</p>
+    </div>
+    <div class="card"><h2>🎯 Semester goals</h2>
+      <div class="row"><input id="glTitle" placeholder="Goal, e.g. Finish all readings" style="flex:2;min-width:160px"><input id="glTarget" type="number" value="10" style="max-width:80px"><button class="btn" onclick="addGoal()">+ Add</button></div>
+      <div id="glList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CALENDAR -->
+<section id="tab-calendar">
+  <div class="card"><h2>📅 Monthly calendar</h2>
+    <div class="row"><button class="btn ghost small" onclick="calMove(-1)">← Prev</button><b id="calTitle"></b><button class="btn ghost small" onclick="calMove(1)">Next →</button> <button class="btn small ghost" onclick="exportICS()">📅 Export .ics</button></div>
+    <div class="cal" id="calGrid" style="margin-top:12px"></div>
+    <div id="calDay" style="margin-top:12px"></div>
+  </div>
+</section>
+
+<!-- STICKY NOTES -->
+<section id="tab-sticky">
+  <div class="card"><h2>📌 Sticky notes board</h2>
+    <div class="row"><input id="stText" placeholder="Quick thought, reminder, idea..." style="flex:2;min-width:180px">
+      <select id="stColor" style="max-width:150px"><option value="#fef08a">Yellow</option><option value="#bbf7d0">Green</option><option value="#fecdd3">Pink</option><option value="#bfdbfe">Blue</option></select>
+      <button class="btn" onclick="addSticky()">+ Pin it</button></div>
+    <div id="stList" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px"></div>
+  </div>
+</section>
+
+<!-- REPORTS -->
+<section id="tab-reports">
+  <div class="card"><h2>📊 Weekly report — study minutes</h2>
+    <p class="muted" id="repWeekSum"></p>
+    <div class="chart" id="repWeekChart"></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h2>📅 Monthly report — study minutes</h2>
+    <p class="muted" id="repMonthSum"></p>
+    <div class="chart" id="repMonthChart"></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h2>📚 Per-subject report — this week</h2>
+    <p class="muted">Actual minutes vs your target for each subject.</p>
+    <div id="repSubject"></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h2>🔥 Focus heatmap — last 12 weeks</h2><div id="heatMap"></div></div>
+  <p class="muted">Tip: these charts come from your Focus timer — use the timer (or manual add) and your report builds itself.</p>
+</section>
+
+<!-- BUDGET: OVERVIEW -->
+<section id="tab-budget-overview">
+  <div class="card"><h2>💰 Budget overview — this month</h2><div id="bgOver"></div></div>
+  <div class="card" style="margin-top:14px"><h2>🗂️ Spending by category — this month</h2><div id="bgCatOver"></div></div>
+  <div class="card" style="margin-top:14px"><h2>🍩 Spending donut — this month</h2><div id="bgDonut"></div></div>
+  <div class="card" style="margin-top:14px"><h2>⚖️ My money now</h2><div id="bgNet"></div></div>
+</section>
+
+<!-- BUDGET: SALARY -->
+<section id="tab-budget-salary">
+  <div class="card"><h2>💼 Salary</h2>
+    <p class="muted">Set your fixed monthly salary once — it counts in every month's income automatically. No need to add it again each month. The "Received" tick is just a reminder, it does not change the totals.</p>
+    <div class="row"><input id="salName" placeholder="Salary title, e.g. Part-time job" style="flex:1;min-width:160px"><input id="salAmount" type="number" placeholder="Monthly amount" style="max-width:160px"><button class="btn" onclick="saveSalary()">Save salary</button></div>
+    <div id="salBox"></div>
+  </div>
+</section>
+
+<!-- BUDGET: FREELANCE -->
+<section id="tab-budget-freelance">
+  <div class="card"><h2>🎨 Freelance &amp; Business</h2>
+    <p class="muted">Profit = freelance income − business expenses. Business expenses are expenses with the "Business" category.</p>
+    <div id="bgFreeBox"></div>
+    <div class="row"><input id="frTitle" placeholder="Gig, e.g. Logo design — Client A" style="flex:2;min-width:180px"><input id="frAmount" type="number" placeholder="Amount" style="max-width:110px"><button class="btn" onclick="addFreelance()">+ Add gig income</button></div>
+    <div class="row"><input id="bcTitle" placeholder="Business cost, e.g. Design tool subscription" style="flex:2;min-width:180px"><input id="bcAmount" type="number" placeholder="Amount" style="max-width:110px"><button class="btn ghost" onclick="addBusinessCost()">+ Add business cost</button></div>
+    <div id="bgFreeList"></div>
+  </div>
+</section>
+
+<!-- BUDGET: EXPENSES -->
+<section id="tab-budget-expenses">
+  <div class="card"><h2>🛒 Expenses</h2>
+    <div class="row"><input id="ex2Title" placeholder="What did you spend on?" style="flex:2;min-width:160px"><input id="ex2Amount" type="number" placeholder="Amount" style="max-width:110px"><input id="ex2Cat" list="bgCats" placeholder="Category" style="max-width:150px"><select id="ex2Tag" style="max-width:130px"><option value="basic">Basic need</option><option value="luxury">Luxury</option></select><input id="ex2Date" type="date" style="max-width:160px"><button class="btn" onclick="addExpense2()">+ Add expense</button></div>
+    <div id="ex2Box"></div><div id="ex2List"></div>
+  </div>
+</section>
+
+<!-- BUDGET: LENT -->
+<section id="tab-budget-lent">
+  <div class="card"><h2>🤝 Lent — logon se lena hai</h2>
+    <p class="muted">Money you gave to someone. It is not an expense — it should come back.</p>
+    <div class="row"><input id="lnPerson" placeholder="Who did you lend to?" style="flex:1;min-width:150px"><input id="lnAmount" type="number" placeholder="Amount" style="max-width:110px"><input id="lnDate" type="date" style="max-width:160px"><button class="btn" onclick="addLent()">+ Add lent</button></div>
+    <div id="lnList"></div>
+  </div>
+</section>
+
+<!-- BUDGET: BORROWED -->
+<section id="tab-budget-borrowed">
+  <div class="card"><h2>📥 Borrowed — logon ko dena hai</h2>
+    <p class="muted">Money you took from someone. It is not income — you have to pay it back.</p>
+    <div class="row"><input id="brPerson" placeholder="Who did you borrow from?" style="flex:1;min-width:150px"><input id="brAmount" type="number" placeholder="Amount" style="max-width:110px"><input id="brDate" type="date" style="max-width:160px"><button class="btn" onclick="addBorrowed()">+ Add borrowed</button></div>
+    <div id="brList"></div>
+  </div>
+</section>
+
+<!-- BUDGET: SUBSCRIPTIONS -->
+<section id="tab-budget-subs">
+  <div class="card"><h2>📺 Subscriptions &amp; bills</h2>
+    <p class="muted">Monthly bills that repeat — streaming, internet, hostel fee. See your monthly total and what is due next.</p>
+    <div class="row"><input id="subTitle" placeholder="e.g. Netflix" style="flex:2;min-width:160px"><input id="subAmount" type="number" placeholder="Amount / month" style="max-width:130px"><input id="subDay" type="number" placeholder="Day (1-31)" style="max-width:100px"><input id="subCat" placeholder="Category" style="max-width:130px"><button class="btn" onclick="addSub()">+ Add</button></div>
+    <div id="subBox"></div><div id="subList"></div>
+  </div>
+</section>
+<section id="tab-budget-savings">
+ <div class="card"><h2>🐷 Savings goals</h2>
+ <p class="muted">Save up for the things you want — a laptop, a trip, new headphones. Add a goal, then add money to it whenever you can.</p>
+ <div class="row"><input id="savTitle" placeholder="e.g. New laptop" style="flex:2;min-width:160px"><input id="savTarget" type="number" placeholder="Target amount" style="max-width:140px"><button class="btn" onclick="addSavGoal()">+ Add goal</button></div>
+ <div id="savList"></div>
+ </div>
+</section>
+
+<!-- BUDGET: TRANSACTIONS -->
+<section id="tab-budget-transactions">
+  <div class="card"><h2>🧾 Transactions</h2>
+    <div class="row">
+      <input id="bgTitle" placeholder="Title, e.g. Groceries" style="flex:2;min-width:160px">
+      <input id="bgAmount" type="number" placeholder="Amount" style="max-width:110px">
+      <select id="bgType" onchange="bgTypeChanged()" style="max-width:130px"><option value="expense">Expense</option><option value="income">Income</option><option value="lent">Lent</option><option value="borrowed">Borrowed</option></select>
+      <input id="bgCat" list="bgCats" placeholder="Category" style="max-width:150px">
+      <datalist id="bgCats"><option>Food</option><option>Books</option><option>Transport</option><option>Business</option><option>Pocket money</option><option>Entertainment</option><option>Fees</option><option>Other</option></datalist>
+      <input id="bgDate" type="date" style="max-width:160px">
+    </div>
+    <div class="row" id="bgSourceRow" style="display:none"><label class="muted">Income source:</label><select id="bgSource" style="max-width:200px"><option>Salary</option><option>Freelance</option><option>Pocket money</option><option>Family</option><option>Scholarship</option><option>Other</option></select></div>
+    <div class="row" id="bgTagRow"><label class="muted">Kind:</label><select id="bgTag" style="max-width:160px"><option value="basic">Basic need</option><option value="luxury">Luxury</option></select></div>
+    <div class="row" id="bgPersonRow" style="display:none"><label class="muted">Person:</label><input id="bgPerson" placeholder="Who?" style="max-width:220px"></div>
+    <button class="btn" onclick="addBudget()">+ Add</button>
+    <div class="row" style="margin-top:10px"><label class="muted">Filter:</label>
+      <select id="bgFilter" onchange="renderAll()" style="max-width:180px"><option value="all">All</option><option value="income">Income</option><option value="expense">Expenses</option><option value="lent">Lent</option><option value="borrowed">Borrowed</option></select>
+    </div>
+    <div id="bgList"></div>
+  </div>
+</section>
+
+<!-- BUDGET: CATEGORIES -->
+<section id="tab-budget-categories">
+  <div class="card"><h2>🗂️ Categories — this month</h2><p class="muted">Where your money went, by category — plus where your income came from.</p><div id="bgCatList"></div></div>
+</section>
+
+<!-- BUDGET: REPORTS -->
+<section id="tab-budget-reports">
+  <div class="card"><h2>📊 Weekly report — money</h2><div id="bgWeekRep"></div></div>
+  <div class="card" style="margin-top:14px"><h2>📅 Monthly report</h2><div id="bgMonthRep"></div></div>
+  <div class="card" style="margin-top:14px"><h2>🕘 Month history</h2><div id="bgHist"></div></div>
+</section>
+
+<!-- SETTINGS -->
+<section id="tab-settings">
+  <div class="card"><h2>⚙️ Settings &amp; data</h2>
+    <div id="backupNudge" style="display:none;background:rgba(217,119,6,.12);border:1px solid var(--warn);border-radius:10px;padding:10px;margin-bottom:12px"></div>
+    <h3>👤 My profile</h3>
+    <div class="row"><input id="pfName" placeholder="Your name" style="flex:1;min-width:150px"><input id="pfInst" placeholder="Institute name" style="flex:1;min-width:150px"></div>
+    <div class="row"><input id="pfProg" placeholder="Class / Program" style="flex:1;min-width:150px"><input id="pfGoal" type="number" placeholder="Daily goal (minutes)" style="max-width:180px"></div>
+    <button class="btn" onclick="saveProfile()">Save profile</button>
+    <div class="row" style="margin-top:10px"><label class="btn small ghost" style="cursor:pointer">📷 Upload my photo <input type="file" accept="image/*" onchange="pfUpload(this)" hidden></label><button class="btn small ghost" onclick="removePfPhoto()">Remove my photo</button><span class="muted">Shows in the header circle instead of your initial. Saved at once, stored only on this device.</span></div>
+    <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+    <h3>💱 Currency</h3>
+    <p class="muted">Pick the symbol shown next to money in the Budget tracker. Symbol only — amounts are not converted.</p>
+    <select id="curSelect" onchange="setCurrency(this.value)"><option value="$">US Dollar ($)</option><option value="€">Euro (€)</option><option value="£">British Pound (£)</option></select>
+    <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+    <h3>🎨 Planner colour</h3>
+    <label class="row" style="cursor:pointer"><input type="checkbox" id="cmColorful" onchange="setColorful(this.checked)" style="width:auto;margin:0"> Colourful mode (many colours)</label>
+    <div id="cmSingle" class="row" style="margin-top:8px">
+      <span class="muted">Pick one colour for the whole planner:</span>
+      <button class="swatch" style="background:#2563eb" onclick="setSingleColor('#2563eb')"></button>
+      <button class="swatch" style="background:#16a34a" onclick="setSingleColor('#16a34a')"></button>
+      <button class="swatch" style="background:#db2777" onclick="setSingleColor('#db2777')"></button>
+      <button class="swatch" style="background:#ea580c" onclick="setSingleColor('#ea580c')"></button>
+      <button class="swatch" style="background:#7c3aed" onclick="setSingleColor('#7c3aed')"></button>
+      <button class="swatch" style="background:#0891b2" onclick="setSingleColor('#0891b2')"></button>
+      <input type="color" id="cmCustom" onchange="setSingleColor(this.value)" style="width:44px;height:38px;padding:2px">
+    </div>
+    <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+    <h3>🖼️ Backgrounds</h3>
+    <p class="muted">Pick a preset, or upload your own photo — it is compressed and stored only on this device, behind the cards.</p>
+    <label class="muted">Study background</label>
+    <select id="bgStudyPreset" onchange="setBgPreset('study',this.value)"><option value="default">Default (plain)</option><option value="sunset">Sunset</option><option value="ocean">Ocean</option><option value="forest">Forest</option><option value="rose">Rose</option><option value="midnight">Midnight</option><option value="dots">Dots</option></select>
+    <div class="row"><label class="btn small ghost" style="cursor:pointer">📷 Upload my photo <input type="file" accept="image/*" onchange="bgUpload('study',this)" hidden></label><button class="btn small ghost" onclick="removeBgCustom('study')">Remove my photo</button></div>
+    <label class="muted">Budget background</label>
+    <select id="bgBudgetPreset" onchange="setBgPreset('budget',this.value)"><option value="default">Default (plain)</option><option value="sunset">Sunset</option><option value="ocean">Ocean</option><option value="forest">Forest</option><option value="rose">Rose</option><option value="midnight">Midnight</option><option value="dots">Dots</option></select>
+    <div class="row"><label class="btn small ghost" style="cursor:pointer">📷 Upload my photo <input type="file" accept="image/*" onchange="bgUpload('budget',this)" hidden></label><button class="btn small ghost" onclick="removeBgCustom('budget')">Remove my photo</button></div>
+    <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+    <h3>📚 Subjects</h3>
+    <p class="muted">Subjects live in their own tab now.</p>
+    <button class="btn" onclick="showTab('subjects')">📚 Manage subjects →</button>
+    <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+    <p>Your data saves automatically in this browser on this device. Use <b>Export backup</b> before clearing browser data or switching devices, then <b>Import backup</b> on the new device.</p>
+    <div class="row">
+      <button class="btn ghost" onclick="clearSample()">Clear sample data</button>
+      <button class="btn danger" onclick="resetAll()">Delete ALL my data</button>
+    </div>
+    <p class="muted">Study Planner v1.7</p> <p class="muted" style="margin-top:16px">Personal use only. Made for students — plan well, stress less. 💜</p>
+  </div>
+</section>
+
+<p class="muted" style="text-align:center;margin-top:24px">Tip: bookmark this file or Add to Home Screen — it opens like an app, even offline.</p>
+</div>
+
+<!-- ONBOARDING STEP 1 (first open only) -->
+<div class="modal" id="onbModal" style="display:none"><div class="box">
+  <h2 style="margin-top:0">👋 Welcome to your planner!</h2>
+  <p class="muted">30 seconds — tell us a little about you. You can skip and fill this in later from Settings.</p>
+  <label class="muted">Your name</label><input id="obName" placeholder="e.g. Ahmed">
+  <label class="muted">Institute name</label><input id="obInst" placeholder="e.g. ABC University">
+  <label class="muted">Class / Program</label><input id="obProg" placeholder="e.g. BS Computer Science – Semester 3">
+  <label class="muted">Daily study goal (minutes)</label><input id="obGoal" type="number" value="120">
+  <div class="row"><button class="btn" onclick="saveOnb()">Next →</button><button class="btn ghost" onclick="skipOnb()">Skip for now</button></div>
+</div></div>
+
+<!-- ONBOARDING STEP 2 (optional subjects) -->
+<div class="modal" id="onbModal2" style="display:none"><div class="box">
+  <h2 style="margin-top:0">📚 Add your subjects (optional)</h2>
+  <p class="muted">Subjects power everything — timetable, assignments, grades and your daily plan. Add a few now, or skip and add them later from the Subjects tab.</p>
+  <div class="row"><input id="ob2Name" placeholder="Subject name" style="flex:2;min-width:140px"><input id="ob2Min" type="number" placeholder="Daily min (optional)" style="max-width:130px"><button class="btn" onclick="addSubjectStep2()">+ Add</button></div>
+  <div id="ob2List" class="muted"></div>
+  <div class="row" style="margin-top:10px"><button class="btn" onclick="finishOnb2()">Done →</button><button class="btn ghost" onclick="finishOnb2()">Skip</button></div>
+</div></div>
+
+<!-- FOCUS MODE (fullscreen) -->
+<div class="modal" id="fmModal" style="display:none"><div class="box" style="max-width:560px;text-align:center">
+  <h2 style="margin-top:0">🎯 Focus Mode</h2>
+  <div class="timer" id="fmDisplay">25:00</div>
+  <p class="muted" id="fmMode">Focus session — phone away, deep work.</p>
+  <p class="muted" id="fmRound" style="margin:4px 0 0"></p>
+  <p class="muted" id="fmPlan"></p>
+  <div class="row" style="justify-content:center">
+    <button class="btn" onclick="startTimer()">▶ Start</button>
+    <button class="btn ghost" onclick="pauseTimer()">⏸ Pause</button>
+    <button class="btn ghost" onclick="stopTimer()">⏹ Stop &amp; save time</button>
+    <button class="btn ghost" onclick="closeFocusMode()">✕ Exit Focus Mode</button>
+  </div>
+</div></div>
+
+<script>
+const KEY='studyPlannerV1';
+const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const STUDY_TABS=[['today','📍','Today'],['subjects','📚','Subjects'],['timetable','🗓️','Timetable'],['assignments','📝','Assignments'],['exams','⏳','Exams'],['grades','🎓','Grades'],['notes','📓','Notes'],['flashcards','🃏','Flashcards'],['focus','⏱️','Focus'],['habits','🌱','Habits & Goals'],['calendar','📅','Calendar'],['sticky','📌','Sticky notes'],['reports','📊','Reports'],['settings','⚙️','Settings']];
+const BUDGET_TABS=[['budget-overview','💰','Budget overview'],['budget-salary','💼','Salary'],['budget-freelance','🎨','Freelance & Business'],['budget-expenses','🛒','Expenses'],['budget-lent','🤝','Lent'],['budget-borrowed','📥','Borrowed'],['budget-subs','📺','Subscriptions'],['budget-savings','🐷','Savings goals'],['budget-transactions','🧾','Transactions'],['budget-categories','🗂️','Categories'],['budget-reports','📊','Reports']];
+const uid=()=> 'x'+Math.random().toString(36).slice(2,9);
+const todayStr=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+const fmtDate=s=>{if(!s)return '';const d=new Date(s+'T00:00:00');return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});};
+const daysLeft=s=>{const a=new Date(s+'T00:00:00'),b=new Date();b.setHours(0,0,0,0);return Math.round((a-b)/86400000);};
+const dateKey=d=> d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const monthKey=d=> d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+
+
+function blankData(){ const b=sampleData(); b.subjects=[]; b.timetable=[]; b.assignments=[]; b.exams=[]; b.grades=[]; b.notes=[]; b.decks=[{id:uid(),title:'General',cards:[]}]; b.habits=[]; b.goals=[]; b.sticky=[]; b.budget=[]; b.subs=[]; b.salaryLog=[]; b.savGoals=[]; b.focus={totalMin:0,byDay:{},bySubject:{}}; b.profile={name:'',institute:'',program:'',dailyGoal:120,onboarded:false}; return b; }
+function sampleData(){
+  const s1=uid(),s2=uid(),s3=uid(),s4=uid();
+  const d=(n)=>{const x=new Date();x.setDate(x.getDate()+n);return dateKey(x);};
+  return {subjects:[
+    {id:s1,name:'Mathematics',color:'#2563eb',min:60},{id:s2,name:'Biology',color:'#16a34a',min:45},
+    {id:s3,name:'English',color:'#db2777',min:30},{id:s4,name:'History',color:'#ea580c',min:0}],
+  timetable:[
+    {id:uid(),day:'Mon',start:'09:00',end:'10:00',subjectId:s1,room:'Room 12'},
+    {id:uid(),day:'Mon',start:'11:00',end:'12:00',subjectId:s2,room:'Lab 3'},
+    {id:uid(),day:'Wed',start:'10:00',end:'11:30',subjectId:s3,room:'Room 7'},
+    {id:uid(),day:'Fri',start:'09:00',end:'10:00',subjectId:s4,room:'Room 4'}],
+  assignments:[
+    {id:uid(),title:'Algebra problem set 5',subjectId:s1,due:d(2),priority:'High',status:'open',subtasks:[{text:'Questions 1-10',done:true},{text:'Questions 11-20',done:false}]},
+    {id:uid(),title:'Biology lab report',subjectId:s2,due:d(5),priority:'Medium',status:'open',subtasks:[]},
+    {id:uid(),title:'English essay draft',subjectId:s3,due:d(-1),priority:'High',status:'open',subtasks:[]},
+    {id:uid(),title:'History timeline notes',subjectId:s4,due:d(9),priority:'Low',status:'done',subtasks:[]}],
+  exams:[
+    {id:uid(),title:'Math midterm',subjectId:s1,date:d(12),checklist:[{text:'Revise chapters 1-4',done:true},{text:'Past paper 2024',done:false},{text:'Formula sheet',done:false}]},
+    {id:uid(),title:'Biology final',subjectId:s2,date:d(26),checklist:[{text:'Label diagrams',done:false}]}],
+  grades:[
+    {id:uid(),subjectId:s1,title:'Quiz 1',score:85,total:100},
+    {id:uid(),subjectId:s2,title:'Lab 1',score:92,total:100},
+    {id:uid(),subjectId:s3,title:'Essay 1',score:78,total:100}],
+  notes:[
+    {id:uid(),subjectId:s1,title:'Quadratic formulas',body:'x = (-b ± √(b²-4ac)) / 2a\nDiscriminant > 0 → two real roots.'},
+    {id:uid(),subjectId:s2,title:'Cell parts',body:'Mitochondria = powerhouse of the cell.\nNucleus holds DNA.'}],
+  decks:[{id:uid(),title:'General',cards:[
+    {q:'What is 12 × 8?',a:'96',known:false},{q:'Powerhouse of the cell?',a:'Mitochondria',known:false},{q:'Capital of France?',a:'Paris',known:true}]}],
+  habits:[{id:uid(),name:'Read 20 pages',days:{}} ,{id:uid(),name:'Revise flashcards',days:{}}],
+  goals:[{id:uid(),title:'Finish all readings',target:10,current:4},{id:uid(),title:'Past papers completed',target:6,current:2}],
+  sticky:[{id:uid(),text:'Library group study — Friday 4pm',color:'#fef08a'},{id:uid(),text:'Return library book by Monday!',color:'#fecdd3'}],
+  budget:[
+    {id:uid(),title:'Monthly allowance',amount:300,type:'income',source:'Pocket money',category:'Pocket money',date:d(-2)},
+    {id:uid(),title:'Logo design — Client A',amount:50,type:'income',source:'Freelance',category:'Freelance',date:d(-4)},
+    {id:uid(),title:'Groceries',amount:45,type:'expense',tag:'basic',category:'Food',date:d(-3)},
+    {id:uid(),title:'Course book',amount:30,type:'expense',tag:'basic',category:'Books',date:d(-1)},
+    {id:uid(),title:'Bus pass',amount:20,type:'expense',tag:'basic',category:'Transport',date:d(-5)},
+    {id:uid(),title:'Movie night',amount:15,type:'expense',tag:'luxury',category:'Entertainment',date:d(-2)},
+    {id:uid(),title:'Lent to Ahmed',amount:20,type:'lent',person:'Ahmed',status:'pending',category:'Lent',date:d(-6)},
+    {id:uid(),title:'Borrowed from Ali',amount:15,type:'borrowed',person:'Ali',status:'pending',category:'Borrowed',date:d(-7)}],
+  salary:{amount:0,name:'Salary'},
+  salaryLog:{},
+  focus:{totalMin:0,byDay:{},bySubject:{}},
+  profile:{name:'',institute:'',program:'',dailyGoal:120,onboarded:false},
+  colorMode:{colorful:true,single:'#2563eb'},
+  timer:{focus:25,break:5,longBreak:15}, currency:'$', pomRound:1,
+  mode:'study',
+  theme:'light',
+  subs:[{id:uid(),title:'Netflix',amount:15,day:15,category:'Entertainment'},{id:uid(),title:'Internet',amount:30,day:1,category:'Bills'}],
+  lastBackup:0,
+  themeSet:false,
+  bg:{study:{type:'preset',preset:'default'},budget:{type:'preset',preset:'default'}}};
+}
+let S;
+try{ S=sampleData(); }catch(e){ S=sampleData(); }
+if(!S.subjects) S=sampleData();
+if(!S.profile) S.profile={name:'',institute:'',program:'',dailyGoal:120,onboarded:false};
+if(!S.colorMode) S.colorMode={colorful:true,single:'#2563eb'};
+if(!S.focus) S.focus={totalMin:0,byDay:{},bySubject:{}};
+if(!S.focus.bySubject) S.focus.bySubject={};
+if(!S.decks) S.decks=[{id:uid(),title:'General',cards:[]}];
+if(!S.timer) S.timer={focus:25,break:5,longBreak:15}; if(!S.currency) S.currency='$'; if(!S.pomRound) S.pomRound=1; if(!S.savGoals) S.savGoals=[]; if(S.timer&&!S.timer.longBreak) S.timer.longBreak=15;
+if(!S.mode) S.mode='study';
+if(!S.budget) S.budget=[]; if(!S.salary) S.salary={amount:0,name:'Salary'}; if(!S.salaryLog) S.salaryLog={}; S.budget.forEach(b=>{ if(b.type==='income'&&!b.source) b.source='Other'; if(b.type==='expense'&&!b.tag) b.tag='basic'; if((b.type==='lent'||b.type==='borrowed')&&!b.status) b.status='pending'; }); if(!S.subs) S.subs=[]; if(!S.bg) S.bg={study:{type:'preset',preset:'default'},budget:{type:'preset',preset:'default'}}; if(S.themeSet==null) S.themeSet=false; S.grades.forEach(g=>{ if(!g.credits) g.credits=3; });
+if(!S.salary) S.salary={amount:0,name:'Salary'};
+if(!S.salaryLog) S.salaryLog={};
+S.budget.forEach(b=>{ if(b.type==='income'&&!b.source) b.source='Other'; if(b.type==='expense'&&!b.tag) b.tag='basic'; if((b.type==='lent'||b.type==='borrowed')&&!b.status) b.status='pending'; if((b.type==='lent'||b.type==='borrowed')&&!b.person) b.person=''; });
+if(!S.subs) S.subs=[];
+if(!S.bg) S.bg={study:{type:'preset',preset:'default'},budget:{type:'preset',preset:'default'}};
+if(S.themeSet==null) S.themeSet=false;
+if(S.lastBackup==null) S.lastBackup=0;
+S.grades.forEach(g=>{ if(!g.credits) g.credits=3; });
+S.subjects.forEach(s=>{ if(s.min==null) s.min=0; });
+function save(){}
+function subj(id){ return S.subjects.find(s=>s.id===id)||{name:'General',color:'#6b7280',min:0}; }
+function esc(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function dailyGoal(){ return S.profile.dailyGoal||120; }
+function focusToday(){ return S.focus.byDay[todayStr()]||0; }
+function weekdayToday(){ return DAYS[(new Date().getDay()+6)%7]; }
+
+/* ---------- Modes & nav: buttons on home, slim nav inside ---------- */
+function currentTabs(){ return S.mode==='budget' ? BUDGET_TABS : STUDY_TABS; }
+function homeId(){ return S.mode==='budget' ? 'tab-budget-home' : 'tab-dashboard'; }
+function buildNav(){
+  let html=`<button class="back" data-tab="__home" onclick="showHome()">← Home</button>`;
+  currentTabs().forEach(t=>{ html+=`<button data-tab="${t[0]}" title="${t[2]}" onclick="showTab('${t[0]}')">${t[1]}</button>`; });
+  document.getElementById('tabs').innerHTML=html;
+}
+function showHome(){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(homeId()).classList.add('active');
+  document.getElementById('tabs').style.display='none';
+  document.getElementById('modeBar').style.display='flex';
+  document.getElementById('modeBtnStudy').classList.toggle('active',S.mode==='study');
+  document.getElementById('modeBtnBudget').classList.toggle('active',S.mode==='budget');
+  renderAll();
+  applyBg();
+}
+function showTab(name){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById('tab-'+name);
+  if(!el) return showHome();
+  el.classList.add('active');
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));
+  document.getElementById('tabs').style.display='flex';
+  document.getElementById('modeBar').style.display='none';
+  renderAll();
+}
+function switchMode(m){ S.mode=m; save(); buildNav(); showHome(); }
+function subjectOptions(selId,keep){
+  document.querySelectorAll(selId).forEach(sel=>{
+    const cur=sel.value;
+    sel.innerHTML='<option value="">No specific subject</option>'+S.subjects.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+    if(keep&&cur) sel.value=cur;
+  });
+}
+function fillSubjectSelects(){
+  document.querySelectorAll('#ttSubj,#asSubj,#exSubj,#grSubj,#ntSubj').forEach(sel=>{
+    const cur=sel.value;
+    sel.innerHTML=S.subjects.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+    if(cur) sel.value=cur;
+  });
+  subjectOptions('#tmSubj,#tmManSubj',true);
+}
+
+/* ---------- Header & onboarding ---------- */
+function greeting(){
+  const h=new Date().getHours();
+  return h<12?'Good morning':h<18?'Good afternoon':'Good evening';
+}
+function renderHeader(){
+  const p=S.profile;
+  const av=document.getElementById('avatarCircle');
+  if(p.name){ document.getElementById('greetLine').textContent=greeting()+', '+p.name+' 👋'; } else { document.getElementById('greetLine').textContent='📚 My Study Planner'; }
+  if(p.photo){ av.innerHTML='<img src="'+p.photo+'" alt="Profile photo">'; }
+  else if(p.name){ av.textContent=p.name.trim()[0].toUpperCase(); }
+  else { av.textContent='📚'; }
+  const bits=[p.institute,p.program].filter(Boolean);
+  document.getElementById('subLine').textContent = bits.length? bits.join(' • ') : 'Your whole semester in one place — no app, no account, works offline.';
+}
+function maybeShowOnb(){ return;
+  document.getElementById('onbModal').style.display = (!S.profile.onboarded) ? 'flex' : 'none';
+  document.getElementById('onbModal2').style.display='none';
+}
+function saveOnb(){
+  S.profile={name:document.getElementById('obName').value.trim(),institute:document.getElementById('obInst').value.trim(),program:document.getElementById('obProg').value.trim(),dailyGoal:parseInt(document.getElementById('obGoal').value)||120,onboarded:true};
+  save();
+  document.getElementById('onbModal').style.display='none';
+  document.getElementById('onbModal2').style.display='flex';
+  renderOnb2List(); renderAll();
+}
+function skipOnb(){
+  S.profile={name:'',institute:'',program:'',dailyGoal:120,onboarded:true};
+  save(); maybeShowOnb(); renderAll();
+}
+function renderOnb2List(){
+  document.getElementById('ob2List').innerHTML = S.subjects.length? S.subjects.map(s=>`<div><span class="dot" style="background:${s.color}"></span> ${esc(s.name)}${s.min?` — ${s.min} min/day`:''}</div>`).join('') : 'No subjects yet.';
+}
+function addSubjectStep2(){
+  const name=document.getElementById('ob2Name').value.trim();
+  if(!name) return;
+  S.subjects.push({id:uid(),name,color:document.getElementById('ob2Color')?document.getElementById('ob2Color').value:'#2563eb',min:parseInt(document.getElementById('ob2Min').value)||0});
+  document.getElementById('ob2Name').value=''; document.getElementById('ob2Min').value=''; save(); renderOnb2List(); renderAll();
+}
+function finishOnb2(){ document.getElementById('onbModal2').style.display='none'; renderAll(); }
+function saveProfile(){
+  S.profile.name=document.getElementById('pfName').value.trim();
+  S.profile.institute=document.getElementById('pfInst').value.trim();
+  S.profile.program=document.getElementById('pfProg').value.trim();
+  S.profile.dailyGoal=parseInt(document.getElementById('pfGoal').value)||120;
+  S.profile.onboarded=true; save(); renderAll(); alert('Profile saved! ✅');
+}
+
+/* ---------- Colour mode ---------- */
+function shade(hex,pct){
+  const n=parseInt(hex.slice(1),16), r=(n>>16)&255, g=(n>>8)&255, b=n&255, t=pct<0?0:255, p=Math.abs(pct)/100;
+  const f=v=>Math.round((t-v)*p+v);
+  return '#'+((1<<24)+(f(r)<<16)+(f(g)<<8)+f(b)).toString(16).slice(1);
+}
+function applyColorMode(){
+  const r=document.documentElement.style;
+  if(S.colorMode.colorful){ r.removeProperty('--pri'); r.removeProperty('--pri2'); }
+  else { r.setProperty('--pri',S.colorMode.single); r.setProperty('--pri2',shade(S.colorMode.single,-30)); }
+}
+function setColorful(v){ S.colorMode.colorful=v; save(); applyColorMode(); renderAll(); }
+function setSingleColor(c){ S.colorMode.single=c; S.colorMode.colorful=false; save(); applyColorMode(); renderAll(); }
+function toggleColorPanel(){
+  const p=document.getElementById('colorPanel');
+  p.style.display = p.style.display==='none' ? 'block' : 'none';
+}
+function syncColorUI(){
+  const c1=document.getElementById('cmColorful'), c2=document.getElementById('cmColorful2');
+  if(c1) c1.checked=!!S.colorMode.colorful;
+  if(c2) c2.checked=!!S.colorMode.colorful;
+  const s1=document.getElementById('cmSingle'), s2=document.getElementById('cmSingle2');
+  if(s1) s1.style.display=S.colorMode.colorful?'none':'flex';
+  if(s2) s2.style.display=S.colorMode.colorful?'none':'flex';
+  const v1=document.getElementById('cmCustom'), v2=document.getElementById('cmCustom2');
+  if(v1) v1.value=S.colorMode.single||'#2563eb';
+  if(v2) v2.value=S.colorMode.single||'#2563eb';
+}
+
+/* ---------- Subjects (first-class) ---------- */
+function renderSubjects(){
+  document.getElementById('suList').innerHTML = S.subjects.length? S.subjects.map(s=>`<div class="item"><span><span class="dot" style="background:${s.color}"></span> <b>${esc(s.name)}</b></span><span class="row"><label class="muted">Daily min:</label><input type="number" value="${s.min||0}" onchange="setSubjectMin('${s.id}',this.value)" style="max-width:80px;margin:0"> <button class="btn small danger" onclick="delSubject('${s.id}')">✕</button></span></div>`).join('') : '<p class="muted">No subjects yet — add your first one above.</p>';
+  document.getElementById('sbList') && (document.getElementById('sbList').innerHTML='');
+}
+function addSubjectTab(){
+  const name=document.getElementById('suName').value.trim();
+  if(!name) return alert('Please type a subject name.');
+  S.subjects.push({id:uid(),name,color:document.getElementById('suColor').value,min:parseInt(document.getElementById('suMin').value)||0});
+  document.getElementById('suName').value=''; document.getElementById('suMin').value=''; save(); renderAll();
+}
+function setSubjectMin(id,v){ const s=S.subjects.find(x=>x.id===id); if(s){ s.min=Math.max(0,parseInt(v)||0); save(); renderAll(); } }
+function delSubject(id){
+  if(S.assignments.some(a=>a.subjectId===id)||S.exams.some(e=>e.subjectId===id)) return alert('This subject is used by assignments or exams — remove those first.');
+  if(!confirm('Delete this subject? This cannot be undone.')) return; S.subjects=S.subjects.filter(s=>s.id!==id); save(); renderAll();
+}
+
+/* ---------- Daily plan engine ---------- */
+function computePlan(){
+  const goal=dailyGoal();
+  const today=weekdayToday();
+  const todays=[...new Set(S.timetable.filter(c=>c.day===today).map(c=>c.subjectId))].filter(id=>S.subjects.some(s=>s.id===id));
+  if(S.timetable.length>0 && todays.length===0) return {items:[],total:goal,mode:'free'};
+  const pool = todays.length? todays : S.subjects.map(s=>s.id);
+  if(!pool.length) return {items:[],total:goal,mode:'free'};
+  const given=pool.filter(id=>subj(id).min>0);
+  const rest=pool.filter(id=>!subj(id).min>0);
+  const givenSum=given.reduce((s,id)=>s+subj(id).min,0);
+  let items=given.map(id=>({id,min:subj(id).min}));
+  let total;
+  if(!rest.length){ total=givenSum; }
+  else { total=Math.max(goal,givenSum); const share=(total-givenSum)/rest.length; items=items.concat(rest.map(id=>({id,min:Math.round(share)}))); }
+  return {items,total,mode:'plan'};
+}
+function doneForSubjectToday(id){ return (S.focus.bySubject[todayStr()]||{})[id]||0; }
+
+/* ---------- Dashboard (study home) ---------- */
+function renderDashboard(){
+  const today=weekdayToday();
+  const classesToday=S.timetable.filter(c=>c.day===today);
+  const dueToday=S.assignments.filter(a=>a.due===todayStr()&&a.status!=='done');
+  document.getElementById('todayStrip').innerHTML=`<h3 style="margin-bottom:6px">📍 Today — ${new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'})}</h3><p class="muted" style="margin:0">${classesToday.length? 'Classes today: '+classesToday.map(c=>esc(subj(c.subjectId).name)+' '+esc(c.start)).join(', ') : 'No classes today.'} &nbsp;·&nbsp; ${dueToday.length? dueToday.length+' assignment(s) due today!' : 'Nothing due today. 🎉'}</p>`;
+  const plan=computePlan(), done=focusToday(), left=Math.max(0,plan.total-done), pct=plan.total?Math.min(100,Math.round(done/plan.total*100)):0;
+  const breakdown = plan.mode==='free' ? 'No classes today — free study day' : plan.items.map(it=>{ const d=doneForSubjectToday(it.id); return d>0? `${esc(subj(it.id).name)} ${d}/${it.min} min` : `${esc(subj(it.id).name)} ${it.min} min`; }).join(' • ');
+  document.getElementById('focusCard').innerHTML=`<h3>🎯 Today's focus</h3><p class="muted" style="font-size:13px;margin:0">${breakdown}</p><p style="margin:6px 0 0">Target: <b>${plan.total} min</b> &nbsp;·&nbsp; Done: <b>${done} min</b> &nbsp;·&nbsp; Remaining: <b>${left} min</b></p><div class="bar"><i style="width:${pct}%"></i></div><p class="muted" style="margin:0">${pct>=100?'Goal reached! Amazing work! 🎉':pct+'% of your daily plan'}</p><div class="row" style="margin-top:10px"><button class="btn small" onclick="openFocusMode()">🎯 Focus Mode (fullscreen)</button></div>`;
+  const open=S.assignments.filter(a=>a.status!=='done');
+  const dueSoon=open.filter(a=>daysLeft(a.due)>=0&&daysLeft(a.due)<=7);
+  const nextExam=[...S.exams].sort((a,b)=>a.date.localeCompare(b.date))[0];
+  const gpa=S.grades.length? (S.grades.reduce((s,g)=>s+gradePoint(g.score/g.total*100),0)/S.grades.length).toFixed(1):'—';
+  const known=S.decks[0]? S.decks[0].cards.filter(c=>c.known).length+'/'+S.decks[0].cards.length+' known' : '0 cards';
+  const bestStreak=S.habits.length? Math.max(...S.habits.map(streakOf)):0;
+  const weekMin=weekMinutes().total;
+  const nextDue=dueSoon.length? dueSoon[0].title : 'nothing due';
+  const cards=[
+    ['subjects','📚','Subjects','#2563eb',S.subjects.length+' subjects'],
+    ['today','📍','Today','#dc2626',classesToday.length+' classes · '+dueToday.length+' due today'],
+    ['timetable','🗓️','Timetable','#2563eb',S.timetable.length+' classes / week'],
+    ['assignments','📝','Assignments','#db2777',open.length+' open · '+dueSoon.length+' due this week'],
+    ['exams','⏳','Exams','#ea580c',nextExam?nextExam.title+' in '+Math.max(0,daysLeft(nextExam.date))+'d':'No exams yet'],
+    ['grades','🎓','Grades','#16a34a',gpa==='—'?'No grades yet':'Average '+gpa+'%'],
+    ['notes','📓','Notes','#0891b2',S.notes.length+' notes'],
+    ['flashcards','🃏','Flashcards','#7c3aed',known],
+    ['focus','⏱️','Focus','#dc2626','Today: '+done+' min'],
+    ['habits','🌱','Habits & Goals','#16a34a','Best streak 🔥 '+bestStreak+' days'],
+    ['calendar','📅','Calendar','#2563eb','Next due: '+nextDue],
+    ['sticky','📌','Sticky notes','#d97706',S.sticky.length+' notes'],
+    ['reports','📊','Reports','#6d28d9','This week: '+weekMin+' min'],
+    ['settings','⚙️','Settings','#6b7280','Profile, colour, backup'],
+  ];
+  document.getElementById('dashGrid').innerHTML=cards.map(c=>`<div class="dashcard" style="border-top-color:${c[3]};--ac:${c[3]}" onclick="showTab('${c[0]}')"><div class="ic">${c[1]}</div><div class="nm">${c[2]}</div><div class="sb">${esc(c[4])}</div></div>`).join('');
+  setTimeout(()=>document.getElementById('dashGrid').classList.remove('anim'),600);
+  document.getElementById('dashDue').innerHTML = dueSoon.length? dueSoon.map(a=>`<div class="item"><span><span class="dot" style="background:${subj(a.subjectId).color}"></span> <b>${esc(a.title)}</b> <span class="muted">${esc(subj(a.subjectId).name)}</span></span><span class="muted">${fmtDate(a.due)}</span></div>`).join('') : '<p class="muted">Nothing due this week. Enjoy the calm! 🎉</p>';
+  document.getElementById('dashGoals').innerHTML = S.goals.length? S.goals.map(g=>{const p=g.target?Math.min(100,Math.round(g.current/g.target*100)):0;return `<p><b>${esc(g.title)}</b> — ${g.current}/${g.target}</p><div class="bar"><i style="width:${p}%"></i></div>`;}).join('') : '<p class="muted">No goals yet — add one in Habits &amp; Goals.</p>';
+  const openA=S.assignments.filter(a=>a.status!=='done');
+  const pw=p=>p==='High'?0:p==='Medium'?1:2;
+  openA.sort((a,b)=>a.due.localeCompare(b.due)||pw(a.priority)-pw(b.priority));
+  const nu=openA[0];
+  document.getElementById('dashNext').innerHTML = nu? `<p><b>${esc(nu.title)}</b> <span class="muted">${esc(subj(nu.subjectId).name)} · Due ${fmtDate(nu.due)} · ${nu.priority}</span></p><button class="btn small" onclick="showTab('focus')">⏱️ Start focusing</button>` : (nextExam? `<p>Next exam: <b>${esc(nextExam.title)}</b> in ${Math.max(0,daysLeft(nextExam.date))} days.</p>` : '<p class="muted">All caught up! 🎉 Nothing due, no exams — enjoy the calm.</p>');
+}
+function weekMinutes(){
+  const now=new Date(), day=(now.getDay()+6)%7, mon=new Date(now); mon.setDate(now.getDate()-day);
+  const arr=[];
+  for(let i=0;i<7;i++){ const d=new Date(mon); d.setDate(mon.getDate()+i); const k=dateKey(d); arr.push({label:DAYS[i],min:S.focus.byDay[k]||0}); }
+  return {arr,total:arr.reduce((s,x)=>s+x.min,0)};
+}
+
+/* ---------- Timetable ---------- */
+function renderTimetable(){
+  const rows=[...S.timetable].sort((a,b)=>DAYS.indexOf(a.day)-DAYS.indexOf(b.day)||a.start.localeCompare(b.start));
+  document.getElementById('ttBody').innerHTML = rows.length? rows.map(c=>`<tr><td>${c.day}</td><td>${esc(c.start)}–${esc(c.end)}</td><td><span class="dot" style="background:${subj(c.subjectId).color}"></span> ${esc(subj(c.subjectId).name)}</td><td>${esc(c.room||'')}</td><td><button class="btn small danger" onclick="delItem('timetable','${c.id}')">✕</button></td></tr>`).join('') : '<tr><td colspan="5" class="muted">No classes yet — add your first class above.</td></tr>';
+}
+function addClass(){
+  const day=document.getElementById('ttDay').value, start=document.getElementById('ttStart').value, end=document.getElementById('ttEnd').value, subjectId=document.getElementById('ttSubj').value, room=document.getElementById('ttRoom').value.trim();
+  if(!start||!end) return alert('Please pick start and end times.');
+  S.timetable.push({id:uid(),day,start,end,subjectId,room}); save(); renderAll();
+}
+
+/* ---------- Assignments ---------- */
+function renderAssignments(){
+  const f=document.getElementById('asFilter').value;
+  let list=[...S.assignments].sort((a,b)=>a.due.localeCompare(b.due));
+  if(f==='open') list=list.filter(a=>a.status!=='done');
+  if(f==='done') list=list.filter(a=>a.status==='done');
+  document.getElementById('asList').innerHTML = list.length? list.map(a=>{
+    const dl=daysLeft(a.due), done=a.status==='done';
+    const subDone=a.subtasks.filter(t=>t.done).length;
+    return `<div class="item ${done?'done':''}"><div style="flex:1">
+      <span class="dot" style="background:${subj(a.subjectId).color}"></span> <span class="t"><b>${esc(a.title)}</b></span>
+      <span class="tag ${a.priority==='High'?'pill-high':a.priority==='Medium'?'pill-med':'pill-low'}">${a.priority}</span>
+      <div class="muted">${esc(subj(a.subjectId).name)} · Due ${fmtDate(a.due)} · ${done?'Completed':dl<0?(-dl)+' day(s) overdue':dl===0?'Due TODAY':dl+' day(s) left'}${a.subtasks.length?` · Subtasks ${subDone}/${a.subtasks.length}`:''}</div>
+      ${a.subtasks.map((t,i)=>`<label style="display:block;font-size:14px"><input type="checkbox" ${t.done?'checked':''} onchange="toggleSub('${a.id}',${i})"> ${esc(t.text)}</label>`).join('')}
+      <div class="row" style="margin-top:6px"><input id="sub-${a.id}" placeholder="Add a subtask..." style="max-width:260px;margin:0"><button class="btn small ghost" onclick="addSubtask('${a.id}')">+ Subtask</button></div>
+    </div><div class="row">
+      <button class="btn small ghost" onclick="toggleAssign('${a.id}')">${done?'↩ Reopen':'✓ Done'}</button>
+      <button class="btn small danger" onclick="delItem('assignments','${a.id}')">✕</button>
+    </div></div>`;}).join('') : '<p class="muted">No assignments here yet.</p>';
+}
+function addAssignment(){
+  const title=document.getElementById('asTitle').value.trim();
+  if(!title) return alert('Please type an assignment title.');
+  S.assignments.push({id:uid(),title,subjectId:document.getElementById('asSubj').value,due:document.getElementById('asDue').value||todayStr(),priority:document.getElementById('asPrio').value,status:'open',subtasks:[]});
+  document.getElementById('asTitle').value=''; save(); renderAll();
+}
+function toggleAssign(id){ const a=S.assignments.find(x=>x.id===id); if(a){a.status=a.status==='done'?'open':'done'; save(); renderAll();} }
+function addSubtask(id){ const inp=document.getElementById('sub-'+id); const a=S.assignments.find(x=>x.id===id); if(a&&inp.value.trim()){a.subtasks.push({text:inp.value.trim(),done:false}); save(); renderAll();} }
+function toggleSub(id,i){ const a=S.assignments.find(x=>x.id===id); if(a){a.subtasks[i].done=!a.subtasks[i].done; save(); renderAll();} }
+
+/* ---------- Exams ---------- */
+function renderExams(){
+  const list=[...S.exams].sort((a,b)=>a.date.localeCompare(b.date));
+  document.getElementById('exList').innerHTML = list.length? list.map(e=>{
+    const dl=daysLeft(e.date), done=e.checklist.filter(c=>c.done).length;
+    return `<div class="item"><div style="flex:1"><b>${esc(e.title)}</b> <span class="muted">${esc(subj(e.subjectId).name)} · ${fmtDate(e.date)} · ${dl<0?'Passed':dl===0?'TODAY!':dl+' days left'}</span>
+    <div class="bar"><i style="width:${e.checklist.length?Math.round(done/e.checklist.length*100):0}%"></i></div>
+    ${e.checklist.map((c,i)=>`<label style="display:block;font-size:14px"><input type="checkbox" ${c.done?'checked':''} onchange="toggleEx('${e.id}',${i})"> ${esc(c.text)}</label>`).join('')}
+    <div class="row" style="margin-top:6px"><input id="exsub-${e.id}" placeholder="Add a revision step..." style="max-width:260px;margin:0"><button class="btn small ghost" onclick="addExStep('${e.id}')">+ Step</button></div>
+    </div><button class="btn small danger" onclick="delItem('exams','${e.id}')">✕</button></div>`;}).join('') : '<p class="muted">No exams added yet.</p>';
+}
+function addExam(){
+  const title=document.getElementById('exTitle').value.trim();
+  if(!title) return alert('Please type an exam name.');
+  S.exams.push({id:uid(),title,subjectId:document.getElementById('exSubj').value,date:document.getElementById('exDate').value||todayStr(),checklist:[]});
+  document.getElementById('exTitle').value=''; save(); renderAll();
+}
+function toggleEx(id,i){ const e=S.exams.find(x=>x.id===id); if(e){e.checklist[i].done=!e.checklist[i].done; save(); renderAll();} }
+function addExStep(id){ const inp=document.getElementById('exsub-'+id); const e=S.exams.find(x=>x.id===id); if(e&&inp.value.trim()){e.checklist.push({text:inp.value.trim(),done:false}); save(); renderAll();} }
+
+function delItem(list,id){ if(!confirm('Delete this item? This cannot be undone.')) return; S[list]=S[list].filter(x=>x.id!==id); save(); renderAll(); }
+
+/* ---------- Grades ---------- */
+function gradePoint(pct){ return pct>=90?4.0:pct>=80?3.0:pct>=70?2.0:pct>=60?1.0:0.0; }
+function renderGrades(){
+  const list=S.grades;
+  const totC=list.reduce((s,g)=>s+(g.credits||3),0);
+  const gpa=list.length? (list.reduce((s,g)=>s+gradePoint(g.score/g.total*100)*(g.credits||3),0)/totC).toFixed(2):'—';
+  document.getElementById('gpaBox').innerHTML=`<p><span class="muted">Your GPA (4.0 scale, weighted by credits)</span><br><span class="bignum">${gpa}</span></p>`;
+  document.getElementById('grList').innerHTML = list.length? list.map(g=>{const p=Math.round(g.score/g.total*100);return `<div class="item"><span><span class="dot" style="background:${subj(g.subjectId).color}"></span> <b>${esc(g.title)}</b> <span class="muted">${esc(subj(g.subjectId).name)}</span></span><span>${g.score}/${g.total} · <b>${p}%</b> · ${gradePoint(p).toFixed(1)} · ${g.credits||3} cr <button class="btn small danger" onclick="delItem('grades','${g.id}')">✕</button></span></div>`;}).join('') : '<p class="muted">No grades yet.</p>';
+}
+function addGrade(){
+  const title=document.getElementById('grTitle').value.trim(), score=parseFloat(document.getElementById('grScore').value), total=parseFloat(document.getElementById('grTotal').value)||100;
+  if(!title||isNaN(score)) return alert('Please type a name and a score.');
+  S.grades.push({id:uid(),subjectId:document.getElementById('grSubj').value,title,score,total,credits:parseFloat(document.getElementById('grCredits').value)||3});
+  document.getElementById('grTitle').value=''; document.getElementById('grScore').value=''; save(); renderAll();
+}
+function calcFinal(){
+  const cur=parseFloat(document.getElementById('fcCur').value), w=parseFloat(document.getElementById('fcW').value), want=parseFloat(document.getElementById('fcWant').value);
+  if(isNaN(cur)||isNaN(w)||isNaN(want)||w<=0||w>=100) return document.getElementById('fcOut').textContent='Please enter valid numbers (final weight between 1 and 99).';
+  const need=(want-cur*(100-w)/100)/(w/100);
+  document.getElementById('fcOut').textContent = need<=0? 'You already have it — even a 0 on the final keeps you at your goal! 🎉' : need>100? `You would need ${need.toFixed(1)}% — above 100%, so aim a little higher on coursework too.` : `You need ${need.toFixed(1)}% on the final to reach ${want}%. You can do it! 💪`;
+}
+
+/* ---------- Notes ---------- */
+function renderNotes(){
+  document.getElementById('ntList').innerHTML = S.notes.length? S.notes.map(n=>`<div class="item"><div style="flex:1"><b>${esc(n.title)}</b> <span class="muted">${esc(subj(n.subjectId).name)}</span><div style="white-space:pre-wrap;font-size:14px">${esc(n.body)}</div></div><button class="btn small danger" onclick="delItem('notes','${n.id}')">✕</button></div>`).join('') : '<p class="muted">No notes yet.</p>';
+}
+function addNote(){
+  const title=document.getElementById('ntTitle').value.trim(), body=document.getElementById('ntBody').value.trim();
+  if(!title) return alert('Please give your note a title.');
+  S.notes.unshift({id:uid(),subjectId:document.getElementById('ntSubj').value,title,body});
+  document.getElementById('ntTitle').value=''; document.getElementById('ntBody').value=''; save(); renderAll();
+}
+
+/* ---------- Flashcards ---------- */
+function renderCards(){
+  const deck=S.decks[0]; if(!deck) return;
+  const known=deck.cards.filter(c=>c.known).length;
+  document.getElementById('fcProgress').textContent = deck.cards.length? `Known: ${known}/${deck.cards.length}` : '';
+  document.getElementById('fcList').innerHTML = deck.cards.length? deck.cards.map((c,i)=>`
+    <div class="flash" onclick="this.classList.toggle('flip')"><div class="inner">
+      <div class="face">❓ ${esc(c.q)}<br><span class="muted" style="font-size:12px">Tap to reveal</span></div>
+      <div class="face back">✅ ${esc(c.a)}</div>
+    </div></div>
+    <div class="row" style="margin-top:-4px"><button class="btn small ghost" onclick="event.stopPropagation();markCard(${i},true)">I know it ✓</button><button class="btn small ghost" onclick="event.stopPropagation();markCard(${i},false)">Still learning</button><button class="btn small danger" onclick="event.stopPropagation();delCard(${i})">✕</button></div>`).join('') : '<p class="muted">No cards yet — add your first question above.</p>';
+}
+function addCard(){
+  const q=document.getElementById('fcQ').value.trim(), a=document.getElementById('fcA').value.trim();
+  if(!q||!a) return alert('Please type both a question and an answer.');
+  if(!S.decks[0]) S.decks=[{id:uid(),title:'General',cards:[]}];
+  S.decks[0].cards.push({q,a,known:false});
+  document.getElementById('fcQ').value=''; document.getElementById('fcA').value=''; save(); renderAll();
+}
+function markCard(i,v){ S.decks[0].cards[i].known=v; save(); renderAll(); }
+function delCard(i){ if(!confirm('Delete this flashcard? This cannot be undone.')) return; S.decks[0].cards.splice(i,1); save(); renderAll(); }
+function shuffleCards(){ const d=S.decks[0]; if(d){ for(let i=d.cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [d.cards[i],d.cards[j]]=[d.cards[j],d.cards[i]];} save(); renderAll(); } }
+
+/* ---------- Focus timer (custom lengths, partial banking, manual add) ---------- */
+let timerInt=null, timerSec=S.timer.focus*60, timerTotal=timerSec, timerMode='focus';
+function fmtSec(s){ return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+function setTimerFor(mode){
+  timerMode=mode;
+  timerSec=(mode==='focus'?S.timer.focus:mode==='longbreak'?(S.timer.longBreak||15):S.timer.break)*60;
+  timerTotal=timerSec;
+  drawTimer();
+}
+function currentFocusSubject(){ const v=document.getElementById('tmSubj'); return v&&v.value ? v.value : null; }
+function bankMinutes(min,subjectId){
+  if(!min||min<=0) return;
+  S.focus.totalMin+=min;
+  const t=todayStr();
+  S.focus.byDay[t]=(S.focus.byDay[t]||0)+min;
+  if(subjectId){ S.focus.bySubject[t]=S.focus.bySubject[t]||{}; S.focus.bySubject[t][subjectId]=(S.focus.bySubject[t][subjectId]||0)+min; }
+  save();
+}
+function drawTimer(){
+  document.getElementById('tmDisplay').textContent=fmtSec(timerSec);
+  const modeText = timerMode==='focus'?'Focus session — phone away, deep work.':timerMode==='longbreak'?'🌿 Long break — you earned it! Recharge.':'Break time — stretch, water, breathe.';
+  document.getElementById('tmMode').textContent = modeText;
+  const rd=document.getElementById('tmRound'); if(rd) rd.textContent = timerMode==='longbreak' ? '🎉 Cycle complete — fresh cycle starts after this break.' : `🔄 Round ${S.pomRound||1} of 4${(S.pomRound||1)===4?' — long break after this round!':''}`;
+  const plan=computePlan(), done=focusToday(), left=Math.max(0,plan.total-done);
+  document.getElementById('tmTarget').textContent = done>=plan.total? '🎉 Daily plan reached!' : `🎯 Daily plan: ${plan.total} min · ${left} min to go`;
+  document.getElementById('tmToday').textContent=done+' min';
+  document.getElementById('tmTotal').textContent=S.focus.totalMin+' min';
+  const fm=document.getElementById('fmDisplay');
+  if(fm){ fm.textContent=fmtSec(timerSec); document.getElementById('fmMode').textContent=modeText; const fr=document.getElementById('fmRound'); if(fr) fr.textContent=timerMode==='longbreak'?'🎉 Cycle complete — fresh cycle starts after this break.':`🔄 Round ${S.pomRound||1} of 4`; document.getElementById('fmPlan').textContent=done>=plan.total?'🎉 Daily plan reached!':`🎯 Daily plan: ${plan.total} min · ${left} min to go`; }
+}
+function saveTimerSettings(){
+  const f=Math.min(180,Math.max(5,parseInt(document.getElementById('tmFocusMin').value)||25));
+  const b=Math.min(60,Math.max(1,parseInt(document.getElementById('tmBreakMin').value)||5));
+  S.timer={focus:f,break:b,longBreak:S.timer.longBreak||15}; save();
+  document.getElementById('tmFocusMin').value=f; document.getElementById('tmBreakMin').value=b;
+  if(!timerInt) setTimerFor('focus');
+}
+function startTimer(){
+  if(timerInt) return;
+  ensureAudio();
+  timerInt=setInterval(()=>{
+    timerSec--;
+    if(timerSec<=0){
+      clearInterval(timerInt); timerInt=null;
+      if(timerMode==='focus'){ bankMinutes(Math.round(timerTotal/60),currentFocusSubject()); beep(); if((S.pomRound||1)>=4){ S.pomRound=1; save(); alert('Focus session done! 🎉 Enjoy your long break.'); setTimerFor('longbreak'); } else { S.pomRound=(S.pomRound||1)+1; save(); alert('Focus session done! 🎉 Take a break.'); setTimerFor('break'); } }
+      else if(timerMode==='longbreak'){ beep(); alert('Long break over — fresh cycle starts! 💪'); setTimerFor('focus'); }
+      else { beep(); alert('Break over — ready for another round? 💪'); setTimerFor('focus'); }
+      renderAll();
+    }
+    drawTimer();
+  },1000);
+}
+function pauseTimer(){ clearInterval(timerInt); timerInt=null; }
+function stopTimer(){
+  pauseTimer();
+  if(timerMode==='focus'){
+    const elapsed=timerTotal-timerSec, min=Math.floor(elapsed/60);
+    if(min>0){ bankMinutes(min,currentFocusSubject()); }
+  }
+  setTimerFor('focus'); renderAll();
+}
+function resetTimer(){ pauseTimer(); setTimerFor('focus'); }
+function addManual(){
+  const min=parseInt(document.getElementById('tmManMin').value)||0;
+  if(min<=0) return alert('Please type how many minutes you studied.');
+  const sv=document.getElementById('tmManSubj');
+  bankMinutes(min, sv&&sv.value ? sv.value : null);
+  document.getElementById('tmManMin').value=''; renderAll();
+}
+
+/* ---------- Habits & Goals ---------- */
+function streakOf(h){
+  let s=0, d=new Date();
+  if(!h.days[todayStr()]) d.setDate(d.getDate()-1);
+  while(true){ const k=dateKey(d); if(h.days[k]){s++; d.setDate(d.getDate()-1);} else break; }
+  return s;
+}
+function renderHabits(){
+  document.getElementById('hbList').innerHTML = S.habits.length? S.habits.map(h=>{
+    const doneToday=!!h.days[todayStr()];
+    return `<div class="item"><span><b>${esc(h.name)}</b> <span class="muted">🔥 ${streakOf(h)} day streak</span></span><button class="btn small ${doneToday?'ghost':''}" onclick="tickHabit('${h.id}')">${doneToday?'✓ Done today':'Done today'}</button> <button class="btn small danger" onclick="delItem('habits','${h.id}')">✕</button></div>`;}).join('') : '<p class="muted">No habits yet.</p>';
+  document.getElementById('glList').innerHTML = S.goals.length? S.goals.map(g=>{const p=g.target?Math.min(100,Math.round(g.current/g.target*100)):0;return `<div class="item"><div style="flex:1"><b>${esc(g.title)}</b><div class="bar"><i style="width:${p}%"></i></div><span class="muted">${g.current}/${g.target} · ${p}%</span></div><button class="btn small" onclick="bumpGoal('${g.id}',1)">+1</button> <button class="btn small danger" onclick="delItem('goals','${g.id}')">✕</button></div>`;}).join('') : '<p class="muted">No goals yet.</p>';
+}
+function addHabit(){ const v=document.getElementById('hbName').value.trim(); if(!v) return; S.habits.push({id:uid(),name:v,days:{}}); document.getElementById('hbName').value=''; save(); renderAll(); }
+function tickHabit(id){ const h=S.habits.find(x=>x.id===id); if(h){ const t=todayStr(); if(h.days[t]) delete h.days[t]; else h.days[t]=true; save(); renderAll(); } }
+function addGoal(){ const t=document.getElementById('glTitle').value.trim(), tg=parseInt(document.getElementById('glTarget').value)||10; if(!t) return; S.goals.push({id:uid(),title:t,target:tg,current:0}); document.getElementById('glTitle').value=''; save(); renderAll(); }
+function bumpGoal(id,d){ const g=S.goals.find(x=>x.id===id); if(g){ g.current=Math.max(0,g.current+d); save(); renderAll(); } }
+
+/* ---------- Calendar ---------- */
+let calCursor=new Date(); calCursor.setDate(1);
+function calMove(d){ calCursor.setMonth(calCursor.getMonth()+d); renderCalendar(); }
+function renderCalendar(){
+  const y=calCursor.getFullYear(), m=calCursor.getMonth();
+  document.getElementById('calTitle').textContent=calCursor.toLocaleDateString(undefined,{month:'long',year:'numeric'});
+  const first=new Date(y,m,1).getDay(), daysIn=new Date(y,m+1,0).getDate();
+  let html=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div class="head">${d}</div>`).join('');
+  for(let i=0;i<first;i++) html+='<div style="background:transparent;border:0"></div>';
+  for(let d=1;d<=daysIn;d++){
+    const k=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const due=S.assignments.filter(a=>a.due===k), ex=S.exams.filter(e=>e.date===k);
+    const isToday=k===todayStr();
+    html+=`<div class="${isToday?'today':''}" style="cursor:pointer" onclick="showCalDay('${k}')"><b>${d}</b>${due.map(a=>`<div>📝 ${esc(a.title)}</div>`).join('')}${ex.map(e=>`<div>⏳ ${esc(e.title)}</div>`).join('')}</div>`;
+  }
+  document.getElementById('calGrid').innerHTML=html;
+}
+function showCalDay(k){
+  const due=S.assignments.filter(a=>a.due===k), ex=S.exams.filter(e=>e.date===k);
+  document.getElementById('calDay').innerHTML=`<div class="card"><b>${fmtDate(k)}</b>${(!due.length&&!ex.length)?'<p class="muted">Nothing due this day.</p>':''}${due.map(a=>`<div>📝 ${esc(a.title)} (${esc(subj(a.subjectId).name)})</div>`).join('')}${ex.map(e=>`<div>⏳ ${esc(e.title)} (${esc(subj(e.subjectId).name)})</div>`).join('')}</div>`;
+}
+
+/* ---------- Sticky notes ---------- */
+function renderSticky(){
+  document.getElementById('stList').innerHTML = S.sticky.length? S.sticky.map(n=>`<div class="sticky-note" style="background:${n.color}">${esc(n.text)}<div style="text-align:right;margin-top:8px"><button class="btn small danger" onclick="delItem('sticky','${n.id}')">✕</button></div></div>`).join('') : '<p class="muted">No sticky notes yet.</p>';
+}
+function addSticky(){ const t=document.getElementById('stText').value.trim(); if(!t) return; S.sticky.unshift({id:uid(),text:t,color:document.getElementById('stColor').value}); document.getElementById('stText').value=''; save(); renderAll(); }
+
+/* ---------- Reports (bar charts, pure CSS) ---------- */
+function renderReports(){
+  const w=weekMinutes();
+  const maxW=Math.max(...w.arr.map(x=>x.min),1);
+  const best=w.arr.reduce((b,x)=>x.min>b.min?x:b,w.arr[0]);
+  document.getElementById('repWeekSum').textContent=`This week: ${w.total} min total · ${Math.round(w.total/7)} min/day average · Best day: ${best.label} (${best.min} min)`;
+  document.getElementById('repWeekChart').innerHTML=w.arr.map(x=>`<div class="col"><span class="val">${x.min}</span><div class="bar2" style="height:${Math.max(4,Math.round(x.min/maxW*140))}px"></div><span class="lbl">${x.label}</span></div>`).join('');
+  const now=new Date(), y=now.getFullYear(), m=now.getMonth(), daysIn=new Date(y,m+1,0).getDate();
+  const marr=[];
+  for(let d=1;d<=daysIn;d++){ const k=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'); marr.push({d,min:S.focus.byDay[k]||0}); }
+  const mTotal=marr.reduce((s,x)=>s+x.min,0), mDays=marr.filter(x=>x.min>0).length, maxM=Math.max(...marr.map(x=>x.min),1);
+  document.getElementById('repMonthSum').textContent=`${now.toLocaleDateString(undefined,{month:'long',year:'numeric'})}: ${mTotal} min total · ${mDays} day(s) studied · ${mDays?Math.round(mTotal/mDays):0} min per studied day`;
+  document.getElementById('repMonthChart').innerHTML=marr.map(x=>`<div class="col"><span class="val">${x.min||''}</span><div class="bar2" style="height:${Math.max(4,Math.round(x.min/maxM*140))}px"></div><span class="lbl">${x.d}</span></div>`).join('');
+  const weekDates=weekMinutes().arr;
+  const weekKeys=[]; { const n2=new Date(), day=(n2.getDay()+6)%7, mon=new Date(n2); mon.setDate(n2.getDate()-day); for(let i=0;i<7;i++){ const d=new Date(mon); d.setDate(mon.getDate()+i); weekKeys.push(dateKey(d)); } }
+  const classDaysOf=id=>{ const days=[...new Set(S.timetable.filter(c=>c.subjectId===id).map(c=>c.day))]; return S.timetable.length? days.length : 7; };
+  document.getElementById('repSubject').innerHTML = S.subjects.length? S.subjects.map(s=>{
+    const actual=weekKeys.reduce((sum,k)=>sum+((S.focus.bySubject[k]||{})[s.id]||0),0);
+    const target=s.min? s.min*classDaysOf(s.id) : 0;
+    const p=target?Math.min(100,Math.round(actual/target*100)):0;
+    return `<div class="item"><div style="flex:1"><span class="dot" style="background:${s.color}"></span> <b>${esc(s.name)}</b> <span class="muted">${actual} min actual${target?` / ${target} min target`:''}</span><div class="bar"><i style="width:${p}%"></i></div></div><span><b>${target?p+'%':'—'}</b></span></div>`;
+  }).join('') : '<p class="muted">No subjects yet.</p>';
+  const hm=[]; const nowH=new Date();
+  for(let i=83;i>=0;i--){ const d=new Date(nowH); d.setDate(nowH.getDate()-i); const k=dateKey(d); const m=S.focus.byDay[k]||0; const col=m===0?'var(--line)':m<=15?'#ddd6fe':m<=30?'#c4b5fd':m<=60?'#8b5cf6':'#6d28d9'; hm.push(`<span class="hm" title="${k}: ${m} min" style="background:${col}"></span>`); }
+  document.getElementById('heatMap').innerHTML=`<div style="display:grid;grid-template-columns:repeat(21,1fr);gap:3px;max-width:420px">${hm.join('')}</div><p class="muted">Each square is one day — darker means more focus minutes.</p>`;
+}
+
+/* ---------- Budget ---------- */
+function monthEntries(){
+  const mk=monthKey(new Date());
+  return S.budget.filter(b=>b.date&&b.date.startsWith(mk));
+}
+function sumAmt(list){ return list.reduce((s,b)=>s+b.amount,0); }
+function fixedSalary(){ return (S.salary&&S.salary.amount)||0; }
+function monthIncomeEntries(){ return sumAmt(monthEntries().filter(b=>b.type==='income')); }
+function monthIncomeTotal(){ return monthIncomeEntries()+fixedSalary(); }
+function monthSpent(){ return sumAmt(monthEntries().filter(b=>b.type==='expense')); }
+function lentPending(){ return S.budget.filter(b=>b.type==='lent'&&b.status!=='settled'); }
+function borrowedPending(){ return S.budget.filter(b=>b.type==='borrowed'&&b.status!=='settled'); }
+function peopleCount(list){ return new Set(list.map(b=>b.person).filter(Boolean)).size; }
+function freelanceStats(monthOnly){
+  const list = monthOnly? monthEntries() : S.budget;
+  const rev = sumAmt(list.filter(b=>b.type==='income'&&b.source==='Freelance'));
+  const cost = sumAmt(list.filter(b=>b.type==='expense'&&b.category==='Business'));
+  return {rev, cost, profit: rev-cost};
+}
+function renderBudgetHome(){
+  const list=monthEntries();
+  const inc=monthIncomeTotal(), exp=monthSpent(), left=inc-exp;
+  const pct=inc?Math.min(100,Math.round(exp/inc*100)):0;
+  document.getElementById('budgetStrip').innerHTML=`<h3>💰 This month</h3><p style="margin:0">Income: <b>${fmtMoney(inc)}</b> &nbsp;·&nbsp; Spent: <b>${fmtMoney(exp)}</b> &nbsp;·&nbsp; Left: <b>${fmtMoney(left)}</b></p><div class="bar"><i style="width:${pct}%"></i></div><p class="muted" style="margin:0">${pct}% of income spent</p>`;
+  const basic=sumAmt(list.filter(b=>b.type==='expense'&&b.tag!=='luxury'));
+  const lux=sumAmt(list.filter(b=>b.type==='expense'&&b.tag==='luxury'));
+  const cats={}; list.filter(b=>b.type==='expense').forEach(b=>{ cats[b.category]=(cats[b.category]||0)+b.amount; });
+  const top=Object.entries(cats).sort((a,b)=>b[1]-a[1])[0];
+  const sal=fixedSalary();
+  const received=!!(S.salaryLog||{})[monthKey(new Date())];
+  const fr=freelanceStats(true);
+  const lp=lentPending(), bp=borrowedPending();
+  document.getElementById('budgetGrid').innerHTML=[
+    ['budget-overview','💰','Overview','#16a34a',`Left: ${fmtMoney(left)}`],
+    ['budget-salary','💼','Salary','#2563eb',sal?`Fixed: ${fmtMoney(sal)} · ${received?'Received ✓':'Not yet'}`:'Not set yet'],
+    ['budget-freelance','🎨','Freelance & Business','#7c3aed',`Profit: ${fmtMoney(fr.profit)}`],
+    ['budget-expenses','🛒','Expenses','#dc2626',`Spent: ${fmtMoney(exp)} · Basic ${fmtMoney(basic)} · Luxury ${fmtMoney(lux)}`],
+    ['budget-lent','🤝','Lent','#d97706',`Lena hai: ${fmtMoney(sumAmt(lp))} (${peopleCount(lp)} people)`],
+    ['budget-borrowed','📥','Borrowed','#0891b2',`Dena hai: ${fmtMoney(sumAmt(bp))} (${peopleCount(bp)} people)`],
+    ['budget-transactions','🧾','Transactions','#6b7280',S.budget.length+' entries'],
+    ['budget-categories','🗂️','Categories','#db2777',top?`Top: ${esc(top[0])} (${fmtMoney(top[1])})`:'No spending yet'],
+    ['budget-reports','📊','Reports','#6d28d9',`Saved this month: ${fmtMoney(left)}`],
+    ['budget-subs','📺','Subscriptions','#ea580c',`Monthly: ${fmtMoney(sumAmt(S.subs||[]))}`],
+     ['budget-savings','🐷','Savings goals','#e11d63',`Saved: ${fmtMoney((S.savGoals||[]).reduce((s,g)=>s+(+g.saved||0),0))} in ${(S.savGoals||[]).length} goal(s)`],
+  ].map(c=>`<div class="dashcard" style="border-top-color:${c[3]};--ac:${c[3]}" onclick="showTab('${c[0]}')"><div class="ic">${c[1]}</div><div class="nm">${c[2]}</div><div class="sb">${c[4]}</div></div>`).join('');
+  setTimeout(()=>document.getElementById('budgetGrid').classList.remove('anim'),600);
+}
+function renderBudgetOverview(){
+  const list=monthEntries();
+  const incE=monthIncomeEntries(), sal=fixedSalary(), inc=incE+sal, exp=monthSpent(), left=inc-exp;
+  const pct=inc?Math.min(100,Math.round(exp/inc*100)):0;
+  document.getElementById('bgOver').innerHTML=`<p><span class="muted">Income from entries</span><br><span class="bignum">${fmtMoney(incE)}</span></p><p><span class="muted">Fixed salary</span><br><span class="bignum">${fmtMoney(sal)}</span></p><p><span class="muted">Total income</span><br><span class="bignum">${fmtMoney(inc)}</span></p><p><span class="muted">Spent</span><br><span class="bignum">${fmtMoney(exp)}</span></p><p><span class="muted">Left</span><br><span class="bignum">${fmtMoney(left)}</span></p><div class="bar"><i style="width:${pct}%"></i></div><p class="muted">${pct}% of income spent</p>`;
+  const cats={}; list.filter(b=>b.type==='expense').forEach(b=>{ cats[b.category]=(cats[b.category]||0)+b.amount; });
+  const maxC=Math.max(...Object.values(cats),1);
+  document.getElementById('bgCatOver').innerHTML = Object.keys(cats).length? Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`<p><b>${esc(c)}</b> — ${fmtMoney(v)}</p><div class="bar"><i style="width:${Math.round(v/maxC*100)}%"></i></div>`).join('') : '<p class="muted">No spending this month yet.</p>';
+  document.getElementById('bgDonut').innerHTML=donutHTML(cats,exp);
+  const allInc=sumAmt(S.budget.filter(b=>b.type==='income'));
+  const allExp=sumAmt(S.budget.filter(b=>b.type==='expense'));
+  const net=allInc-allExp-sumAmt(lentPending())+sumAmt(borrowedPending());
+  document.getElementById('bgNet').innerHTML=`<p><span class="muted">All income entries</span><br><span class="bignum">${fmtMoney(allInc)}</span></p><p><span class="muted">All expense entries</span><br><span class="bignum">${fmtMoney(allExp)}</span></p><p><span class="muted">Minus lent (pending) / plus borrowed (pending)</span><br><span class="bignum">${fmtMoney(-sumAmt(lentPending())+sumAmt(borrowedPending()))}</span></p><p><span class="muted">My money now (from entries)</span><br><span class="bignum">${fmtMoney(net)}</span></p><p class="muted">Fixed salary is a monthly expectation, so it is counted in the monthly overview above, not here.</p>`;
+}
+function renderBudgetSalary(){
+  document.getElementById('salName').value=(S.salary&&S.salary.name)||'';
+  document.getElementById('salAmount').value=fixedSalary()||'';
+  const mk=monthKey(new Date());
+  const received=!!(S.salaryLog||{})[mk];
+  const salEntries=monthEntries().filter(b=>b.type==='income'&&b.source==='Salary');
+  document.getElementById('salBox').innerHTML = fixedSalary()? `<p style="margin-top:12px">Fixed salary: <b>${esc(S.salary.name||'Salary')} — ${fmtMoney(fixedSalary())}</b> every month.</p><p><button class="btn ${received?'ghost':''}" onclick="markSalaryReceived()">${received?'✓ Received this month':'Mark received this month'}</button></p>${salEntries.length?`<p class="muted">Salary entries this month:</p>`+salEntries.map(b=>`<div class="item"><span><b>${esc(b.title)}</b> <span class="muted">${fmtDate(b.date)}</span></span><span><b>+${fmtMoney(b.amount)}</b></span></div>`).join(''):''}` : '<p class="muted" style="margin-top:12px">No fixed salary set yet. If your salary changes every month, leave this empty and add salary entries in Transactions instead.</p>';
+}
+function saveSalary(){
+  const name=document.getElementById('salName').value.trim()||'Salary';
+  const amount=parseFloat(document.getElementById('salAmount').value)||0;
+  S.salary={name,amount}; save(); renderAll();
+}
+function markSalaryReceived(){
+  const mk=monthKey(new Date());
+  if(!S.salaryLog) S.salaryLog={};
+  S.salaryLog[mk]=!S.salaryLog[mk]; save(); renderAll();
+}
+function renderBudgetFreelance(){
+  const fr=freelanceStats(true), all=freelanceStats(false);
+  document.getElementById('bgFreeBox').innerHTML=`<p><span class="muted">This month — revenue</span><br><span class="bignum">${fmtMoney(fr.rev)}</span></p><p><span class="muted">This month — business costs</span><br><span class="bignum">${fmtMoney(fr.cost)}</span></p><p><span class="muted">This month — profit</span><br><span class="bignum">${fmtMoney(fr.profit)}</span></p><p class="muted">All-time profit: ${fmtMoney(all.profit)} (revenue ${fmtMoney(all.rev)} − costs ${fmtMoney(all.cost)})</p>`;
+  const items=[...S.budget].filter(b=>(b.type==='income'&&b.source==='Freelance')||(b.type==='expense'&&b.category==='Business')).sort((a,b)=>b.date.localeCompare(a.date));
+  document.getElementById('bgFreeList').innerHTML = items.length? items.map(b=>`<div class="item"><span><b>${esc(b.title)}</b> <span class="muted">${b.type==='income'?'Gig income':'Business cost'} · ${fmtDate(b.date)}</span></span><span><span class="tag ${b.type==='income'?'pill-low':'pill-high'}">${b.type==='income'?'+':'−'}${fmtMoney(b.amount)}</span> <button class="btn small danger" onclick="delBudget('${b.id}')">✕</button></span></div>`).join('') : '<p class="muted">No freelance entries yet.</p>';
+}
+function addFreelance(){
+  const title=document.getElementById('frTitle').value.trim(), amount=parseFloat(document.getElementById('frAmount').value);
+  if(!title||isNaN(amount)) return alert('Please type a gig title and an amount.');
+  S.budget.push({id:uid(),title,amount,type:'income',source:'Freelance',category:'Freelance',date:todayStr()});
+  document.getElementById('frTitle').value=''; document.getElementById('frAmount').value=''; save(); renderAll();
+}
+function addBusinessCost(){
+  const title=document.getElementById('bcTitle').value.trim(), amount=parseFloat(document.getElementById('bcAmount').value);
+  if(!title||isNaN(amount)) return alert('Please type a cost title and an amount.');
+  S.budget.push({id:uid(),title,amount,type:'expense',tag:'basic',category:'Business',date:todayStr()});
+  document.getElementById('bcTitle').value=''; document.getElementById('bcAmount').value=''; save(); renderAll();
+}
+function renderBudgetExpenses(){
+  const list=monthEntries().filter(b=>b.type==='expense');
+  const total=sumAmt(list), basic=sumAmt(list.filter(b=>b.tag!=='luxury')), lux=sumAmt(list.filter(b=>b.tag==='luxury'));
+  const bpct=total?Math.round(basic/total*100):0;
+  document.getElementById('ex2Box').innerHTML=`<p style="margin-top:10px">This month spent: <b>${fmtMoney(total)}</b> &nbsp;·&nbsp; Basic needs: <b>${fmtMoney(basic)} (${bpct}%)</b> &nbsp;·&nbsp; Luxuries: <b>${fmtMoney(lux)} (${100-bpct}%)</b></p>`;
+  document.getElementById('ex2List').innerHTML = list.length? [...list].sort((a,b)=>b.date.localeCompare(a.date)).map(b=>`<div class="item"><span><b>${esc(b.title)}</b> <span class="muted">${esc(b.category)} · ${b.tag==='luxury'?'Luxury':'Basic need'} · ${fmtDate(b.date)}</span></span><span><span class="tag pill-high">−${fmtMoney(b.amount)}</span> <button class="btn small danger" onclick="delBudget('${b.id}')">✕</button></span></div>`).join('') : '<p class="muted">No expenses this month yet.</p>';
+}
+function addExpense2(){
+  const title=document.getElementById('ex2Title').value.trim(), amount=parseFloat(document.getElementById('ex2Amount').value);
+  if(!title||isNaN(amount)) return alert('Please type a title and an amount.');
+  S.budget.push({id:uid(),title,amount,type:'expense',tag:document.getElementById('ex2Tag').value,category:document.getElementById('ex2Cat').value.trim()||'Other',date:document.getElementById('ex2Date').value||todayStr()});
+  document.getElementById('ex2Title').value=''; document.getElementById('ex2Amount').value=''; save(); renderAll();
+}
+function renderBudgetLent(){
+  const pend=lentPending(), done=S.budget.filter(b=>b.type==='lent'&&b.status==='settled');
+  const row=b=>`<div class="item"><span><b>${esc(b.person||'Someone')}</b> <span class="muted">${fmtDate(b.date)} · ${esc(b.title)}</span></span><span><b>${fmtMoney(b.amount)}</b> ${b.status==='settled'?'<span class="muted">✓ settled</span>':`<button class="btn small" onclick="settleLent('${b.id}')">✓ Received</button>`} <button class="btn small danger" onclick="delBudget('${b.id}')">✕</button></span></div>`;
+  document.getElementById('lnList').innerHTML=`<p style="margin-top:10px">Pending to receive: <b>${fmtMoney(sumAmt(pend))}</b> from ${peopleCount(pend)} people</p>`+(pend.length?pend.map(row).join(''):'<p class="muted">Nobody owes you right now. 🎉</p>')+(done.length?`<p class="muted" style="margin-top:12px">Settled:</p>`+done.map(row).join(''):'');
+}
+function renderBudgetBorrowed(){
+  const pend=borrowedPending(), done=S.budget.filter(b=>b.type==='borrowed'&&b.status==='settled');
+  const row=b=>`<div class="item"><span><b>${esc(b.person||'Someone')}</b> <span class="muted">${fmtDate(b.date)} · ${esc(b.title)}</span></span><span><b>${fmtMoney(b.amount)}</b> ${b.status==='settled'?'<span class="muted">✓ settled</span>':`<button class="btn small" onclick="settleBorrowed('${b.id}')">✓ Repaid</button>`} <button class="btn small danger" onclick="delBudget('${b.id}')">✕</button></span></div>`;
+  document.getElementById('brList').innerHTML=`<p style="margin-top:10px">Pending to repay: <b>${fmtMoney(sumAmt(pend))}</b> to ${peopleCount(pend)} people</p>`+(pend.length?pend.map(row).join(''):'<p class="muted">You owe nobody right now. 🎉</p>')+(done.length?`<p class="muted" style="margin-top:12px">Settled:</p>`+done.map(row).join(''):'');
+}
+function addLent(){
+  const person=document.getElementById('lnPerson').value.trim(), amount=parseFloat(document.getElementById('lnAmount').value);
+  if(!person||isNaN(amount)) return alert('Please type who you lent to and how much.');
+  S.budget.push({id:uid(),title:'Lent to '+person,amount,type:'lent',person,status:'pending',category:'Lent',date:document.getElementById('lnDate').value||todayStr()});
+  document.getElementById('lnPerson').value=''; document.getElementById('lnAmount').value=''; save(); renderAll();
+}
+function addBorrowed(){
+  const person=document.getElementById('brPerson').value.trim(), amount=parseFloat(document.getElementById('brAmount').value);
+  if(!person||isNaN(amount)) return alert('Please type who you borrowed from and how much.');
+  S.budget.push({id:uid(),title:'Borrowed from '+person,amount,type:'borrowed',person,status:'pending',category:'Borrowed',date:document.getElementById('brDate').value||todayStr()});
+  document.getElementById('brPerson').value=''; document.getElementById('brAmount').value=''; save(); renderAll();
+}
+function settleLent(id){ const b=S.budget.find(x=>x.id===id); if(b){ b.status='settled'; save(); renderAll(); } }
+function settleBorrowed(id){ const b=S.budget.find(x=>x.id===id); if(b){ b.status='settled'; save(); renderAll(); } }
+function bgTypeChanged(){
+  const t=document.getElementById('bgType').value;
+  document.getElementById('bgSourceRow').style.display=t==='income'?'flex':'none';
+  document.getElementById('bgTagRow').style.display=t==='expense'?'flex':'none';
+  document.getElementById('bgPersonRow').style.display=(t==='lent'||t==='borrowed')?'flex':'none';
+}
+function renderBudgetTransactions(){
+  const f=document.getElementById('bgFilter').value;
+  let list=[...S.budget].sort((a,b)=>b.date.localeCompare(a.date));
+  if(f!=='all') list=list.filter(b=>b.type===f);
+  document.getElementById('bgList').innerHTML = list.length? list.map(b=>{
+    const sign=b.type==='income'?'+':b.type==='expense'?'−':b.type==='lent'?'→':'←';
+    const cls=b.type==='income'?'pill-low':b.type==='expense'?'pill-high':'pill-med';
+    const extra=b.type==='income'?` · ${esc(b.source||'Other')}`:b.type==='expense'?` · ${b.tag==='luxury'?'Luxury':'Basic need'}`:(b.person?` · ${esc(b.person)}`:'');
+    return `<div class="item"><span><b>${esc(b.title)}</b> <span class="muted">${esc(b.category)}${extra} · ${fmtDate(b.date)}${(b.type==='lent'||b.type==='borrowed')?(b.status==='settled'?' · ✓ settled':' · pending'):''}</span></span><span><span class="tag ${cls}">${sign}${fmtMoney(b.amount)}</span> <button class="btn small danger" onclick="delBudget('${b.id}')">✕</button></span></div>`;}).join('') : '<p class="muted">No transactions yet.</p>';
+}
+function renderBudgetCategories(){
+  const list=monthEntries();
+  const cats={};
+  list.filter(b=>b.type==='expense').forEach(b=>{ cats[b.category]=(cats[b.category]||0)+b.amount; });
+  const maxC=Math.max(...Object.values(cats),1);
+  const srcs={};
+  list.filter(b=>b.type==='income').forEach(b=>{ srcs[b.source||'Other']=(srcs[b.source||'Other']||0)+b.amount; });
+  document.getElementById('bgCatList').innerHTML = (Object.keys(cats).length? `<p><b>Spending by category:</b></p>`+Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`<p><b>${esc(c)}</b> — ${fmtMoney(v)}</p><div class="bar"><i style="width:${Math.round(v/maxC*100)}%"></i></div>`).join(''):'<p class="muted">No spending this month yet.</p>') + (Object.keys(srcs).length? `<p style="margin-top:14px"><b>Income by source:</b></p>`+Object.entries(srcs).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`<p><b>${esc(c)}</b> — ${fmtMoney(v)}</p>`).join(''):'') + (fixedSalary()?`<p class="muted" style="margin-top:10px">Plus fixed salary: ${fmtMoney(fixedSalary())} (set in the Salary tab).</p>`:'');
+}
+function renderBudgetReports(){
+  const now=new Date(), day=(now.getDay()+6)%7, mon=new Date(now); mon.setDate(now.getDate()-day);
+  const wk=[];
+  for(let i=0;i<7;i++){ const d=new Date(mon); d.setDate(mon.getDate()+i); const k=dateKey(d);
+    wk.push({label:DAYS[i],inc:sumAmt(S.budget.filter(b=>b.type==='income'&&b.date===k)),exp:sumAmt(S.budget.filter(b=>b.type==='expense'&&b.date===k))}); }
+  const maxW=Math.max(...wk.flatMap(x=>[x.inc,x.exp]),1);
+  const wInc=wk.reduce((s,x)=>s+x.inc,0), wExp=wk.reduce((s,x)=>s+x.exp,0);
+  document.getElementById('bgWeekRep').innerHTML=`<p class="muted">This week: income ${fmtMoney(wInc)} · spent ${fmtMoney(wExp)} · left ${fmtMoney(wInc-wExp)}</p>`+wk.map(x=>`<p style="margin:8px 0 2px"><b>${x.label}</b> — income ${fmtMoney(x.inc)} · spent ${fmtMoney(x.exp)}</p><div class="bar" style="margin:2px 0"><i style="width:${Math.round(x.inc/maxW*100)}%;background:#16a34a"></i></div><div class="bar" style="margin:2px 0"><i style="width:${Math.round(x.exp/maxW*100)}%;background:#dc2626"></i></div>`).join('');
+  const list=monthEntries();
+  const inc=monthIncomeTotal(), exp=monthSpent(), left=inc-exp;
+  const basic=sumAmt(list.filter(b=>b.type==='expense'&&b.tag!=='luxury')), lux=sumAmt(list.filter(b=>b.type==='expense'&&b.tag==='luxury'));
+  const srcs={}; list.filter(b=>b.type==='income').forEach(b=>{ srcs[b.source||'Other']=(srcs[b.source||'Other']||0)+b.amount; });
+  const srcLine=Object.entries(srcs).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`${esc(c)} ${fmtMoney(v)}`).join(' · ');
+  const last=new Date(now.getFullYear(),now.getMonth()-1,1), lastKey=monthKey(last);
+  const lastExp=sumAmt(S.budget.filter(b=>b.type==='expense'&&b.date&&b.date.startsWith(lastKey)));
+  const diff=exp-lastExp;
+  const comp=diff>0?`You spent ${fmtMoney(diff)} more than last month.` : diff<0?`You spent ${fmtMoney(-diff)} less than last month — nice saving! 🎉` : 'Same spending as last month.';
+  document.getElementById('bgMonthRep').innerHTML=`<p>Income: <b>${fmtMoney(inc)}</b> (entries ${fmtMoney(monthIncomeEntries())} + fixed salary ${fmtMoney(fixedSalary())}) &nbsp;·&nbsp; Spent: <b>${fmtMoney(exp)}</b> &nbsp;·&nbsp; Left: <b>${fmtMoney(left)}</b></p><p>Basic needs: <b>${fmtMoney(basic)}</b> &nbsp;·&nbsp; Luxuries: <b>${fmtMoney(lux)}</b></p><p class="muted">Income sources: ${srcLine||'none yet'}</p><p class="muted">Last month spent: ${fmtMoney(lastExp)}. ${comp}</p>`;
+  const mcats={}; list.filter(b=>b.type==='expense').forEach(b=>{ mcats[b.category]=(mcats[b.category]||0)+b.amount; });
+  document.getElementById('bgMonthRep').innerHTML+='<h3 style="margin-top:14px">🍩 Spending donut — this month</h3>'+donutHTML(mcats,exp);
+  const months={};
+  S.budget.forEach(b=>{ if(!b.date) return; const mk=b.date.slice(0,7); months[mk]=months[mk]||{inc:0,exp:0}; if(b.type==='income') months[mk].inc+=b.amount; if(b.type==='expense') months[mk].exp+=b.amount; });
+  const mkeys=Object.keys(months).sort().reverse();
+  document.getElementById('bgHist').innerHTML = mkeys.length? mkeys.map(mk=>`<div class="item"><span><b>${mk}</b></span><span>Income ${fmtMoney(months[mk].inc)} · Spent ${fmtMoney(months[mk].exp)} · Left ${fmtMoney(months[mk].inc-months[mk].exp)}</span></div>`).join('') + '<p class="muted">History counts entries only — fixed salary is counted in the current month overview.</p>' : '<p class="muted">No history yet — it builds itself as you add entries.</p>';
+}
+function addBudget(){
+  const title=document.getElementById('bgTitle').value.trim(), amount=parseFloat(document.getElementById('bgAmount').value);
+  const type=document.getElementById('bgType').value;
+  if(!title||isNaN(amount)) return alert('Please type a title and an amount.');
+  const entry={id:uid(),title,amount,type,category:document.getElementById('bgCat').value.trim()||(type==='lent'?'Lent':type==='borrowed'?'Borrowed':'Other'),date:document.getElementById('bgDate').value||todayStr()};
+  if(type==='income') entry.source=document.getElementById('bgSource').value;
+  if(type==='expense') entry.tag=document.getElementById('bgTag').value;
+  if(type==='lent'||type==='borrowed'){ entry.person=document.getElementById('bgPerson').value.trim(); entry.status='pending'; }
+  S.budget.push(entry);
+  document.getElementById('bgTitle').value=''; document.getElementById('bgAmount').value=''; save(); renderAll();
+}
+function delBudget(id){ if(!confirm('Delete this entry? This cannot be undone.')) return; S.budget=S.budget.filter(b=>b.id!==id); save(); renderAll(); }
+
+/* ---------- v1.5: currency, donut, profile photo ---------- */
+function curSym(){ return S.currency||'$'; }
+function fmtMoney(n){ const v=Number(n||0); return v<0? '-'+curSym()+Math.abs(v).toLocaleString('en-US') : curSym()+v.toLocaleString('en-US'); }
+function setCurrency(v){ S.currency=v; save(); renderAll(); }
+function donutHTML(cats,total){
+  const entries=Object.entries(cats).sort((a,b)=>b[1]-a[1]);
+  if(!entries.length||!total) return '<p class="muted">No spending this month yet.</p>';
+  const colors=['#dc2626','#2563eb','#16a34a','#d97706','#7c3aed','#0891b2','#db2777','#ea580c','#6b7280','#84cc16'];
+  let acc=0; const stops=entries.map(([c,v],i)=>{ const p=v/total*100; const s=colors[i%colors.length]+' '+acc+'% '+(acc+p)+'%'; acc+=p; return s; }).join(', ');
+  const legend=entries.map(([c,v],i)=>`<div class="item" style="padding:6px 0"><span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${colors[i%colors.length]}"></span> <b>${esc(c)}</b></span><span>${fmtMoney(v)} · ${Math.round(v/total*100)}%</span></div>`).join('');
+  return `<div class="row" style="align-items:center"><div class="donut" style="background:conic-gradient(${stops})"><div class="donut-center"><div class="muted" style="font-size:12px">Total spent</div><b>${fmtMoney(total)}</b></div></div><div style="flex:1;min-width:180px">${legend}</div></div>`;
+}
+function pfUpload(input){
+  const f=input.files&&input.files[0]; if(!f) return;
+  const rd=new FileReader();
+  rd.onload=()=>{ const img=new Image(); img.onload=()=>{ try{
+    const scale=Math.min(1,400/Math.max(img.width,img.height));
+    const cv=document.createElement('canvas'); cv.width=Math.round(img.width*scale); cv.height=Math.round(img.height*scale);
+    cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
+    S.profile.photo=cv.toDataURL('image/jpeg',0.85); save(); renderAll();
+  }catch(e){ alert('That photo is too large to store — please pick a smaller one.'); } }; img.src=rd.result; };
+  rd.readAsDataURL(f);
+}
+function removePfPhoto(){ S.profile.photo=''; save(); renderAll(); }
+
+/* ---------- Settings bits, backup, theme ---------- */
+function renderSettingsBits(){
+  document.getElementById('pfName').value=S.profile.name||'';
+  document.getElementById('pfInst').value=S.profile.institute||'';
+  document.getElementById('pfProg').value=S.profile.program||'';
+  document.getElementById('pfGoal').value=dailyGoal();
+  document.getElementById('curSelect').value=S.currency||'$';
+  document.getElementById('bgStudyPreset').value=(S.bg&&S.bg.study&&S.bg.study.preset)||'default';
+  document.getElementById('bgBudgetPreset').value=(S.bg&&S.bg.budget&&S.bg.budget.preset)||'default';
+  const nb=document.getElementById('backupNudge');
+  if(nb){ if(S.lastBackup&&Date.now()-S.lastBackup>30*86400000){ nb.innerHTML=`⚠️ Last backup was ${Math.round((Date.now()-S.lastBackup)/86400000)} days ago — <button class="btn small" onclick="exportData()">Export backup now</button>`; nb.style.display='block'; } else nb.style.display='none'; }
+  document.getElementById('tmFocusMin').value=S.timer.focus;
+  document.getElementById('tmBreakMin').value=S.timer.break;
+  syncColorUI();
+}
+function toggleTheme(){ S.theme=S.theme==='dark'?'light':'dark'; S.themeSet=true; document.body.classList.toggle('dark',S.theme==='dark'); save(); applyBg(); }
+function exportData(){ alert('This is the free demo — backups are available in the full version.'); }
+function importData(input){ alert('This is the free demo — importing is available in the full version.'); }
+function clearSample(){
+  if(!confirm('Clear the sample data and start empty? Your own entries stay.')) return;
+  const keep={subjects:S.subjects,timetable:[],assignments:[],exams:[],grades:[],notes:[],decks:[{id:uid(),title:'General',cards:[]}],habits:[],goals:[],sticky:[],budget:[],subs:[],savGoals:[],bg:S.bg,currency:S.currency,themeSet:S.themeSet,lastBackup:S.lastBackup,salary:S.salary,salaryLog:S.salaryLog,focus:{totalMin:0,byDay:{},bySubject:{}},profile:S.profile,colorMode:S.colorMode,timer:S.timer,mode:S.mode,theme:S.theme};
+  S=keep; save(); renderAll(); alert('Sample data cleared — fresh start! 🌱');
+}
+function resetAll(){
+  if(!confirm('Delete ALL data including your own entries? This cannot be undone. Export a backup first if you need it.')) return;
+  localStorage.removeItem(KEY); S=sampleData(); save(); buildNav(); renderAll(); maybeShowOnb(); alert('All data deleted — the planner has been reset to a blank start.');
+}
+
+
+/* ---------- v1.4: Today, achievements, search, ICS, backgrounds, subs, sound ---------- */
+function focusStreak(){
+  let s=0, d=new Date();
+  if(!S.focus.byDay[todayStr()]) d.setDate(d.getDate()-1);
+  while(true){ const k=dateKey(d); if((S.focus.byDay[k]||0)>0){ s++; d.setDate(d.getDate()-1); } else break; }
+  return s;
+}
+function renderAchievements(){
+  const totalMin=S.focus.totalMin||0, fStreak=focusStreak();
+  const doneCount=S.assignments.filter(a=>a.status==='done').length;
+  const knownCount=S.decks[0]?S.decks[0].cards.filter(c=>c.known).length:0;
+  const bestHabit=S.habits.length?Math.max(...S.habits.map(streakOf)):0;
+  const monthLeft=monthIncomeTotal()-monthSpent();
+  const badges=[
+    ['🔥','7-day focus streak',fStreak>=7],
+    ['🔥🔥','30-day focus streak',fStreak>=30],
+    ['⏱️','500 minutes focused',totalMin>=500],
+    ['⏱️⏱️','5000 minutes focused',totalMin>=5000],
+    ['✅','10 assignments done',doneCount>=10],
+    ['🃏','10 flashcards known',knownCount>=10],
+    ['🌱','7-day habit streak',bestHabit>=7],
+    ['💰','Saver month (money left)',monthLeft>0],
+  ];
+  document.getElementById('achBox').innerHTML=`<h3>🏆 Achievements</h3><p class="muted">Focus streak: ${fStreak} days · Total focus: ${totalMin} min</p>`+badges.map(b=>`<span class="tag" style="margin:3px;background:${b[2]?'var(--pri)':'var(--muted)'};opacity:${b[2]?1:.55}">${b[0]} ${b[1]}${b[2]?' ✓':' 🔒'}</span>`).join(' ');
+}
+function renderToday(){
+  const today=weekdayToday();
+  const classesToday=S.timetable.filter(c=>c.day===today);
+  const dueToday=S.assignments.filter(a=>a.due===todayStr()&&a.status!=='done');
+  const overdue=S.assignments.filter(a=>a.status!=='done'&&daysLeft(a.due)<0);
+  const plan=computePlan(), done=focusToday(), left=Math.max(0,plan.total-done), pct=plan.total?Math.min(100,Math.round(done/plan.total*100)):0;
+  const breakdown = plan.mode==='free' ? 'No classes today — free study day' : plan.items.map(it=>{ const d=doneForSubjectToday(it.id); return d>0? `${esc(subj(it.id).name)} ${d}/${it.min} min` : `${esc(subj(it.id).name)} ${it.min} min`; }).join(' • ');
+  const nextExam=[...S.exams].sort((a,b)=>a.date.localeCompare(b.date))[0];
+  const hb=S.habits.length? S.habits.map(h=>`<div class="item"><span><b>${esc(h.name)}</b> <span class="muted">🔥 ${streakOf(h)} days</span></span><button class="btn small ${h.days[todayStr()]?'ghost':''}" onclick="tickHabit('${h.id}')">${h.days[todayStr()]?'✓ Done':'Done today'}</button></div>`).join('') : '<p class="muted">No habits yet.</p>';
+  document.getElementById('todayBox').innerHTML=`
+    <p class="muted">${new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'})} — ${greeting()}!</p>
+    <h3>🗓️ Classes today</h3>${classesToday.length? classesToday.map(c=>`<div class="item"><span><b>${esc(subj(c.subjectId).name)}</b> <span class="muted">${esc(c.start)}–${esc(c.end)}${c.room?' · '+esc(c.room):''}</span></span></div>`).join('') : '<p class="muted">No classes today.</p>'}
+    <h3>🎯 Today's plan</h3><p class="muted" style="font-size:13px;margin:0">${breakdown}</p><p style="margin:6px 0 0">Target: <b>${plan.total} min</b> · Done: <b>${done} min</b> · Remaining: <b>${left} min</b></p><div class="bar"><i style="width:${pct}%"></i></div>
+    <div class="row" style="margin-top:8px"><button class="btn" onclick="showTab('focus')">⏱️ Open Focus timer</button><button class="btn ghost" onclick="openFocusMode()">🎯 Focus Mode</button></div>
+    <h3 style="margin-top:16px">📝 Due today &amp; overdue</h3>${dueToday.length? dueToday.map(a=>`<div class="item"><span><b>${esc(a.title)}</b> <span class="muted">${esc(subj(a.subjectId).name)}</span></span><span class="muted">Due today</span></div>`).join('') : '<p class="muted">Nothing due today. 🎉</p>'}${overdue.length? `<p style="color:var(--bad)"><b>Overdue:</b></p>`+overdue.map(a=>`<div class="item"><span><b>${esc(a.title)}</b> <span class="muted">${esc(subj(a.subjectId).name)}</span></span><span class="muted">${-daysLeft(a.due)} day(s) late</span></div>`).join('') : ''}
+    <h3 style="margin-top:16px">⏳ Next exam</h3>${nextExam? `<p><b>${esc(nextExam.title)}</b> — ${fmtDate(nextExam.date)} (${Math.max(0,daysLeft(nextExam.date))} days left)</p>` : '<p class="muted">No exams yet.</p>'}
+    <h3 style="margin-top:16px">🌱 Habits today</h3>${hb}`;
+}
+function openFocusMode(){ document.getElementById('fmModal').style.display='flex'; drawTimer(); }
+function closeFocusMode(){ document.getElementById('fmModal').style.display='none'; }
+function renderSearch(q){
+  const box=document.getElementById('searchResults');
+  q=(q||'').trim().toLowerCase();
+  if(!q){ box.style.display='none'; box.innerHTML=''; return; }
+  let out='';
+  const add=(label,items,tab,mode)=>{ if(items.length) out+=`<p><b>${label}</b></p>`+items.map(it=>`<div class="item" style="cursor:pointer" onclick="goTo('${tab}'${mode?`, '${mode}`:''})"><span>${it}</span></div>`).join(''); };
+  add('📝 Assignments', S.assignments.filter(a=>a.title.toLowerCase().includes(q)).map(a=>esc(a.title)), 'assignments');
+  add('📓 Notes', S.notes.filter(n=>(n.title+' '+n.body).toLowerCase().includes(q)).map(n=>esc(n.title)), 'notes');
+  add('⏳ Exams', S.exams.filter(e=>e.title.toLowerCase().includes(q)).map(e=>esc(e.title)), 'exams');
+  add('📚 Subjects', S.subjects.filter(s=>s.name.toLowerCase().includes(q)).map(s=>esc(s.name)), 'subjects');
+  add('📌 Sticky notes', S.sticky.filter(s=>s.text.toLowerCase().includes(q)).map(s=>esc(s.text.slice(0,60))), 'sticky');
+  add('🧾 Budget', S.budget.filter(b=>b.title.toLowerCase().includes(q)).map(b=>esc(b.title)), 'budget-transactions', 'budget');
+  box.innerHTML = out||'<p class="muted">Nothing found.</p>';
+  box.style.display='block';
+}
+function goTo(tab,mode){ if(mode&&S.mode!==mode){ switchMode(mode); } showTab(tab); }
+function exportICS(){
+  const evs=[];
+  S.exams.forEach(e=>{ evs.push({d:e.date.replace(/-/g,''),t:e.title+' ('+subj(e.subjectId).name+')'}); });
+  S.assignments.filter(a=>a.status!=='done').forEach(a=>{ evs.push({d:a.due.replace(/-/g,''),t:a.title+' (due)'}); });
+  if(!evs.length) return alert('No exams or open assignments to export.');
+  let ics='BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//My Study Planner//EN\r\n';
+  evs.forEach(e=>{ ics+=`BEGIN:VEVENT\r\nUID:${uid()}@studyplanner\r\nDTSTART;VALUE=DATE:${e.d}\r\nSUMMARY:${e.t.replace(/,/g,'')}\r\nEND:VEVENT\r\n`; });
+  ics+='END:VCALENDAR';
+  const blob=new Blob([ics],{type:'text/calendar'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='study-planner.ics'; a.click(); URL.revokeObjectURL(a.href);
+}
+const BG_PRESETS={
+  'default':{img:'',size:''},
+  'sunset':{img:'linear-gradient(135deg,#fde68a,#fca5a5,#c4b5fd)',size:''},
+  'ocean':{img:'linear-gradient(135deg,#bae6fd,#a5f3fc,#c7d2fe)',size:''},
+  'forest':{img:'linear-gradient(135deg,#bbf7d0,#a7f3d0,#fef08a)',size:''},
+  'rose':{img:'linear-gradient(135deg,#fecdd3,#fbcfe8,#ddd6fe)',size:''},
+  'midnight':{img:'linear-gradient(135deg,#312e81,#1e1b4b,#0f172a)',size:''},
+  'dots':{img:'radial-gradient(circle, rgba(109,40,217,.14) 1.5px, transparent 1.5px)',size:'24px 24px'},
+};
+function applyBg(){
+  const setting=(S.bg&&S.bg[S.mode])||{type:'preset',preset:'default'};
+  const b=document.body.style;
+  if(setting.type==='custom'&&setting.custom){
+    const scrim=S.theme==='dark'?'linear-gradient(rgba(10,8,40,.55),rgba(10,8,40,.55))':'linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,.5))';
+    b.backgroundImage=scrim+`, url(${setting.custom})`;
+    b.backgroundSize='cover'; b.backgroundAttachment='fixed';
+  } else {
+    const pr=BG_PRESETS[setting.preset]||BG_PRESETS['default'];
+    b.backgroundImage=pr.img; b.backgroundSize=pr.size||''; b.backgroundAttachment='';
+  }
+}
+function setBgPreset(mode,val){ if(!S.bg) S.bg={}; S.bg[mode]={type:'preset',preset:val}; save(); applyBg(); }
+function removeBgCustom(mode){ if(!S.bg) S.bg={}; S.bg[mode]={type:'preset',preset:'default'}; save(); applyBg(); renderAll(); }
+function bgUpload(mode,input){
+  const f=input.files&&input.files[0]; if(!f) return;
+  const rd=new FileReader();
+  rd.onload=()=>{ const img=new Image(); img.onload=()=>{ try{
+    const maxW=1400, scale=Math.min(1,maxW/img.width);
+    const cv=document.createElement('canvas'); cv.width=Math.round(img.width*scale); cv.height=Math.round(img.height*scale);
+    const ctx=cv.getContext('2d'); ctx.drawImage(img,0,0,cv.width,cv.height);
+    const data=cv.toDataURL('image/jpeg',0.72);
+    if(!S.bg) S.bg={};
+    S.bg[mode]={type:'custom',custom:data}; save(); applyBg(); renderAll();
+  }catch(e){ alert('That photo is too large to store — please pick a smaller one.'); } }; img.src=rd.result; };
+  rd.readAsDataURL(f);
+}
+function renderBudgetSubs(){
+  const list=S.subs||[];
+  const total=sumAmt(list);
+  const now=new Date(), today0=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  let next=null;
+  list.forEach(s=>{ let y=now.getFullYear(), m=now.getMonth();
+    let day=Math.min(s.day, new Date(y,m+1,0).getDate()); let d=new Date(y,m,day);
+    if(d<today0){ m++; if(m>11){m=0;y++;} day=Math.min(s.day, new Date(y,m+1,0).getDate()); d=new Date(y,m,day); }
+    if(!next||d<next.d) next={d, s}; });
+  const nextLine=next?`${esc(next.s.title)} in ${Math.round((next.d-today0)/86400000)} days (${fmtMoney(next.s.amount)})`:'No subscriptions yet.';
+  document.getElementById('subBox').innerHTML=`<p style="margin-top:10px">Monthly total: <b>${fmtMoney(total)}</b> &nbsp;·&nbsp; Next due: <b>${nextLine}</b></p>`;
+  document.getElementById('subList').innerHTML = list.length? list.map(s=>`<div class="item"><span><b>${esc(s.title)}</b> <span class="muted">${esc(s.category||'')} · Day ${s.day} of month</span></span><span><b>${fmtMoney(s.amount)}</b>/mo <button class="btn small danger" onclick="delSub('${s.id}')">✕</button></span></div>`).join('') : '<p class="muted">No subscriptions yet.</p>';
+}
+function addSub(){
+  const title=document.getElementById('subTitle').value.trim(), amount=parseFloat(document.getElementById('subAmount').value);
+  let day=parseInt(document.getElementById('subDay').value)||1; day=Math.min(31,Math.max(1,day));
+  if(!title||isNaN(amount)) return alert('Please type a title and an amount.');
+  if(!S.subs) S.subs=[];
+  S.subs.push({id:uid(),title,amount,day,category:document.getElementById('subCat').value.trim()||'Other'});
+  document.getElementById('subTitle').value=''; document.getElementById('subAmount').value=''; save(); renderAll();
+}
+function delSub(id){ if(!confirm('Delete this subscription? This cannot be undone.')) return; S.subs=(S.subs||[]).filter(s=>s.id!==id); save(); renderAll(); }
+let audioCtx=null;
+function ensureAudio(){ try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); }catch(e){} }
+function beep(){ try{ if(!audioCtx) return; const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination); o.frequency.value=880; g.gain.setValueAtTime(0.12,audioCtx.currentTime); o.start(); o.stop(audioCtx.currentTime+0.4); }catch(e){} }
+
+
+function addSavGoal(){ const title=document.getElementById('savTitle').value.trim(), target=parseFloat(document.getElementById('savTarget').value); if(!title||isNaN(target)||target<=0) return alert('Please type a goal name and a target amount.'); if(!S.savGoals) S.savGoals=[]; S.savGoals.push({id:uid(),title,target,saved:0}); document.getElementById('savTitle').value=''; document.getElementById('savTarget').value=''; save(); renderAll(); }
+function savAdd(id,dir){ const inp=document.getElementById('savAmt-'+id); const amt=parseFloat(inp&&inp.value); if(isNaN(amt)||amt<=0) return alert('Type an amount first.'); const g=(S.savGoals||[]).find(x=>x.id===id); if(!g) return; g.saved=Math.max(0,Math.round((g.saved+dir*amt)*100)/100); save(); renderAll(); }
+function delSavGoal(id){ if(!confirm('Delete this savings goal? This cannot be undone.')) return; S.savGoals=(S.savGoals||[]).filter(x=>x.id!==id); save(); renderAll(); }
+function renderBudgetSavings(){ const list=S.savGoals||[]; const el=document.getElementById('savList'); if(!el) return; el.innerHTML=list.length? list.map(g=>{ const pct=g.target?Math.min(100,Math.round(g.saved/g.target*100)):0; return '<div class="item"><span style="flex:1"><b>'+esc(g.title)+'</b> <span class="muted">'+fmtMoney(g.saved)+' of '+fmtMoney(g.target)+' ('+pct+'%)</span><div class="bar"><i style="width:'+pct+'%"></i></div></span><span class="row"><input type="number" id="savAmt-'+g.id+'" placeholder="Amount" style="max-width:90px;margin:0"><button class="btn small" onclick="savAdd(\''+g.id+'\',1)">+ Add</button><button class="btn small ghost" onclick="savAdd(\''+g.id+'\',-1)">− Take out</button><button class="btn small danger" onclick="delSavGoal(\''+g.id+'\')">✕</button></span></div>'; }).join('') : '<p class="muted">No savings goals yet — add your first one above.</p>'; }
+function renderAll(){
+  fillSubjectSelects();
+  renderHeader(); renderDashboard(); renderToday(); renderAchievements(); renderBudgetHome(); renderSubjects(); renderTimetable(); renderAssignments(); renderExams();
+  renderGrades(); renderNotes(); renderCards(); drawTimer();
+  renderHabits(); renderCalendar(); renderSticky(); renderReports();
+  renderBudgetOverview(); renderBudgetSubs(); renderBudgetSavings(); renderBudgetSalary(); renderBudgetFreelance(); renderBudgetExpenses(); renderBudgetLent(); renderBudgetBorrowed(); renderBudgetTransactions(); renderBudgetCategories(); renderBudgetReports();
+  renderSettingsBits();
+}
+buildNav();
+if(!S.themeSet){ const hh=new Date().getHours(); if(hh>=20||hh<7) S.theme='dark'; }
+document.getElementById('dashGrid').classList.add('anim');
+document.getElementById('budgetGrid').classList.add('anim');
+document.body.classList.toggle('dark',S.theme==='dark');
+applyColorMode();
+applyBg();
+showHome();
+maybeShowOnb();
+</script>
+</body>
+</html>
