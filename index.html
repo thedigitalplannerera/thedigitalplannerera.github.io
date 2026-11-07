@@ -17,21 +17,13 @@
   header p.sub{max-width:640px;margin:14px auto 0;font-size:15.5px;line-height:1.55;color:#e9e2cf}
   .badge{display:inline-block;margin-top:16px;background:var(--gold);color:var(--navy);font-weight:700;font-size:13.5px;padding:6px 16px;border-radius:999px;letter-spacing:.4px}
   main{max-width:1060px;margin:0 auto;padding:10px 16px}
-  .sec{margin-top:36px}
-  .sec h2.secname{font-size:24px;color:var(--navy);border-bottom:3px solid var(--gold);padding-bottom:8px;margin-bottom:20px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
-  .card{background:#fff;border:1px solid #e5dcc3;border-top:4px solid var(--gold);border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(18,35,63,.08);display:flex;flex-direction:column}
-  .card img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
-  .card .body{padding:18px 18px 20px;display:flex;flex-direction:column;flex:1}
-  .card h3{font-size:20px;color:var(--navy);line-height:1.25}
-  .card p{font-size:14.5px;line-height:1.55;margin-top:8px;color:#43536e;flex:1}
-  .price{margin-top:12px;font-size:15px;color:var(--navy)}
-  .price b{font-size:19px}
-  .price s{color:#98a2b3;font-weight:normal}
-  .btns{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
-  a.btn{text-decoration:none;font-weight:700;font-size:14.5px;padding:11px 16px;border-radius:10px;text-align:center;flex:1;white-space:nowrap}
-  a.try{background:var(--navy);color:#fff}
-  a.buy{background:var(--gold);color:var(--navy)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;margin-top:36px}
+  a.seccard{display:block;text-decoration:none;background:#fff;border:1px solid #e5dcc3;border-top:4px solid var(--gold);border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(18,35,63,.08)}
+  a.seccard img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+  a.seccard .body{padding:18px}
+  a.seccard h2{font-size:22px;color:var(--navy);line-height:1.25}
+  a.seccard p{font-size:14.5px;line-height:1.55;margin-top:8px;color:#43536e}
+  a.seccard .go{display:inline-block;margin-top:12px;font-weight:700;font-size:14.5px;color:var(--navy);background:var(--gold);padding:9px 16px;border-radius:9px}
   .how{max-width:760px;margin:40px auto 0;background:#fff;border:1px solid #e5dcc3;border-radius:14px;padding:22px 24px}
   .how h3{color:var(--navy);font-size:18px;margin-bottom:10px}
   .how li{font-size:14.5px;line-height:1.6;margin-left:18px;color:#43536e}
@@ -44,123 +36,41 @@
   <img src="seal.png" alt="The Digital Planner Era seal">
   <h1>The Digital Planner Era — <span>Free Demos &amp; Samples</span></h1>
   <p class="tag">Every Era of Your Life, Beautifully Planned.</p>
-  <p class="sub">Try our interactive planners right here in your browser — filled with sample data so you can click everything. Prefer paper? Open a free filled-in sample of the printable editions. No download, no sign-up, no app to install.</p>
+  <p class="sub">Pick a section to explore its planners. Try the interactive planners right here in your browser — filled with sample data so you can click everything — or peek inside the printable PDF editions with free filled-in sample pages. No download, no sign-up, no app to install.</p>
   <div class="badge">FREE TO TRY — NOTHING SAVES IN A DEMO</div>
 </header>
 
 <main>
+  <div class="grid">
 
-  <section class="sec">
-    <h2 class="secname">🎄 Christmas</h2>
-    <div class="grid">
-
-      <div class="card">
-        <img src="cp.jpg" alt="Christmas Planner 2026">
-        <div class="body">
-          <h3>Christmas Planner 2026 — Interactive</h3>
-          <p>The whole season in one planner — gifts, budget, advent, meals, decor, travel and more across 15 sections, with a live countdown to Christmas Day.</p>
-          <div class="price"><s>$19.99</s> <b>$9.99</b> launch sale</div>
-          <div class="btns">
-            <a class="btn try" href="christmas-planner-demo.html">▶ Try Free Demo</a>
-            <a class="btn buy" href="https://www.etsy.com/uk/listing/4609607630/">Buy on Etsy</a>
-          </div>
-        </div>
+    <a class="seccard" href="christmas.html">
+      <img src="cp.jpg" alt="Christmas planners">
+      <div class="body">
+        <h2>🎄 Christmas</h2>
+        <p>3 interactive planners — the full Christmas Planner, the Gift Tracker and the Secret Santa Generator. Open one and try the live demo.</p>
+        <span class="go">View 3 planners →</span>
       </div>
+    </a>
 
-      <div class="card">
-        <img src="gt.jpg" alt="Christmas Gift Tracker">
-        <div class="body">
-          <h3>Christmas Gift Tracker — Interactive</h3>
-          <p>Every gift from idea to Given — master list, per-person budgets, delivery tracking, wish lists and card list, all with running totals.</p>
-          <div class="price"><s>$9.99</s> <b>$4.99</b> launch sale</div>
-          <div class="btns">
-            <a class="btn try" href="gift-tracker-demo.html">▶ Try Free Demo</a>
-            <a class="btn buy" href="https://www.etsy.com/uk/listing/4610281568/christmas-gift-tracker-interactive">Buy on Etsy</a>
-          </div>
-        </div>
+    <a class="seccard" href="new-year-goals.html">
+      <img src="ny.jpg" alt="New Year and goals planners">
+      <div class="body">
+        <h2>🎆 New Year &amp; Goals</h2>
+        <p>2 planners for 2027 — the interactive New Year Planner (goals, habits, mood, budget) and its 187-page printable PDF edition.</p>
+        <span class="go">View 2 planners →</span>
       </div>
+    </a>
 
-      <div class="card">
-        <img src="santa.jpg" alt="Secret Santa Generator">
-        <div class="body">
-          <h3>Secret Santa Generator — Interactive</h3>
-          <p>Run a fair, secret draw in minutes — add your group, set exclusions and budgets, watch the suspense draw, then print private slips. Nobody sees anyone else's match.</p>
-          <div class="price"><s>$7.99</s> <b>$3.99</b> launch sale</div>
-          <div class="btns">
-            <a class="btn try" href="secret-santa-demo.html">▶ Try Free Demo</a>
-            <a class="btn buy" href="https://www.etsy.com/uk/listing/4610996457/secret-santa-generator-interactive">Buy on Etsy</a>
-          </div>
-        </div>
+    <a class="seccard" href="christmas-pdf-planners.html">
+      <img src="cppdf.jpg" alt="Christmas PDF planners">
+      <div class="body">
+        <h2>📄 Christmas PDF Planners</h2>
+        <p>2 printable editions — the 78-page Christmas Planner and the 44-page Gift Tracker book. Open a free filled-in sample of each.</p>
+        <span class="go">View 2 planners →</span>
       </div>
+    </a>
 
-    </div>
-  </section>
-
-  <section class="sec">
-    <h2 class="secname">🎆 New Year &amp; Goals</h2>
-    <div class="grid">
-
-      <div class="card">
-        <img src="ny.jpg" alt="New Year 2027 Planner">
-        <div class="body">
-          <h3>New Year 2027 Planner — Interactive</h3>
-          <p>Goals, habits, mood, budget and a full year of monthly, weekly and daily planning — with streaks, a focus timer and a countdown to 2027.</p>
-          <div class="price"><s>$12.99</s> <b>$6.49</b> launch sale</div>
-          <div class="btns">
-            <a class="btn try" href="new-year-2027-demo.html">▶ Try Free Demo</a>
-            <a class="btn buy" href="https://www.etsy.com/uk/listing/4610448194/new-year-2027-planner-interactive">Buy on Etsy</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="nypdf.jpg" alt="New Year 2027 Planner — Printable PDF">
-        <div class="body">
-          <h3>New Year 2027 Planner — Printable PDF</h3>
-          <p>The paper edition: 187 dated pages for 2027 — goals, monthly and weekly planning, habit and mood trackers, budgets and a bills tracker. Fillable on screen too.</p>
-          <div class="price"><s>$15.99</s> <b>$7.99</b> launch sale</div>
-          <div class="btns">
-            <a class="btn try" href="sample-new-year-2027.html">📄 View Free Sample</a>
-            <a class="btn buy" href="https://www.etsy.com/listing/4611725864/2027-planner-printable-dated-new-year">Buy on Etsy</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section class="sec">
-    <h2 class="secname">📄 Christmas PDF Planners</h2>
-    <div class="grid">
-
-      <div class="card">
-        <img src="cppdf.jpg" alt="Christmas Planner — Printable PDF">
-        <div class="body">
-          <h3>Christmas Planner — Printable PDF</h3>
-          <p>The paper edition of the Christmas Planner: 78 pages — gift lists, budgets, advent, meals, decor, travel and storage, in 4 sizes with an ink-friendly edition.</p>
-          <div class="price"><s>$15.99</s> <b>$7.99</b> launch sale</div>
-          <div class="btns">
-            <a class="btn try" href="sample-christmas-planner.html">📄 View Free Sample</a>
-            <a class="btn buy" href="https://www.etsy.com/listing/4611149522/christmas-planner-printable-2026-78-page">Buy on Etsy</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="gtpdf.jpg" alt="Christmas Gift Tracker — Printable PDF">
-        <div class="body">
-          <h3>Christmas Gift Tracker — Printable PDF</h3>
-          <p>Santa's List Book: 44 pages of gift tracking — stamp-along status circles, delivery labels with a big DELIVERED stamp, budgets, hiding places and gift tags.</p>
-          <div class="price"><s>$9.99</s> <b>$4.99</b> launch sale</div>
-          <div class="btns">
-            <a class="btn try" href="sample-gift-tracker.html">📄 View Free Sample</a>
-            <a class="btn buy" href="https://www.etsy.com/listing/4611701705/christmas-gift-tracker-printable">Buy on Etsy</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
+  </div>
 
   <div class="how">
     <h3>How the free demos &amp; samples work</h3>
