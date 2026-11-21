@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="goldenteal">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goal &amp; Habit Tracker 2027 — The Digital Planner Era</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--radius:16px;--shadow:0 4px 18px rgba(30,40,35,.10)}
+html[data-theme="goldenteal"]{--bg:#FBF5E7;--bg2:#F4EAD2;--surface:#FFFDF6;--card:#FFFFFF;--ink:#17352F;--muted:#68796F;--accent:#0E6B5C;--accentSoft:#DDEEE8;--gold:#C9962C;--gold2:#E9B44C;--line:#E8DCC0;--track:#F0E5CB;--good:#2E9E6B;--bad:#D96C4F;--dark:0}
+html[data-theme="rose"]{--bg:#FBF0EE;--bg2:#F6E0DA;--surface:#FFFBF9;--card:#FFFFFF;--ink:#40282B;--muted:#8A6E6E;--accent:#B04A5A;--accentSoft:#F7DEE1;--gold:#C9962C;--gold2:#E4B04A;--line:#EFD5CF;--track:#F6E3DE;--good:#2E9E6B;--bad:#C6503F;--dark:0}
+html[data-theme="sage"]{--bg:#F2F5EA;--bg2:#E2EAD3;--surface:#FCFDF7;--card:#FFFFFF;--ink:#2C3A24;--muted:#71806A;--accent:#5C7A3D;--accentSoft:#E2EBD2;--gold:#B98A2F;--gold2:#D9AC45;--line:#DCE4CB;--track:#E7EDD8;--good:#3E8E4F;--bad:#D96C4F;--dark:0}
+html[data-theme="sky"]{--bg:#EDF4FA;--bg2:#D9EAF5;--surface:#FAFCFE;--card:#FFFFFF;--ink:#1E3448;--muted:#687E90;--accent:#2E6FA8;--accentSoft:#DCEBF6;--gold:#C08A24;--gold2:#DFAE4A;--line:#D3E2EE;--track:#E0ECF5;--good:#2E9E6B;--bad:#D96C4F;--dark:0}
+html[data-theme="peach"]{--bg:#FCF3E7;--bg2:#F8E4CC;--surface:#FFFBF4;--card:#FFFFFF;--ink:#453322;--muted:#8A7460;--accent:#C46A28;--accentSoft:#F9E3CB;--gold:#BE8A24;--gold2:#DFAE4A;--line:#F0DEC4;--track:#F7E8D2;--good:#2E9E6B;--bad:#C6503F;--dark:0}
+html[data-theme="midnight"]{--bg:#0D2420;--bg2:#081713;--surface:#14302A;--card:#183830;--ink:#F2EAD6;--muted:#9DB4AA;--accent:#3FBFA4;--accentSoft:#1D453B;--gold:#E0B34C;--gold2:#F0C96A;--line:#265045;--track:#1D453B;--good:#4CC084;--bad:#E8836B;--dark:1}
+html[data-theme="plum"]{--bg:#241430;--bg2:#180C22;--surface:#2F1B40;--card:#37224C;--ink:#F3EAF8;--muted:#B4A3C4;--accent:#B07FE8;--accentSoft:#452A63;--gold:#E0B34C;--gold2:#F0C96A;--line:#4A3468;--track:#452A63;--good:#4CC084;--bad:#E8836B;--dark:1}
+html[data-theme="forest"]{--bg:#14220F;--bg2:#0C1709;--surface:#1D3016;--card:#243B1C;--ink:#EFF5E2;--muted:#A3B494;--accent:#8CC084;--accentSoft:#2E4A24;--gold:#E0B34C;--gold2:#F0C96A;--line:#38542C;--track:#2E4A24;--good:#6BCB8B;--bad:#E8836B;--dark:1}
+html[data-theme="charcoal"]{--bg:#1D1D20;--bg2:#121214;--surface:#28282C;--card:#303034;--ink:#F4F0E4;--muted:#A8A49A;--accent:#D9D4C5;--accentSoft:#3D3D42;--gold:#E3B84E;--gold2:#F2CE72;--line:#45454A;--track:#3D3D42;--good:#4CC084;--bad:#E8836B;--dark:1}
+html[data-theme="berry"]{--bg:#2B0F1B;--bg2:#1D0A12;--surface:#3A1424;--card:#451A2D;--ink:#F9EBF0;--muted:#C29DAD;--accent:#E87FA3;--accentSoft:#572238;--gold:#E0B34C;--gold2:#F0C96A;--line:#5E2A40;--track:#572238;--good:#4CC084;--bad:#F0956B;--dark:1}
+html.nocolour{--accent:#7A7A72;--accentSoft:#E8E8E2;--gold:#9A958A;--gold2:#B5B0A4}
+body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(160deg,var(--bg),var(--bg2));color:var(--ink);min-height:100vh;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body.hasbg{background-size:cover;background-position:center;background-attachment:fixed}
+a{color:var(--accent)}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:15px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--gold2);border-color:var(--gold)}
+label{font-size:13px;font-weight:600;color:var(--muted);display:block;margin:10px 0 4px}
+.wrap{max-width:1080px;margin:0 auto;padding:14px 16px 70px}
+#demoBanner{display:none;background:linear-gradient(90deg,var(--gold),var(--gold2));color:#231a02;font-weight:700;text-align:center;padding:9px 12px;font-size:14px;letter-spacing:.3px}
+body.demo #demoBanner{display:block}
+.appbar{display:flex;align-items:center;gap:12px;padding:14px 4px 6px}
+.avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(145deg,var(--gold),var(--gold2));color:#fff;font-weight:800;font-size:22px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex:none;border:2.5px solid var(--gold2);box-shadow:var(--shadow)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.appbar .who{flex:1;min-width:0}
+.appbar .who .nm{font-size:19px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.appbar .who .wd{font-size:13px;color:var(--muted)}
+.iconbtn{background:var(--card);border:1.5px solid var(--line);border-radius:12px;width:44px;height:44px;font-size:20px;display:flex;align-items:center;justify-content:center;transition:transform .15s,box-shadow .15s}
+.iconbtn:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.hero{background:linear-gradient(135deg,var(--accent),var(--gold));border-radius:22px;color:#fff;padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero:after{content:"✦";position:absolute;right:18px;top:6px;font-size:64px;opacity:.22}
+.hero h1{font-size:26px;line-height:1.15}
+.hero .sub{opacity:.92;font-size:14px;margin-top:4px}
+.hero .count{margin-top:12px;display:inline-block;background:rgba(255,255,255,.18);padding:6px 14px;border-radius:999px;font-weight:700;font-size:14px}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:820px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.tile{background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px;text-align:left;width:100%;transition:transform .16s,box-shadow .16s,border-color .16s;position:relative}
+.tile:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(30,40,35,.16);border-color:var(--gold)}
+.tile .ic{font-size:26px}
+.tile .tt{font-weight:800;font-size:16px;margin:6px 0 2px}
+.tile .ds{font-size:12.5px;color:var(--muted);min-height:30px}
+.bar{height:9px;background:var(--track);border-radius:99px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:99px;transition:width .4s}
+.btn{background:var(--accent);color:#fff;border:none;border-radius:11px;padding:10px 16px;font-weight:700;font-size:14.5px;transition:transform .15s,box-shadow .15s,filter .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow);filter:brightness(1.07)}
+.btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#26190а;color:#26190A}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1.5px solid var(--line)}
+.btn.danger{background:var(--bad)}
+.btn.small{padding:6px 11px;font-size:13px;border-radius:9px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.chip{display:inline-flex;align-items:center;gap:5px;background:var(--accentSoft);color:var(--ink);border-radius:999px;padding:4px 11px;font-size:12.5px;font-weight:600;margin:2px}
+.chip.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#26190A}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.spread{justify-content:space-between}
+.sec-head{display:flex;align-items:center;gap:12px;margin:8px 0 14px}
+.sec-head h2{font-size:23px}
+.sec-head .back{flex:none}
+.mut{color:var(--muted);font-size:13.5px}
+.small{font-size:12.5px}
+.item{background:var(--surface);border:1.5px solid var(--line);border-radius:13px;padding:12px 14px;margin-bottom:10px;transition:box-shadow .15s,transform .15s}
+.item:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+.item .t{font-weight:700;font-size:15.5px}
+.tick{width:30px;height:30px;border-radius:9px;border:2px solid var(--line);background:var(--surface);font-size:16px;display:inline-flex;align-items:center;justify-content:center;flex:none;transition:all .15s}
+.tick:hover{border-color:var(--gold);transform:scale(1.08)}
+.tick.on{background:linear-gradient(135deg,var(--accent),var(--gold));color:#fff;border-color:transparent}
+table.grid-t{border-collapse:collapse;width:100%;font-size:12.5px}
+table.grid-t th,table.grid-t td{border:1px solid var(--line);padding:4px;text-align:center}
+table.grid-t th{background:var(--accentSoft);font-weight:700}
+table.grid-t td.day{cursor:pointer;min-width:26px;height:28px}
+table.grid-t td.day:hover{background:var(--accentSoft)}
+table.grid-t td.on{background:var(--accent);color:#fff;font-weight:800}
+table.grid-t td.today{outline:2.5px solid var(--gold);outline-offset:-2.5px}
+.pix{display:grid;grid-template-columns:repeat(31,1fr);gap:2.5px}
+.pix i{aspect-ratio:1;border-radius:3px;background:var(--track);display:block}
+.pix i.m1{background:#F2B8A0}.pix i.m2{background:#F6D492}.pix i.m3{background:#F9ECB8}.pix i.m4{background:#BFE3B4}.pix i.m5{background:#7FC98F}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal .dow{font-size:12px;font-weight:700;color:var(--muted);text-align:center;padding:4px}
+.cal .cd{background:var(--surface);border:1.5px solid var(--line);border-radius:11px;min-height:74px;padding:6px;font-size:12px;transition:box-shadow .15s,transform .15s}
+.cal .cd:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+.cal .cd.today{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold2) inset}
+.cal .cd .n{font-weight:800;font-size:14px}
+.ringwrap{position:relative;display:inline-block}
+.ringwrap .rv{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800}
+.modal-bg{position:fixed;inset:0;background:rgba(10,15,12,.55);display:flex;align-items:flex-start;justify-content:center;padding:22px 12px;z-index:60;overflow:auto}
+.modal{background:var(--card);border-radius:20px;max-width:560px;width:100%;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h3{font-size:20px;margin-bottom:6px}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 20px;border-radius:999px;font-weight:600;font-size:14px;z-index:90;opacity:0;pointer-events:none;transition:opacity .25s;max-width:92vw;text-align:center}
+#toast.show{opacity:1}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:80}
+.searchbar{display:flex;gap:8px}
+.kbd-num{font-size:30px;font-weight:800}
+details.more{background:var(--surface);border:1.5px solid var(--line);border-radius:13px;padding:10px 14px;margin-bottom:10px}
+details.more summary{cursor:pointer;font-weight:700}
+textarea{min-height:74px;resize:vertical}
+.note-paper{border-radius:10px;padding:12px;min-height:110px;background:var(--surface);border:1.5px solid var(--line);white-space:pre-wrap}
+.note-lined{background-image:repeating-linear-gradient(transparent,transparent 25px,var(--line) 26px)}
+.note-dotted{background-image:radial-gradient(var(--line) 1.4px,transparent 1.5px);background-size:18px 18px}
+.note-gridp{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:20px 20px}
+.honesty{margin-top:26px;text-align:center;color:var(--muted);font-size:12.5px;border-top:1.5px dashed var(--line);padding-top:14px}
+.shell{display:flex;gap:18px;align-items:flex-start}
+#view{flex:1;min-width:0}
+#sidebar{width:228px;flex:none;position:sticky;top:14px;background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:10px;box-shadow:var(--shadow);max-height:calc(100vh - 28px);overflow:auto}
+body.on-home #sidebar{display:none}
+#sidebar button{display:flex;gap:9px;align-items:center;width:100%;text-align:left;background:none;border:none;padding:8px 10px;border-radius:10px;font-size:14px;font-weight:600;color:var(--ink);font-family:inherit;cursor:pointer}
+#sidebar button:hover{background:var(--accentSoft)}
+#sidebar button.sel{background:linear-gradient(135deg,var(--accent),var(--gold));color:#fff}
+#menuBtn{display:none}
+@media(max-width:1023px){#sidebar{position:fixed;left:0;top:0;bottom:0;width:252px;z-index:65;border-radius:0;transform:translateX(-106%);transition:transform .25s;max-height:none}#sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.35)}body:not(.on-home) #menuBtn{display:flex}}
+.sec-head .infobtn{margin-left:auto;width:40px;height:40px;font-size:18px;flex:none}
+.avatar{cursor:pointer}
+.hcal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.hcal .dow{font-size:11.5px;font-weight:700;color:var(--muted);text-align:center;padding:2px 0}
+.hcell{aspect-ratio:1;border-radius:10px;border:2px solid var(--line);background:var(--surface);font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit}
+.hcell:hover{border-color:var(--gold)}
+.hcell.on{background:linear-gradient(135deg,var(--accent),var(--gold));color:#fff;border-color:transparent}
+.hcell.today{outline:2.5px solid var(--gold);outline-offset:-2.5px}
+.hcell.future{opacity:.45}
+.pix i{cursor:pointer}
+.cal .cd{cursor:pointer}
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-height:320px;overflow:auto;padding:2px}
+.vpreset{border:none;border-radius:12px;padding:14px 8px;color:#fff;font-weight:700;font-size:12.5px;cursor:pointer;text-align:center;font-family:inherit}
+.vpreset .ve{font-size:30px;display:block;margin-bottom:5px}
+.vpreset:hover{filter:brightness(1.1)}
+.focusmode{position:fixed;inset:0;background:var(--bg);z-index:70;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;text-align:center}
+.focusmode .clock{font-size:84px;font-weight:800;font-variant-numeric:tabular-nums}
+.swatch{width:38px;height:38px;border-radius:50%;border:3px solid transparent;cursor:pointer;flex:none}
+.swatch.sel{border-color:var(--ink);transform:scale(1.1)}
+.themerow{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}
+.themebtn{border:2px solid var(--line);background:var(--surface);border-radius:11px;padding:8px 12px;font-weight:600;font-size:13.5px}
+.themebtn.sel{border-color:var(--gold);background:var(--accentSoft)}
+@media print{
+ body{background:#fff!important}
+ .appbar,#demoBanner,.no-print,#toast,#confetti,#sidebar{display:none!important}
+ .wrap{max-width:none;padding:0}
+ #printArea{display:block!important}
+ #view{display:none}
+ .card,.item,.tile{box-shadow:none!important}
+}
+#printArea{display:none}
+.pg-break{page-break-after:always}
+</style>
+</head>
+<body>
+<div id="demoBanner">✦ DEMO — Sample data only · Nothing you change here is saved · The full version starts blank and saves on your device ✦</div>
+<div class="wrap">
+  <div class="appbar">
+    <button class="iconbtn no-print" id="menuBtn" title="All sections" onclick="toggleSidebar()">☰</button>
+    <div class="avatar" id="avatar" title="Tap to change your photo" onclick="document.querySelector('#avatarFile').click()">✦</div>
+    <div class="who"><div class="nm" id="whoName">Welcome</div><div class="wd" id="whoWord">Goal &amp; Habit Tracker · 2027</div></div>
+    <button class="iconbtn no-print" id="searchBtn" title="Search">🔍</button>
+    <button class="iconbtn no-print" id="themeBtn" title="Themes & colours" onclick="themePanel()">🎨</button>
+  </div>
+  <input type="file" id="avatarFile" accept="image/*" style="display:none" onchange="avatarPicked(this)">
+  <div class="shell"><aside id="sidebar" class="no-print"></aside><main id="view"></main></div>
+  <div id="printArea"></div>
+  <div class="honesty" id="honesty"></div>
+</div>
+<div id="modalRoot"></div>
+<div id="toast"></div>
+<canvas id="confetti"></canvas>
+<script>
+"use strict";
+const DEMO = true;
+const LS_KEY = "ghTracker2027_v1";
+const YEAR = 2027;
+const AREAS = ["Health","Wealth","Career","Relationships","Family","Growth","Fun","Home"];
+const AREA_ICONS = {Health:"💪",Wealth:"💰",Career:"💼",Relationships:"🤝",Family:"🏡",Growth:"🌱",Fun:"🎉",Home:"🏠"};
+const THEMES = [
+ {id:"goldenteal",n:"Golden Teal",dark:false},{id:"rose",n:"Rose Quartz",dark:false},
+ {id:"sage",n:"Sage Meadow",dark:false},{id:"sky",n:"Sky Serene",dark:false},
+ {id:"peach",n:"Peach Glow",dark:false},{id:"midnight",n:"Midnight Teal",dark:true},
+ {id:"plum",n:"Royal Plum",dark:true},{id:"forest",n:"Forest Night",dark:true},
+ {id:"charcoal",n:"Charcoal Gold",dark:true},{id:"berry",n:"Berry Noir",dark:true}];
+const QUOTES = ["Small steps every day beat big plans someday.","You do not rise to your goals; you fall to your systems.","A habit is a vote for the person you want to become.","Done is better than perfect.","What gets tracked gets improved.","One day or day one — you decide.","Progress, not perfection.","Your future self is watching you right now.","Discipline is choosing what you want most.","Start where you are. Use what you have.","The best time to start was January 1st. The second best time is today.","Little by little, a little becomes a lot."];
+const IDEAS = {Health:["Morning walk 20 minutes","Drink a glass of water on waking","Stretch for 5 minutes","No phone for the first hour","Sleep by 10:30 pm","Take the stairs"],Wealth:["Save $5 a day","No-spend day","Track every expense","Review one subscription","Move money to savings on payday"],Career:["Plan tomorrow's top 3 tonight","Learn one new skill for 15 minutes","Inbox zero before lunch","One focused deep-work hour"],Relationships:["Message one friend","Compliment someone sincerely","Phone-free dinner"],Family:["Play with the kids 20 minutes","Call a parent","One shared meal, no screens"],Growth:["Read 10 pages","Journal 5 minutes","Meditate 5 minutes","Learn 5 new words"],Fun:["Listen to a favourite song","15 minutes of a hobby","Watch the sunset"],Home:["Tidy one drawer","Make the bed","10-minute evening reset"]};
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const pad2 = n => String(n).padStart(2,"0");
+const dkey = d => d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate());
+const today = () => { const d=new Date(); d.setHours(0,0,0,0); return d; };
+const tkey = () => dkey(today());
+const parseK = k => { const p=k.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); };
+const addDays = (d,n) => { const x=new Date(d); x.setDate(x.getDate()+n); return x; };
+const daysInMonth = (y,m) => new Date(y,m+1,0).getDate();
+const isLeap = y => (y%4===0 && y%100!==0) || y%400===0;
+const fmtDate = k => parseK(k).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+function blankState(){ return {
+ profile:{name:"",word:"",currency:"$",photo:null,onboarded:false},
+ settings:{theme:"goldenteal",accent:"",colourful:true,bgPhoto:null},
+ goals:[], habits:[], habitLog:{}, ifthen:{}, rescue:{week:"",used:false},
+ daily:{}, weeklyPlan:{}, weeklyReview:{}, monthlyGoals:{}, monthlyReview:{},
+ quarterlyPlan:{}, quarterlyReview:{}, midyear:{}, wheel:{}, yearReview:{},
+ vision:[], challenges:[], wins:[], gratitude:[], savings:{target:1000,entries:[]},
+ events:[], customMetrics:[], metricLog:{},
+ books:[], bucket:[], notes:[], letter:{text:"",openOn:"2027-12-31"},
+ focusLog:[], customQuotes:[], lastSection:"home", lastBackup:null, createdAt:Date.now()
+};}
+function sampleState(){ const s = blankState();
+ s.profile = {name:"Alex Morgan",word:"Consistency",currency:"$",photo:null,onboarded:true};
+ const g1={id:"g1",title:"Run a 10K race",area:"Health",why:"Feel strong and energised all year",measure:"Finish a 10K under 60 minutes",deadline:"2027-10-15",top3:true,progress:35,steps:[{id:"s1",text:"Run 3x per week",done:true},{id:"s2",text:"Reach 5K without stopping",done:true},{id:"s3",text:"Long run every Sunday",done:false},{id:"s4",text:"Book the October race",done:false}],focusMin:240};
+ const g2={id:"g2",title:"Save a $1,000 emergency fund",area:"Wealth",why:"Peace of mind for surprises",measure:"$1,000 in the savings account",deadline:"2027-06-30",top3:true,progress:45,steps:[{id:"s5",text:"Open a separate savings account",done:true},{id:"s6",text:"Auto-transfer $45 every payday",done:true},{id:"s7",text:"Sell unused items",done:false}],focusMin:60};
+ const g3={id:"g3",title:"Read 12 books",area:"Growth",why:"Learn something new every month",measure:"12 books finished",deadline:"2027-12-20",top3:false,progress:25,steps:[{id:"s8",text:"Read 10 pages every evening",done:false}],focusMin:300};
+ s.goals=[g1,g2,g3];
+ s.habits=[{id:"h1",name:"Morning walk",area:"Health",icon:"🚶"},{id:"h2",name:"Read 10 pages",area:"Growth",icon:"📖"},{id:"h3",name:"No-spend day",area:"Wealth",icon:"💰"},{id:"h4",name:"Gratitude note",area:"Growth",icon:"🙏"}];
+ const tk=tkey(), yk=dkey(addDays(today(),-1)), k3=dkey(addDays(today(),-2)), k4=dkey(addDays(today(),-3));
+ s.habitLog={[tk]:{h1:true,h2:true},[yk]:{h1:true,h2:true,h3:true,h4:true},[k3]:{h1:true,h3:true},[k4]:{h1:true,h2:true,h4:true}};
+ s.ifthen={h1:"If it rains, then I walk indoors at the mall.",h2:"If I feel tired, then I read just 2 pages."};
+ s.daily={[tk]:{pick3:["Finish the weekly review","Book dentist appointment","Evening walk with Sam"],wins:"Finished the budget review early",mood:4,sleep:7.5,water:6,note:"Felt focused today."},[yk]:{pick3:["Pay the electricity bill"],wins:"Helped a neighbour move boxes",mood:5,sleep:8,water:8,note:""}};
+ s.wheel={Health:7,Wealth:6,Career:8,Relationships:7,Family:8,Growth:6,Fun:5,Home:7};
+ s.wins=[{id:uid(),date:yk,text:"Stuck to the morning walk all week"},{id:uid(),date:k3,text:"Savings passed $400"}];
+ s.gratitude=[{id:uid(),date:tk,text:"A slow, sunny morning coffee"},{id:uid(),date:yk,text:"Mum's call — we laughed for ages"}];
+ s.savings={target:1000,entries:[{id:uid(),date:k4,amount:200,note:"Payday transfer"},{id:uid(),date:yk,amount:150,note:"Sold the old bike"},{id:uid(),date:tk,amount:100,note:"Payday transfer"}]};
+ s.books=[{id:uid(),title:"Atomic Habits",author:"James Clear",pages:320,read:320,status:"Finished"},{id:uid(),title:"The Psychology of Money",author:"Morgan Housel",pages:256,read:96,status:"Reading"}];
+ s.bucket=[{id:uid(),text:"Watch the sunrise at the lake",done:true},{id:uid(),text:"Take a cooking class",done:false},{id:uid(),text:"Visit a new city",done:false}];
+ s.notes=[{id:uid(),title:"Ideas for the garden",style:"dotted",text:"Raised beds along the fence.\nHerbs near the kitchen door.",date:tk}];
+ s.challenges=[{id:"c1",name:"30-Day Morning Walk",days:30,start:k4,ticks:{[k4]:true,[k3]:true,[yk]:true}}];
+ s.vision=[{id:uid(),emoji:"🏃",caption:"Cross the 10K finish line"},{id:uid(),emoji:"🏦",caption:"$1,000 safety net saved"},{id:uid(),emoji:"📚",caption:"12 books read"}];
+ s.focusLog=[{id:uid(),date:yk,minutes:25,goalId:"g3",label:"Focus Sprint"}];
+ s.letter={text:"Dear future me — I hope you are proud of how consistent you were this year.",openOn:"2027-12-31"};
+ for(let d=1;d<=14;d++){ const k=`2027-01-${pad2(d)}`; const day={}; if(d%2===1) day.h1=true; if(d%3!==0) day.h2=true; if(d%4===0) day.h3=true; if(d%2===0) day.h4=true; s.habitLog[k]=day; }
+ [4,5,3,4,5,4,3,5,4,4].forEach((mo,i)=>{ const k=`2027-01-${pad2(i+1)}`; s.daily[k]={pick3:[],wins:"",mood:mo,sleep:7+(i%3)*0.5,water:5+(i%4),note:""}; });
+ s.events=[{id:uid(),date:"2027-01-15",title:"Dentist appointment",type:"event"},{id:uid(),date:"2027-01-20",title:"Payday — move $45 to savings",type:"reminder"}];
+ s.monthlyGoals={0:{focus:"Build the morning routine",plan:"Walk before breakfast, read before bed.\nLong run every Sunday."}};
+ s.monthlyReview={0:{best:"First long Sunday run",hard:"Cold dark mornings",lesson:"Lay clothes out the night before",next:"Add a fourth run day"}};
+ s.quarterlyPlan={0:{focus:"Lock the morning routine",notes:"Reach the first $450 of the emergency fund."}};
+ s.weeklyPlan={"2027-W01":{focus:"Start strong, keep it simple",days:{"2027-01-04":"Gym — first session\nEvening: plan the week","2027-01-06":"Long walk by the river"}}};
+ return s; }
+let S;
+function load(){ try{ const raw = localStorage.getItem(LS_KEY); if(raw){ S = Object.assign(blankState(), JSON.parse(raw)); S.profile = Object.assign(blankState().profile, S.profile); S.settings = Object.assign(blankState().settings, S.settings); return; } }catch(e){} S = DEMO ? sampleState() : blankState(); }
+function save(){ if(DEMO) return; try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){ toast("Storage is full — export a backup from Settings."); } }
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),2600); }
+function confirmDo(msg, fn){ openModal(`<h3>Are you sure?</h3><p class="mut">${esc(msg)}</p><div class="row" style="margin-top:16px"><button class="btn danger" id="cfYes">Yes, continue</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>`); $("#cfYes").onclick=()=>{ closeModal(); fn(); }; }
+function openModal(html){ $("#modalRoot").innerHTML = `<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal">${html}</div></div>`; }
+function closeModal(){ $("#modalRoot").innerHTML=""; }
+function confetti(){ const c=$("#confetti"), x=c.getContext("2d"); c.width=innerWidth; c.height=innerHeight; const cols=["#C9962C","#E9B44C","#0E6B5C","#3FBFA4","#F6D492"]; const ps=Array.from({length:110},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*0.4,w:6+Math.random()*6,h:8+Math.random()*8,vy:2.2+Math.random()*3,vx:-1.4+Math.random()*2.8,r:Math.random()*Math.PI,vr:-0.1+Math.random()*0.2,col:cols[Math.floor(Math.random()*cols.length)]})); let t0=performance.now(); (function anim(t){ const el=t-t0; x.clearRect(0,0,c.width,c.height); ps.forEach(p=>{ p.y+=p.vy; p.x+=p.vx; p.r+=p.vr; x.save(); x.translate(p.x,p.y); x.rotate(p.r); x.fillStyle=p.col; x.fillRect(-p.w/2,-p.h/2,p.w,p.h); x.restore(); }); if(el<2600) requestAnimationFrame(anim); else x.clearRect(0,0,c.width,c.height); })(t0); }
+function habitStreak(hid){ let n=0; let d=today(); if(!(S.habitLog[tkey()]||{})[hid]) d=addDays(d,-1); while((S.habitLog[dkey(d)]||{})[hid]){ n++; d=addDays(d,-1); } return n; }
+function habitTotal(hid){ return Object.values(S.habitLog).filter(day=>day[hid]).length; }
+function ladderOf(hid){ const t=habitTotal(hid); if(t>=150) return {name:"Gold",icon:"🥇",next:null}; if(t>=66) return {name:"Silver",icon:"🥈",next:150}; if(t>=21) return {name:"Bronze",icon:"🥉",next:66}; return {name:"Starter",icon:"🌱",next:21}; }
+function dayDone(dateK){ const day=S.habitLog[dateK]||{}; return S.habits.filter(h=>day[h.id]).length; }
+function liveScore(){ if(!S.habits.length && !S.goals.length) return 0; const yearStart=new Date(YEAR,0,1), yearEnd=new Date(YEAR,11,31); const now=today(); const upto = now<yearStart?yearStart:(now>yearEnd?yearEnd:now); const totalDays=Math.max(1,Math.round((upto-yearStart)/86400000)+1); let possible=0, done=0; for(let i=0;i<totalDays;i++){ const k=dkey(addDays(yearStart,i)); possible+=S.habits.length; done+=dayDone(k); } const habitScore = possible? done/possible : 0; const goalScore = S.goals.length? S.goals.reduce((a,g)=>a+(+g.progress||0),0)/(S.goals.length*100) : 0; const focusMin = S.focusLog.reduce((a,f)=>a+(+f.minutes||0),0); const focusScore = Math.min(1, focusMin/6000); const w = S.habits.length&&S.goals.length? [0.5,0.35,0.15] : (S.habits.length? [0.8,0,0.2] : [0,0.85,0.15]); return Math.round(100*(habitScore*w[0]+goalScore*w[1]+focusScore*w[2])); }
+function areaScores(){ const out={}; AREAS.forEach(a=>{ const hs=S.habits.filter(h=>h.area===a); const gs=S.goals.filter(g=>g.area===a); if(!hs.length && !gs.length){ out[a]=null; return; } let parts=[]; if(hs.length){ const yearStart=new Date(YEAR,0,1); const now=today(); const upto=now<yearStart?yearStart:(now>new Date(YEAR,11,31)?new Date(YEAR,11,31):now); const totalDays=Math.max(1,Math.round((upto-yearStart)/86400000)+1); let done=0; for(let i=0;i<totalDays;i++){ const day=S.habitLog[dkey(addDays(yearStart,i))]||{}; hs.forEach(h=>{ if(day[h.id]) done++; }); } parts.push(Math.min(1, done/(totalDays*hs.length))); } if(gs.length) parts.push(gs.reduce((x,g)=>x+(+g.progress||0),0)/(gs.length*100)); out[a]=Math.min(100, Math.round(100*parts.reduce((x,y)=>x+y,0)/parts.length)); }); return out; }
+function ringSVG(pct,size,color){ const r=(size/2)-6, c=2*Math.PI*r, off=c-(pct/100)*c; return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--track)" stroke-width="7"/><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color||'var(--gold)'}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 ${size/2} ${size/2})"/></svg>`; }
+function donutSVG(){ const counts={}; AREAS.forEach(a=>counts[a]=0); S.goals.forEach(g=>counts[g.area]++); S.habits.forEach(h=>counts[h.area]++); const total=Object.values(counts).reduce((a,b)=>a+b,0); if(!total) return `<p class="mut">Add goals or habits to see your life-area balance.</p>`; const cols=["#0E6B5C","#C9962C","#2E6FA8","#B04A5A","#5C7A3D","#7A5CA8","#C46A28","#4A7A8C"]; let acc=0, paths=""; const cx=70,cy=70,r=58,ir=34; AREAS.forEach((a,i)=>{ const v=counts[a]; if(!v) return; const a0=(acc/total)*2*Math.PI-Math.PI/2; acc+=v; const a1=(acc/total)*2*Math.PI-Math.PI/2; const large=(a1-a0)>Math.PI?1:0; const x0=cx+r*Math.cos(a0),y0=cy+r*Math.sin(a0),x1=cx+r*Math.cos(a1),y1=cy+r*Math.sin(a1),x2=cx+ir*Math.cos(a1),y2=cy+ir*Math.sin(a1),x3=cx+ir*Math.cos(a0),y3=cy+ir*Math.sin(a0); paths+=`<path d="M${x0} ${y0} A${r} ${r} 0 ${large} 1 ${x1} ${y1} L${x2} ${y2} A${ir} ${ir} 0 ${large} 0 ${x3} ${y3} Z" fill="${cols[i]}"><title>${a}: ${v}</title></path>`; }); const legend=AREAS.map((a,i)=>counts[a]?`<span class="chip" style="background:${cols[i]}22">■ ${a} · ${counts[a]}</span>`:"").join(""); return `<div class="row"><svg width="140" height="140" viewBox="0 0 140 140">${paths}</svg><div style="flex:1;min-width:170px">${legend}</div></div>`; }
+function applyTheme(){ document.documentElement.dataset.theme = S.settings.theme || "goldenteal"; document.documentElement.classList.toggle("nocolour", !S.settings.colourful); if(S.settings.accent) document.documentElement.style.setProperty("--accent", S.settings.accent); else document.documentElement.style.removeProperty("--accent"); if(S.settings.bgPhoto){ document.body.classList.add("hasbg"); document.body.style.backgroundImage=`linear-gradient(rgba(0,0,0,0.06),rgba(0,0,0,0.06)),url(${S.settings.bgPhoto})`; } else { document.body.classList.remove("hasbg"); document.body.style.backgroundImage=""; } const av=$("#avatar"); if(S.profile.photo){ av.innerHTML=`<img src="${S.profile.photo}" alt="">`; } else { av.textContent = S.profile.name ? S.profile.name.trim().charAt(0).toUpperCase() : "✦"; } $("#whoName").textContent = S.profile.name ? "Hello, "+S.profile.name : "Goal & Habit Tracker 2027"; $("#whoWord").textContent = S.profile.word ? `Word of the year: “${S.profile.word}” · 2027` : "Goal & Habit Tracker · 2027"; $("#honesty").innerHTML = "A planner is a tool, not a promise — your results come from the small steps you take each day. Your data stays on this device; nothing is uploaded anywhere. · The Digital Planner Era"; }
+let navStack=[];
+function go(sec, fromBack){ const cur=S.lastSection; if(!fromBack && cur && cur!==sec){ navStack.push(cur); if(navStack.length>25) navStack.shift(); } S.lastSection=sec; save(); render(); window.scrollTo(0,0); }
+function backNav(){ const prev=navStack.pop(); go(prev||"home", true); }
+function backHome(){ go("home"); }
+function secHead(title, sub){ return `<div class="sec-head no-print"><button class="btn ghost small back" onclick="backNav()">← Back</button><div><h2>${title}</h2>${sub?`<div class="mut">${sub}</div>`:""}</div><button class="iconbtn infobtn" onclick="showInfo()" title="About this page — what it is, how to use it">📝</button></div>`; }
+function toggleSidebar(){ const sb=$("#sidebar"); if(sb) sb.classList.toggle("open"); }
+function buildSidebar(){ const sb=$("#sidebar"); if(!sb || typeof SECTIONS==="undefined") return; const cur=S.lastSection; sb.classList.remove("open"); sb.innerHTML = `<button class="${cur==="home"?"sel":""}" onclick="go('home')">🏠 Home</button>` + SECTIONS.map(([id,ic,tt])=>`<button class="${cur===id?"sel":""}" onclick="go('${id}')">${ic} ${tt}</button>`).join(""); }
+function avatarPicked(input){ const f=input.files&&input.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ const img=new Image(); img.onload=()=>{ const c=document.createElement("canvas"); const sc=Math.min(1,300/img.width); c.width=Math.max(1,Math.round(img.width*sc)); c.height=Math.max(1,Math.round(img.height*sc)); c.getContext("2d").drawImage(img,0,0,c.width,c.height); S.profile.photo=c.toDataURL("image/jpeg",0.85); save(); applyTheme(); render(); toast("📷 Profile photo updated"); }; img.src=r.result; }; r.readAsDataURL(f); input.value=""; }
+function themePanel(){ openModal(`<h3>🎨 Theme & colours</h3><p class="mut">Pick any of the 10 themes — your choice saves automatically and applies everywhere.</p><div class="themerow" style="margin-top:10px">${THEMES.map(t=>`<button class="themebtn ${S.settings.theme===t.id?"sel":""}" onclick="setTheme('${t.id}');themePanel()">${t.dark?"🌙":"☀️"} ${t.n}</button>`).join("")}</div><label>Accent colour</label><div class="themerow">${["","#0E6B5C","#B04A5A","#2E6FA8","#C46A28","#7A5CA8","#2E9E6B"].map(a=>`<button class="swatch ${S.settings.accent===a?"sel":""}" style="background:${a||"linear-gradient(135deg,#C9962C,#0E6B5C)"}" onclick="setAccent('${a}');themePanel()" title="${a?"Custom accent":"Theme default"}"></button>`).join("")}</div><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" style="width:auto" ${S.settings.colourful?"checked":""} onchange="S.settings.colourful=this.checked;save();applyTheme()"> Colourful mode</label><div class="row" style="margin-top:14px"><button class="btn gold" onclick="closeModal()">Done</button><button class="btn ghost" onclick="closeModal();go('settings')">All settings →</button></div>`); }
+const INFO = {
+home:{t:"🏠 Home — Your Dashboard",w:"Everything in your 2027, in one place: your Live Score, today's habits, what needs attention, and every section as a card.",u:"Start here each day. Tick today's habits, check the Attention box, then tap any card to open that section. Use the sidebar inside a section to jump around without coming back.",g:"One glance tells you if today is on track — no hunting through pages."},
+year:{t:"📅 My 2027 at a Glance",w:"Your whole year on one page: the countdown, your word of the year, and four honest reflection boxes.",u:"Fill the boxes at the start of the year; revisit them whenever you need to remember why you started. Everything saves as you type.",g:"Keeps the big picture visible so daily tasks stay connected to the year you actually want."},
+wheel:{t:"🎡 Wheel of Life",w:"A snapshot of balance across the 8 areas of life — Health, Wealth, Career, Relationships, Family, Growth, Fun and Home.",u:"Slide each area to an honest score from 1 to 10. Do not score where you wish you were — score where you are today.",g:"Your lowest area is usually where your best goal is hiding. The planner suggests goals for it automatically."},
+goals:{t:"🎯 Goals",w:"Your goals for 2027, each with a reason, a measure, a deadline, small steps and a progress bar.",u:"Tap + New goal. Break it into small steps, tick steps off as you finish them, and slide progress as you go. Star your top 3 to pin them to Home.",g:"A goal with steps and a deadline is a plan; a goal without them is just a wish."},
+steps:{t:"👣 Action Steps",w:"Every small step from every goal, gathered into one checklist.",u:"Work through the list and tick steps off. Use a Focus Sprint on a step when you want a timed push — the Back button brings you right back here.",g:"You never have to wonder 'what can I do right now?' — the next step is always on this page."},
+roadmap:{t:"🗺️ Quarterly Roadmap",w:"The year in 4 chapters. Each quarter gets one focus sentence, and your goal deadlines land here automatically.",u:"Write one focus per quarter — short and clear. Everything saves as you type, so refresh whenever you like.",g:"Stops the year from blurring together; every season has a job."},
+habits:{t:"✅ Habit Tracker",w:"One calendar chart per habit. Each box is one day of the month you are viewing.",u:"Tap a day to tick it (tap again to undo). Use the arrows at the top to change month. The flame is your current streak; the medal is your ladder level — Bronze at 21 total ticks, Silver at 66, Gold at 150.",g:"Seeing the chain grow makes you protect it. Missed a day? Streak Rescue on the Home page can save one streak per week."},
+ideas:{t:"💡 Habit Ideas Library",w:"Ready-made habit ideas in 8 categories, matched to the areas of your life.",u:"Tap + Add on any idea and it becomes one of your habits instantly. Or tap '+ Add my own habit' at the top to create a custom one.",g:"Starting is the hard part — this page removes the blank page."},
+daily:{t:"🌅 Daily Log",w:"One page per day: your Pick-3 priorities, a win, a note, mood, sleep, water, a gratitude line and today's habits.",u:"Use the day arrows to move between dates — every date keeps its own page, saved as you type. The gratitude button moves your line into the Gratitude Log.",g:"Five minutes here is the habit that powers every other page — mood feeds Year in Pixels, sleep and water feed Wellness."},
+wellness:{t:"💧 Wellness",w:"Your sleep and water for the last 7 days as charts — plus any custom metric you add yourself, like steps, weight or exercise minutes.",u:"Log sleep with the quick box (the chart updates instantly), tap the drops for water, and use '+ Add your own metric' for anything else you want to track daily.",g:"Energy is the fuel behind every goal; this page shows whether the tank is full."},
+weekly:{t:"🗓️ Weekly Planner",w:"Your week at a glance: a focus line, AM/PM boxes for every day, and a habit row showing what actually got done.",u:"Plan on Sunday or Monday morning. Everything saves as you type. The button at the bottom takes you to the Weekly Review — and that page links back here.",g:"A week is the perfect planning size: long enough to matter, short enough to hold."},
+weeklyreview:{t:"🔁 Weekly Review & Reset",w:"A short Sunday ritual: your week's numbers (auto-filled), three reflection boxes and one improvement for next week.",u:"Read the numbers first, then answer honestly. Close the week before you plan the next one — the Weekly Planner button below takes you there.",g:"Reviews are where weeks turn into progress instead of just passing time."},
+monthly:{t:"🌙 Monthly Goals",w:"One focus and a few notes for each month, with a shortcut to that month in the Habit Tracker.",u:"Pick the month, write the focus, and tap the tracker button to see that month's habit charts. The Back button returns you here.",g:"A single monthly focus beats ten vague intentions."},
+monthlyreview:{t:"📝 Monthly Review",w:"The month in numbers (auto-filled) plus four reflection boxes: best moment, hardest part, lesson, and next month's change.",u:"Do it on the last day of the month — it takes ten minutes and feeds your Quarterly Review automatically.",g:"Months are where habits become identity; reviewing them keeps the story straight."},
+quarterlyreview:{t:"🧭 Quarterly Review",w:"Every 3 months, a bigger look back: auto-built summary of ticks, wins, savings and focus time, plus your reflection and what carries over.",u:"Read the summary, write the reflection, and tick 'carry unfinished goals forward' if they roll into the next quarter.",g:"Catches drift early — four course corrections a year beat one big regret in December."},
+midyear:{t:"🌗 Mid-Year Reset",w:"Halftime, in July: what you are proud of, what you are letting go of, and your refocus for the second half.",u:"Fill the three boxes honestly. Everything saves as you type.",g:"The year is not over at halftime — this page turns a wobble into a comeback plan."},
+vision:{t:"🖼️ Vision Board",w:"Your goals as pictures: cards with art and a caption showing the 2027 you are building.",u:"Tap '+ Add vision card' and pick from the ready gallery (one tap adds it) — or add your own photo and caption. Remove any card anytime.",g:"What you see daily, you move toward. The board keeps your reasons in front of your eyes."},
+challenges:{t:"🔥 Challenges",w:"Fixed-length runs — 7, 30 or 100 days — with a box for every day.",u:"Start a challenge, then tick each day you do it. The chain and progress bar fill as you go; finishing a full run earns a celebration.",g:"A challenge turns 'I should' into a game with a finish line."},
+wins:{t:"🏆 Wins Log",w:"A running list of everything that went right, big or small.",u:"Tap + Add a win whenever something lands — finished a workout, saved money, helped someone. Edit or delete entries anytime.",g:"On hard days this page is proof you are moving. Motivation you can re-read beats motivation you have to invent."},
+badges:{t:"🏅 Badges & Rewards",w:"Your trophy shelf: habit medals (Bronze 21 ticks, Silver 66, Gold 150), best streaks, sprint totals and savings milestones.",u:"There is nothing to fill in — badges appear by themselves as you use the planner. Come here when you want to see how far you have come.",g:"Progress you can see is progress you repeat."},
+focus:{t:"⏱️ Focus Timer",w:"A Pomodoro timer: 25 minutes of focus, 5-minute short breaks, 15-minute long breaks — with an optional Focus Sprint mode for goal steps.",u:"Pick a mode, press Start, and work until the timer ends. Finished sessions are logged automatically and feed your Score and Sprints page.",g:"Time-boxing makes starting easy — you only have to begin for 25 minutes."},
+sprints:{t:"🏃 Focus Sprints",w:"Your timed work sessions on goal steps: what you sprinted, for how long, and your totals.",u:"Start a sprint from Action Steps or the Focus Timer. This page is the record — it fills itself.",g:"Shows exactly where your hours went, goal by goal."},
+savings:{t:"🐷 Savings Goals",w:"One savings target with a deposit log and a progress bar — built for the $1,000 emergency fund, usable for anything.",u:"Set the target, add deposits as you save. Every entry counts toward the bar and the Badges page.",g:"Watching the bar fill makes the next deposit easier than skipping it."},
+reading:{t:"📚 Reading Log",w:"Your 2027 bookshelf: books you are reading and have finished, with pages and progress.",u:"Add a book, update pages read as you go (it saves as you type), and mark it Finished when done — it counts toward your reading goal.",g:"Pages turn into books, books into a year of growth — this page keeps count."},
+bucket:{t:"🪣 Bucket List",w:"Experiences you want in 2027 — not targets, moments: a sunrise, a trip, a class, a reunion.",u:"Add anything you would love to do this year. When it happens, tick it and the date is stamped automatically.",g:"Goals build your future; bucket moments make the year worth remembering."},
+pixels:{t:"🎨 Year in Pixels",w:"Your whole year as coloured squares — one square per day, coloured by that day's mood in the Daily Log.",u:"Log your mood in the Daily Log and the square fills in. Tap any coloured square to see that day's mood up close and jump to its Daily Log page.",g:"Patterns you cannot see day-to-day become obvious: which months lift you, which drain you."},
+gratitude:{t:"🙏 Gratitude Log",w:"Every gratitude line you have saved — from the Daily Log button or added directly here — in date order.",u:"Tap + Add gratitude anytime, or use the Daily Log's gratitude box and button. Edit or delete entries anytime.",g:"A jar of good moments that grows all year — open it on the days that feel heavy."},
+notes:{t:"🗒️ Notes & Lists",w:"Free-form notes with three paper styles — lined, dotted and grid.",u:"Tap + New note, pick a style, and write. Notes save when you tap Save, and can be edited or deleted anytime.",g:"Not everything needs a system; this is the drawer for everything else."},
+letter:{t:"✉️ Letter to Future Me",w:"A letter you write to yourself now and open on the date you choose — usually December 31st.",u:"Write it, seal it, and the planner keeps it closed until the opening date (you can peek early from Settings if you must).",g:"Nothing measures a year like reading your own hopes from January."},
+calendar:{t:"📆 Calendar",w:"Your 2027 month by month: goal deadlines, habit ticks and your own events and reminders on every date.",u:"Tap any date to add an event or reminder in the dialog — it appears on the calendar with a 📌. Tap the date again to edit or remove it. Deadlines can be exported as an .ics file for your phone calendar.",g:"One true calendar for the year you planned — nothing important lives in two places."},
+settings:{t:"⚙️ Settings",w:"Your profile, themes, backup and data controls.",u:"Change your name, word of the year, currency and photo; export a backup file regularly, and import it on a new device to bring everything with you.",g:"Your data lives only on your device — backups are how it survives a lost phone."}};
+function showInfo(){ const i=INFO[S.lastSection]||INFO.home; openModal(`<h3>${i.t}</h3><p style="margin-top:10px"><b>What it is</b></p><p class="mut">${i.w}</p><p style="margin-top:10px"><b>How to use it</b></p><p class="mut">${i.u}</p><p style="margin-top:10px"><b>Why it helps</b></p><p class="mut">${i.g}</p><div class="row" style="margin-top:16px"><button class="btn gold" onclick="closeModal()">Got it ✓</button></div>`); }
+</script>
+<script>
+const SECTIONS = [
+ ["year","📖","My Year","Word of the year + last year's review"],
+ ["wheel","🎡","Wheel of Life","Balance across 8 life areas"],
+ ["goals","🎯","My Goals","SMART goals by life area"],
+ ["steps","👣","Action Steps","Steps & milestones per goal"],
+ ["roadmap","🗺️","Quarterly Roadmap","Your 4 quarters at a glance"],
+ ["habits","✅","Habit Tracker","Daily ticks, streaks & ladders"],
+ ["ideas","💡","Habit Ideas","One-tap starter habits per area"],
+ ["daily","🌅","Daily Log","Pick-3, wins, mood — 365 days"],
+ ["wellness","💧","Wellness","Sleep + water trackers"],
+ ["weekly","🗓️","Weekly Planner","Plan each of the 52 weeks"],
+ ["weeklyreview","🔄","Weekly Review","Wins, lessons, next focus"],
+ ["monthly","🌙","Monthly Goals","A fresh page every month"],
+ ["monthlyreview","📝","Monthly Review","Look back, then forward"],
+ ["quarterlyreview","🏁","Quarterly Review","Auto-filled from your data"],
+ ["midyear","🌗","Mid-Year Reset","Re-align in July"],
+ ["vision","🖼️","Vision Board","Pictures of your 2027"],
+ ["challenges","🔥","Challenges","30-day & 100-day challenges"],
+ ["wins","🏆","Wins Log","Every win, big or small"],
+ ["badges","🎖️","Badges & Rewards","Habit Ladder levels & badges"],
+ ["focus","⏱️","Focus Timer","Pomodoro 25/5/15 + Focus Mode"],
+ ["sprints","🏃","Focus Sprints","Sprint on a goal — minutes auto-log"],
+ ["savings","🐷","Savings Tracker","Watch the fund grow"],
+ ["reading","📚","Reading Tracker","Books, pages & progress"],
+ ["bucket","🪣","Bucket List","2027's must-do moments"],
+ ["pixels","🎨","Year in Pixels","Your mood, day by day"],
+ ["gratitude","🙏","Gratitude Log","One good thing a day"],
+ ["notes","🗒️","Notes","Lined, dotted & grid pages"],
+ ["letter","✉️","Letter to Future Self","Open it on Dec 31, 2027"],
+ ["calendar","📅","Calendar","Month view + .ics export"],
+ ["settings","⚙️","Settings","Themes, backup, print & more"]];
+function sectionProgress(id){ const t=tkey(); switch(id){
+ case "goals": return S.goals.length? Math.round(S.goals.reduce((a,g)=>a+(+g.progress||0),0)/S.goals.length) : 0;
+ case "habits": return S.habits.length? Math.round(100*dayDone(t)/S.habits.length) : 0;
+ case "daily": return S.daily[t] ? 100 : 0;
+ case "savings": { const sum=S.savings.entries.reduce((a,e)=>a+(+e.amount||0),0); return S.savings.target? Math.min(100,Math.round(100*sum/S.savings.target)) : 0; }
+ case "wins": return Math.min(100, S.wins.length*5);
+ case "gratitude": return Math.min(100, S.gratitude.length*4);
+ case "reading": return S.books.length? Math.round(100*S.books.filter(b=>b.status==="Finished").length/S.books.length) : 0;
+ case "bucket": return S.bucket.length? Math.round(100*S.bucket.filter(b=>b.done).length/S.bucket.length) : 0;
+ case "challenges": return S.challenges.length? Math.round(100*S.challenges.reduce((a,c)=>a+Object.keys(c.ticks||{}).length/Math.min(c.days,30),0)/S.challenges.length) : 0;
+ case "focus": return Math.min(100, Math.round(S.focusLog.reduce((a,f)=>a+(+f.minutes||0),0)/60));
+ case "pixels": return Math.round(100*Object.keys(S.daily).filter(k=>S.daily[k].mood).length/365);
+ case "notes": return Math.min(100, S.notes.length*10);
+ case "vision": return Math.min(100, S.vision.length*12);
+ default: return 0; } }
+function renderHome(){ const t=tkey(); const now=today(); const jan1=new Date(YEAR,0,1), dec31=new Date(YEAR,11,31);
+ const daysToStart = Math.ceil((jan1-now)/86400000); const daysLeft = Math.ceil((dec31-now)/86400000)+1; const dayOfYear = now<jan1?0:Math.min(365,Math.floor((now-jan1)/86400000)+1);
+ const countTxt = now<jan1 ? `⏳ ${daysToStart} days until 2027 begins` : (now>dec31 ? "2027 complete — what a year!" : `📅 Day ${dayOfYear} of 365 · ${daysLeft} days left in 2027`);
+ const score = liveScore(); const areas = areaScores();
+ const quote = QUOTES[(Math.floor(now.getTime()/86400000))%QUOTES.length];
+ const habitRows = S.habits.map(h=>{ const on=(S.habitLog[t]||{})[h.id]; return `<div class="item row spread"><span>${h.icon||"✅"} <b>${esc(h.name)}</b> <span class="mut small">${esc(h.area)} · 🔥 ${habitStreak(h.id)}</span></span><button class="tick ${on?"on":""}" onclick="toggleHabit('${h.id}','${t}')">${on?"✓":""}</button></div>`; });
+ const todaysHabits = habitRows.slice(0,5).join("") + (habitRows.length>5 ? `<button class="btn ghost small" onclick="go('habits')">+ ${habitRows.length-5} more habits → Habit Tracker</button>` : "");
+ const yk=dkey(addDays(now,-1)); const missedYesterday = S.habits.filter(h=>!(S.habitLog[yk]||{})[h.id] && habitStreak(h.id)>=2);
+ let attention = "";
+ if(missedYesterday.length && !DEMO){ const wk = dkey(addDays(now,-now.getDay())); const canRescue = !(S.rescue.week===wk && S.rescue.used); attention = `<div class="card" style="border-color:var(--gold);margin-top:14px"><b>⚠️ Attention — streak at risk</b><p class="mut" style="margin:6px 0">${missedYesterday.map(h=>esc(h.name)).join(", ")} missed yesterday. ${canRescue? "Your weekly Streak Rescue can save the streak:" : "This week's Rescue is used — one honest restart beats a broken chain."}</p>${missedYesterday.map(h=>S.ifthen[h.id]?`<p class="small">💡 Your plan for ${esc(h.name)}: <i>${esc(S.ifthen[h.id])}</i></p>`:"").join("")}${canRescue?`<button class="btn gold small" onclick="useRescue('${missedYesterday[0].id}')">🛟 Use Streak Rescue (1 per week)</button>`:""}</div>`; }
+ if(S.lastBackup && (Date.now()-S.lastBackup) > 30*86400000) attention += `<div class="card" style="margin-top:10px"><b>💾 Backup reminder</b><p class="mut" style="margin:6px 0">It has been over 30 days since your last backup export.</p><button class="btn ghost small" onclick="go('settings')">Export a backup</button></div>`;
+ const nextUp = S.goals.filter(g=>g.deadline).sort((a,b)=>a.deadline<b.deadline?-1:1).filter(g=>(+g.progress||0)<100).slice(0,3).map(g=>`<div class="item row spread"><span>🎯 <b>${esc(g.title)}</b></span><span class="chip">by ${fmtDate(g.deadline)}</span></div>`).join("") || `<p class="mut">No goal deadlines yet — add one in My Goals.</p>`;
+ const areaRings = AREAS.filter(a=>areas[a]!=null).map(a=>`<div style="text-align:center;width:76px"><div class="ringwrap">${ringSVG(areas[a],64)}<div class="rv" style="font-size:14px">${areas[a]}</div></div><div class="small mut">${AREA_ICONS[a]} ${a}</div></div>`).join("");
+ const cards = SECTIONS.map(([id,ic,tt,ds])=>{ const p=sectionProgress(id); return `<button class="tile" onclick="go('${id}')"><div class="ic">${ic}</div><div class="tt">${tt}</div><div class="ds">${ds}</div><div class="bar"><i style="width:${p}%"></i></div><div class="small mut" style="margin-top:4px">${p}%</div></button>`; }).join("");
+ $("#view").innerHTML = `
+ <div class="hero"><h1>${S.profile.word? `Make 2027 the year of “${esc(S.profile.word)}”` : "Your 2027, beautifully on track"}</h1><div class="sub">${esc(quote)}</div><span class="count">${countTxt}</span> <button class="iconbtn no-print" style="background:rgba(255,255,255,.22);border:none;color:#fff;vertical-align:middle" onclick="showInfo()" title="About this planner — how it works">📝</button></div>
+ <div class="grid g2" style="margin-top:14px">
+   <div class="card" style="text-align:center"><div class="mut" style="font-weight:700">⭐ LIVE 2027 SCORE</div><div class="ringwrap" style="margin:8px 0">${ringSVG(score,150)}<div class="rv"><span style="font-size:38px">${score}</span><span class="small mut">of 100</span></div></div><div class="small mut">Habits · Goals · Focus — updates with every tick</div></div>
+   <div class="card"><div class="mut" style="font-weight:700;margin-bottom:8px">🎡 LIFE-AREA RINGS</div><div class="row" style="justify-content:space-around">${areaRings || '<p class="mut">Add a habit or goal to light up your first ring.</p>'}</div><div style="margin-top:10px">${donutSVG()}</div></div>
+ </div>
+ ${attention}
+ <div class="card" style="margin-top:14px"><div class="row spread"><b>🌅 Today — ${fmtDate(t)}</b><button class="btn ghost small" onclick="go('daily')">Open Daily Log →</button></div>
+   <div style="margin-top:8px">${todaysHabits || '<p class="mut">No habits yet — pick a starter from Habit Ideas 💡</p>'}</div>
+   ${(S.daily[t]&&S.daily[t].pick3&&S.daily[t].pick3.length)?`<div class="small" style="margin-top:6px">🎯 Pick-3: ${S.daily[t].pick3.map(esc).join(" · ")}</div>`:""}
+ </div>
+ <div class="card no-print" style="margin-top:14px"><b>⚡ Quick Add</b><div class="row" style="margin-top:10px"><button class="btn small" onclick="quickAdd('goal')">🎯 Goal</button><button class="btn small" onclick="quickAdd('habit')">✅ Habit</button><button class="btn small" onclick="quickAdd('win')">🏆 Win</button><button class="btn small" onclick="quickAdd('gratitude')">🙏 Gratitude</button><button class="btn small" onclick="quickAdd('note')">🗒️ Note</button><button class="btn ghost small" onclick="printHome()">🖨️ Print Home</button></div>
+   <div class="searchbar" style="margin-top:12px"><input id="homeSearch" placeholder="Search goals, habits, notes, wins…" onkeydown="if(event.key==='Enter')doSearch()"><button class="btn gold" onclick="doSearch()">Search</button></div><div id="searchOut" style="margin-top:8px"></div>
+ </div>
+ <div class="card" style="margin-top:14px"><b>⏭️ Next up — nearest goal deadlines</b><div style="margin-top:8px">${nextUp}</div></div>
+ <h3 style="margin:20px 0 10px">All 30 sections</h3>
+ <div class="grid g3">${cards}</div>`; }
+function toggleHabit(hid, dateK){ S.habitLog[dateK] = S.habitLog[dateK]||{}; const was = !!S.habitLog[dateK][hid]; const before = ladderOf(hid).name; if(was) delete S.habitLog[dateK][hid]; else S.habitLog[dateK][hid]=true; save(); const after = ladderOf(hid).name; if(!was && dateK===tkey()){ const st=habitStreak(hid); if(before!==after){ confetti(); toast(`🎉 Level up! ${after} on the Habit Ladder!`); } else if(st>0 && st%7===0){ confetti(); toast(`🔥 ${st}-day streak — a full week!`); } } render(); }
+function useRescue(hid){ const now=today(); const wk=dkey(addDays(now,-now.getDay())); const yk=dkey(addDays(now,-1)); S.habitLog[yk]=S.habitLog[yk]||{}; S.habitLog[yk][hid]=true; S.rescue={week:wk,used:true}; save(); confetti(); toast("🛟 Streak rescued — yesterday is ticked. Keep going!"); render(); }
+function quickAdd(kind){ if(kind==="goal") return goalForm(); if(kind==="habit") return habitForm(); if(kind==="win") return entryForm("win"); if(kind==="gratitude") return entryForm("gratitude"); if(kind==="note") return noteForm(); }
+function doSearch(){ const q=($("#homeSearch").value||"").toLowerCase().trim(); const out=$("#searchOut"); if(!q){ out.innerHTML=""; return; } const hits=[]; S.goals.forEach(g=>{ if((g.title+" "+g.why+" "+g.area).toLowerCase().includes(q)) hits.push(`🎯 <b>${esc(g.title)}</b> — goal <button class="btn ghost small" onclick="go('goals')">Open</button>`); }); S.habits.forEach(h=>{ if(h.name.toLowerCase().includes(q)) hits.push(`✅ <b>${esc(h.name)}</b> — habit <button class="btn ghost small" onclick="go('habits')">Open</button>`); }); S.notes.forEach(n=>{ if((n.title+" "+n.text).toLowerCase().includes(q)) hits.push(`🗒️ <b>${esc(n.title)}</b> — note <button class="btn ghost small" onclick="go('notes')">Open</button>`); }); S.wins.forEach(w=>{ if(w.text.toLowerCase().includes(q)) hits.push(`🏆 ${esc(w.text)} — win <button class="btn ghost small" onclick="go('wins')">Open</button>`); }); S.books.forEach(b=>{ if((b.title+" "+b.author).toLowerCase().includes(q)) hits.push(`📚 <b>${esc(b.title)}</b> — book <button class="btn ghost small" onclick="go('reading')">Open</button>`); }); out.innerHTML = hits.length? hits.map(h=>`<div class="item">${h}</div>`).join("") : `<p class="mut">No matches for “${esc(q)}”.</p>`; }
+function printHome(){ printCurrent(); }
+</script>
+<script>
+function goalForm(id){ const g = id? S.goals.find(x=>x.id===id) : {title:"",area:"Health",why:"",measure:"",deadline:"",top3:false,progress:0,steps:[],focusMin:0};
+ openModal(`<h3>${id?"Edit goal":"New goal"} 🎯</h3>
+ <label>Goal title</label><input id="gf_t" value="${esc(g.title)}" placeholder="e.g. Run a 10K race">
+ <label>Life area</label><select id="gf_a">${AREAS.map(a=>`<option ${a===g.area?"selected":""}>${a}</option>`).join("")}</select>
+ <label>Why it matters</label><input id="gf_w" value="${esc(g.why)}">
+ <label>How will you measure it? (SMART)</label><input id="gf_m" value="${esc(g.measure)}" placeholder="e.g. Finish under 60 minutes">
+ <label>Deadline</label><input id="gf_d" type="date" min="2027-01-01" max="2027-12-31" value="${esc(g.deadline)}">
+ <label>Progress %</label><input id="gf_p" type="number" min="0" max="100" value="${g.progress||0}">
+ <label style="display:flex;gap:8px;align-items:center;margin-top:12px"><input type="checkbox" id="gf_top" style="width:auto" ${g.top3?"checked":""}> ⭐ Top-3 goal of the year</label>
+ <div class="row" style="margin-top:16px"><button class="btn gold" id="gf_save">Save goal</button><button class="btn ghost" onclick="closeModal()">Cancel</button>${id?`<button class="btn danger" id="gf_del">Delete</button>`:""}</div>`);
+ $("#gf_save").onclick=()=>{ const t=$("#gf_t").value.trim(); if(!t) return toast("Give the goal a title first."); const data={title:t,area:$("#gf_a").value,why:$("#gf_w").value.trim(),measure:$("#gf_m").value.trim(),deadline:$("#gf_d").value,progress:Math.max(0,Math.min(100,+$("#gf_p").value||0)),top3:$("#gf_top").checked}; if(id){ Object.assign(S.goals.find(x=>x.id===id), data); } else { S.goals.push(Object.assign({id:uid(),steps:[],focusMin:0}, data)); } save(); closeModal(); confetti(); toast("🎯 Goal saved!"); render(); };
+ if(id) $("#gf_del").onclick=()=>confirmDo("Delete this goal and its action steps?", ()=>{ S.goals=S.goals.filter(x=>x.id!==id); save(); render(); }); }
+function renderGoals(){ const filter = renderGoals._f || "All"; const list = S.goals.filter(g=>filter==="All"||g.area===filter); const top3 = S.goals.filter(g=>g.top3);
+ $("#view").innerHTML = secHead("🎯 My Goals","SMART goals, grouped by life area") + `
+ <div class="row no-print" style="margin-bottom:12px"><button class="btn gold" onclick="goalForm()">+ New goal</button>${["All"].concat(AREAS).map(a=>`<button class="btn ${filter===a?"":"ghost"} small" onclick="renderGoals._f='${a}';render()">${a}</button>`).join("")}</div>
+ ${top3.length?`<div class="card" style="margin-bottom:12px"><b>⭐ Top-3 of 2027</b>${top3.map(g=>`<div class="item row spread"><span>${AREA_ICONS[g.area]} <b>${esc(g.title)}</b></span><span class="chip gold">${g.progress||0}%</span></div>`).join("")}</div>`:""}
+ ${list.length? list.map(g=>`<div class="item"><div class="row spread"><span class="t">${g.top3?"⭐ ":""}${esc(g.title)}</span><span class="chip">${AREA_ICONS[g.area]} ${esc(g.area)}</span></div>
+ ${g.why?`<div class="mut">Why: ${esc(g.why)}</div>`:""}${g.measure?`<div class="mut">Measure: ${esc(g.measure)}</div>`:""}
+ <div class="row small mut"><span>${g.steps?g.steps.filter(s=>s.done).length:0}/${g.steps?g.steps.length:0} steps done</span>${g.deadline?`<span>· deadline ${fmtDate(g.deadline)}</span>`:""}${g.focusMin?`<span>· ⏱️ ${g.focusMin} focus minutes</span>`:""}</div>
+ <div class="bar"><i style="width:${g.progress||0}%"></i></div>
+ <div class="row" style="margin-top:8px"><input type="range" min="0" max="100" value="${g.progress||0}" style="flex:1" onchange="setGoalProgress('${g.id}',this.value)"><b>${g.progress||0}%</b><button class="btn ghost small" onclick="goalForm('${g.id}')">Edit</button><button class="btn small" onclick="go('steps')">Steps →</button></div></div>`).join("") : `<div class="card"><b>No goals here yet.</b><p class="mut">A goal written down is a plan. Add your first one — you can refine it any time.</p></div>`}
+ <div class="card no-print"><b>Print</b><p class="mut">Print this section or the whole planner from Settings.</p><button class="btn ghost small" onclick="printCurrent()">🖨️ Print My Goals</button></div>`; }
+function setGoalProgress(id,v){ const g=S.goals.find(x=>x.id===id); if(!g) return; g.progress=+v; save(); if(+v===100){ confetti(); toast("🏆 Goal complete — amazing work!"); } render(); }
+function renderSteps(){ $("#view").innerHTML = secHead("👣 Action Steps & Milestones","Break every goal into small, tickable steps") +
+ (S.goals.length? S.goals.map(g=>`<div class="card" style="margin-bottom:12px"><div class="row spread"><b>${AREA_ICONS[g.area]} ${esc(g.title)}</b><span class="chip">${g.steps.filter(s=>s.done).length}/${g.steps.length} steps</span></div>
+ ${(g.steps||[]).map(s=>`<div class="item row spread"><span style="${s.done?"text-decoration:line-through;color:var(--muted)":""}">${esc(s.text)}</span><span class="row"><button class="tick ${s.done?"on":""}" onclick="toggleStep('${g.id}','${s.id}')">${s.done?"✓":""}</button><button class="btn ghost small" onclick="delStep('${g.id}','${s.id}')">✕</button></span></div>`).join("") || '<p class="mut small">No steps yet — add the very first small step.</p>'}
+ <div class="row no-print" style="margin-top:8px"><input id="ns_${g.id}" placeholder="Add a step… e.g. Book the race" onkeydown="if(event.key==='Enter')addStep('${g.id}')"><button class="btn small" onclick="addStep('${g.id}')">Add</button><button class="btn gold small" onclick="startSprint('${g.id}')">⏱️ Focus Sprint</button></div></div>`).join("") : `<div class="card"><b>No goals yet.</b><p class="mut">Steps belong to goals — create a goal first.</p><button class="btn gold" onclick="go('goals')">Go to My Goals</button></div>`); }
+function addStep(gid){ const inp=$("#ns_"+gid); const v=inp.value.trim(); if(!v) return; const g=S.goals.find(x=>x.id===gid); g.steps.push({id:uid(),text:v,done:false}); save(); render(); }
+function toggleStep(gid,sid){ const g=S.goals.find(x=>x.id===gid); const s=g.steps.find(x=>x.id===sid); s.done=!s.done; const done=g.steps.filter(x=>x.done).length; if(g.steps.length) g.progress=Math.round(100*done/g.steps.length); save(); if(s.done) toast("✔ Step done — progress updated!"); render(); }
+function delStep(gid,sid){ const g=S.goals.find(x=>x.id===gid); g.steps=g.steps.filter(x=>x.id!==sid); save(); render(); }
+function habitForm(id){ const h = id? S.habits.find(x=>x.id===id) : {name:"",area:"Health",icon:"✅"};
+ openModal(`<h3>${id?"Edit habit":"New habit"} ✅</h3>
+ <label>Habit name</label><input id="hf_n" value="${esc(h.name)}" placeholder="e.g. Morning walk">
+ <label>Icon</label><input id="hf_i" value="${esc(h.icon||"✅")}" maxlength="4">
+ <label>Life area</label><select id="hf_a">${AREAS.map(a=>`<option ${a===h.area?"selected":""}>${a}</option>`).join("")}</select>
+ <label>🛟 If–Then rescue plan</label><input id="hf_it" value="${esc(S.ifthen[id]||"")}" placeholder="If I miss my usual time, then I will do 5 minutes before bed.">
+ <div class="row" style="margin-top:16px"><button class="btn gold" id="hf_save">Save habit</button><button class="btn ghost" onclick="closeModal()">Cancel</button>${id?`<button class="btn danger" id="hf_del">Delete</button>`:""}</div>`);
+ $("#hf_save").onclick=()=>{ const n=$("#hf_n").value.trim(); if(!n) return toast("Name the habit first."); let hid=id; if(id){ Object.assign(S.habits.find(x=>x.id===id),{name:n,area:$("#hf_a").value,icon:$("#hf_i").value||"✅"}); } else { hid=uid(); S.habits.push({id:hid,name:n,area:$("#hf_a").value,icon:$("#hf_i").value||"✅"}); } S.ifthen[hid]=$("#hf_it").value.trim(); save(); closeModal(); toast("✅ Habit saved!"); render(); };
+ if(id) $("#hf_del").onclick=()=>confirmDo("Delete this habit? Its past ticks stay in your history counts but the habit leaves the tracker.", ()=>{ S.habits=S.habits.filter(x=>x.id!==id); save(); render(); }); }
+let habitView = {y: YEAR, m: null};
+function renderHabits(){ const now=today(); if(habitView.m===null) habitView.m = now.getFullYear()===YEAR? now.getMonth() : 0; const y=habitView.y, m=habitView.m; const dim=daysInMonth(y,m);
+ const firstOffset=(new Date(y,m,1).getDay()+6)%7;
+ const cards = S.habits.map(h=>{ const lad=ladderOf(h.id); const streak=habitStreak(h.id); let monthTicks=0; for(let d=1;d<=dim;d++){ if((S.habitLog[`${y}-${pad2(m+1)}-${pad2(d)}`]||{})[h.id]) monthTicks++; }
+  let cells=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(dw=>`<div class="dow">${dw}</div>`).join("");
+  for(let i=0;i<firstOffset;i++) cells+=`<div></div>`;
+  for(let d=1;d<=dim;d++){ const k=`${y}-${pad2(m+1)}-${pad2(d)}`; const on=(S.habitLog[k]||{})[h.id]; const isT=k===tkey(); const fut=parseK(k)>today(); cells+=`<button class="hcell ${on?"on":""} ${isT?"today":""} ${fut?"future":""}" onclick="toggleHabit('${h.id}','${k}')" title="${fmtDate(k)}">${on?"✓":d}</button>`; }
+  return `<div class="card" style="margin-bottom:14px"><div class="row spread"><b style="font-size:17px">${h.icon||"✅"} ${esc(h.name)}</b><span><span class="chip gold">🔥 ${streak} day streak</span><span class="chip">${lad.icon} ${lad.name}${lad.next?` · ${lad.next-habitTotal(h.id)} to next`:" · top level"}</span></span></div>
+  <div class="hcal" style="margin-top:12px">${cells}</div>
+  <div class="row spread" style="margin-top:10px"><span class="small mut">${monthTicks}/${dim} days this month · ${habitTotal(h.id)} total ticks</span><span class="row"><button class="btn ghost small" onclick="habitForm('${h.id}')">✏️ Edit</button>${S.ifthen[h.id]?`<span class="small mut">🛟 ${esc(S.ifthen[h.id])}</span>`:""}</span></div></div>`; }).join("");
+ $("#view").innerHTML = secHead("✅ Habit Tracker",`One chart per habit · tap a day to tick it`) + `
+ <div class="row no-print" style="margin-bottom:12px"><button class="btn gold" onclick="habitForm()">+ New habit</button>
+ <button class="btn ghost small" onclick="habitView.m=Math.max(0,habitView.m-1);render()">← ${MONTHS[Math.max(0,m-1)]||""}</button><b>${MONTHS[m]} ${y}</b><button class="btn ghost small" onclick="habitView.m=Math.min(11,habitView.m+1);render()">${MONTHS[Math.min(11,m+1)]||""} →</button>
+ <span class="chip">Year total ticks: ${S.habits.reduce((a,h)=>a+habitTotal(h.id),0)}</span></div>
+ ${S.habits.length? cards + `<p class="small mut">🏅 Ladder: 🌱 Starter → 🥉 Bronze at 21 total ticks → 🥈 Silver at 66 → 🥇 Gold at 150. 🔥 = current streak. Tap the 📝 icon at the top for the full guide.</p>` : `<div class="card"><b>No habits yet.</b><p class="mut">Start with one tiny habit — or grab a starter from the Ideas library.</p><button class="btn gold" onclick="go('ideas')">Browse Habit Ideas 💡</button></div>`}`; }
+function renderIdeas(){ $("#view").innerHTML = secHead("💡 Habit Ideas Library","One tap adds the habit to your tracker") + `<div class="row no-print" style="margin-bottom:12px"><button class="btn gold" onclick="habitForm()">+ Add my own habit</button><span class="mut small">Your habit, your words — any name, any icon.</span></div>` + AREAS.map(a=>`<div class="card" style="margin-bottom:12px"><b>${AREA_ICONS[a]} ${a}</b>${IDEAS[a].map(idea=>{ const has=S.habits.some(h=>h.name===idea); return `<div class="item row spread"><span>${esc(idea)}</span>${has?'<span class="chip gold">Added ✓</span>':`<button class="btn small" onclick="addIdea('${esc(a)}','${esc(idea).replace(/'/g,"\\'")}')">+ Add</button>`}</div>`; }).join("")}</div>`).join(""); }
+function addIdea(area, name){ S.habits.push({id:uid(),name,area,icon:"✅"}); save(); toast("✅ Added to your Habit Tracker!"); render(); }
+let dailyDate = null;
+function renderDaily(){ if(!dailyDate) dailyDate = tkey(); const k=dailyDate; const d=S.daily[k]||{pick3:[],wins:"",mood:0,sleep:"",water:0,note:""}; const prev=dkey(addDays(parseK(k),-1)), next=dkey(addDays(parseK(k),1));
+ $("#view").innerHTML = secHead("🌅 Daily Log","One page per day — all 365 days of 2027") + `
+ <div class="row no-print" style="margin-bottom:12px"><button class="btn ghost small" onclick="dailyDate='${prev}';render()">← Prev day</button><b>${fmtDate(k)}${k===tkey()?" · Today":""}</b><button class="btn ghost small" onclick="dailyDate='${next}';render()">Next day →</button><button class="btn ghost small" onclick="dailyDate=tkey();render()">Today</button></div>
+ <div class="grid g2">
+ <div class="card"><b>🎯 Today's Pick-3</b><p class="mut small">The three things that matter most today.</p>${[0,1,2].map(i=>`<input style="margin-top:8px" placeholder="Priority ${i+1}" value="${esc((d.pick3||[])[i]||"")}" oninput="setDaily('${k}','pick3',${i},this.value)">`).join("")}
+ <label>🏆 Today's win</label><input value="${esc(d.wins||"")}" oninput="setDaily('${k}','wins',null,this.value)" placeholder="One thing that went well">
+ <label>📝 Note</label><textarea oninput="setDaily('${k}','note',null,this.value)" placeholder="Anything worth remembering…">${esc(d.note||"")}</textarea></div>
+ <div class="card"><b>😊 Mood</b><div class="row" style="margin:8px 0">${[1,2,3,4,5].map(n=>`<button class="tick ${(d.mood||0)===n?"on":""}" style="width:44px;height:44px;font-size:20px" onclick="setDaily('${k}','mood',null,${n})">${["","😖","😕","😐","🙂","😄"][n]}</button>`).join("")}</div><p class="small mut">Your mood colours the Year in Pixels 🎨</p>
+ <label>😴 Sleep (hours)</label><input type="number" step="0.5" min="0" max="24" value="${d.sleep||""}" oninput="setDaily('${k}','sleep',null,this.value)">
+ <label>💧 Water (glasses)</label><div class="row">${Array.from({length:8},(_,i)=>`<button class="tick ${(d.water||0)>i?"on":""}" onclick="setDaily('${k}','water',null,${(d.water||0)===i+1?i:i+1})">💧</button>`).join("")}<b>${d.water||0}/8</b></div>
+ <label>🙏 One gratitude</label><input id="dg_${k}" placeholder="One good thing about today"><div class="row" style="margin-top:8px"><button class="btn small" onclick="addDailyGrat('${k}')">Add to Gratitude Log</button><button class="btn ghost small" onclick="go('gratitude')">Open the Gratitude Log →</button></div></div>
+ </div>
+ <div class="card" style="margin-top:12px"><b>✅ Habits — ${fmtDate(k)}</b>${S.habits.map(h=>{ const on=(S.habitLog[k]||{})[h.id]; return `<div class="item row spread"><span>${h.icon||"✅"} ${esc(h.name)}</span><button class="tick ${on?"on":""}" onclick="toggleHabit('${h.id}','${k}')">${on?"✓":""}</button></div>`; }).join("") || '<p class="mut">No habits yet.</p>'}</div>`; }
+function setDaily(k, field, idx, val){ S.daily[k]=S.daily[k]||{pick3:[],wins:"",mood:0,sleep:"",water:0,note:""}; if(field==="pick3"){ S.daily[k].pick3=S.daily[k].pick3||[]; S.daily[k].pick3[idx]=val; } else if(field==="mood"||field==="water"){ S.daily[k][field]=+val; } else { S.daily[k][field]=val; } save(); if(field==="mood"||field==="water") render(); else if(field==="sleep" && S.lastSection==="wellness") render(); }
+function addDailyGrat(k){ const inp=$("#dg_"+k); const v=inp.value.trim(); if(!v){ toast("✍️ Write one line first — then tap Add."); inp.focus(); return; } S.gratitude.unshift({id:uid(),date:k,text:v}); save(); toast("🙏 Saved — find it any time in the Gratitude Log"); render(); }
+function renderWellness(){ const days=[]; for(let i=6;i>=0;i--){ const k=dkey(addDays(today(),-i)); days.push({k, d:S.daily[k]||{}}); }
+ const bar=(v,max,col)=>`<div style="background:${col};height:${Math.round(90*Math.min(1,(+v||0)/max))}px;border-radius:6px 6px 0 0"></div>`;
+ const chart=(field,max,col,unit)=>`<div class="row" style="align-items:flex-end;gap:10px;height:120px">${days.map(({k,d})=>`<div style="flex:1;text-align:center">${bar(d[field],max,col)}<div class="small" style="margin-top:4px">${(+d[field]||0)}${unit}</div><div class="small mut">${parseK(k).toLocaleDateString("en-US",{weekday:"narrow"})}</div></div>`).join("")}</div>`;
+ const avgS = (days.reduce((a,x)=>a+(+x.d.sleep||0),0)/days.filter(x=>+x.d.sleep>0).length||0);
+ $("#view").innerHTML = secHead("💧 Wellness","Sleep and water — the fuel behind every goal") + `
+ <div class="grid g2"><div class="card"><b>😴 Sleep — last 7 days</b>${chart("sleep",10,"var(--accent)","h")}<p class="mut small">Average: ${avgS?avgS.toFixed(1):"—"} hours. Log sleep in the Daily Log.</p></div>
+ <div class="card"><b>💧 Water — last 7 days</b>${chart("water",8,"var(--gold)","")}<p class="mut small">Goal: 8 glasses a day. Tap the drops in the Daily Log.</p></div></div>
+ <div class="card" style="margin-top:12px"><b>Quick log for today</b><div class="row" style="margin-top:8px"><span>Sleep last night:</span><input type="number" step="0.5" min="0" max="24" style="width:110px" id="wSleep" value="${(S.daily[tkey()]||{}).sleep||""}"><button class="btn small" onclick="setDaily(tkey(),'sleep',null,$('#wSleep').value);toast('😴 Sleep logged — chart updated')">Save</button><span style="margin-left:10px">Water:</span>${Array.from({length:8},(_,i)=>`<button class="tick ${((S.daily[tkey()]||{}).water||0)>i?"on":""}" onclick="setDaily(tkey(),'water',null,${i+1})">💧</button>`).join("")}</div></div>
+ <div class="card" style="margin-top:12px"><div class="row spread"><b>➕ Your own metrics</b><button class="btn gold small" onclick="metricForm()">+ Add your own metric</button></div>
+ ${(S.customMetrics||[]).map(mt=>{ const tval=(S.metricLog[tkey()]||{})[mt.id]; const last7=days.map(({k})=>{ const v=(S.metricLog[k]||{})[mt.id]; return v!=null&&v!==""? +v : null; }); const mx=Math.max(1,...last7.filter(v=>v!=null)); return `<div style="margin-top:12px"><div class="row spread"><b>${esc(mt.name)}</b><span class="row"><input type="number" step="any" style="width:110px" id="mt_${mt.id}" value="${tval!=null?tval:""}" placeholder="Today"><span class="mut small">${esc(mt.unit||"")}</span><button class="btn small" onclick="setMetric('${mt.id}')">Save</button><button class="btn ghost small" onclick="delMetric('${mt.id}')">✕</button></span></div><div class="row" style="align-items:flex-end;gap:10px;height:74px;margin-top:6px">${days.map(({k},i)=>`<div style="flex:1;text-align:center">${last7[i]!=null?`<div style="background:var(--accent);height:${Math.round(52*last7[i]/mx)}px;border-radius:6px 6px 0 0"></div><div class="small" style="margin-top:3px">${last7[i]}</div>`:`<div class="small mut" style="padding-top:34px">—</div>`}<div class="small mut">${parseK(k).toLocaleDateString("en-US",{weekday:"narrow"})}</div></div>`).join("")}</div></div>`; }).join("") || '<p class="mut small" style="margin-top:8px">Track anything else daily — steps, weight, exercise minutes, pages, push-ups… Give it a name and a unit, log a number each day, and its chart appears here.</p>'}</div>`; }
+function metricForm(){ openModal(`<h3>New wellness metric ➕</h3><label>Name</label><input id="mf_n" placeholder="e.g. Steps, Weight, Exercise"><label>Unit (optional)</label><input id="mf_u" placeholder="e.g. steps, kg, minutes"><div class="row" style="margin-top:16px"><button class="btn gold" id="mf_save">Add metric</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>`);
+ $("#mf_save").onclick=()=>{ const n=$("#mf_n").value.trim(); if(!n) return toast("Name the metric first."); S.customMetrics=S.customMetrics||[]; S.customMetrics.push({id:uid(),name:n,unit:$("#mf_u").value.trim()}); save(); closeModal(); toast("➕ Metric added — log today's number below."); render(); }; }
+function setMetric(id){ const v=$("#mt_"+id).value; S.metricLog=S.metricLog||{}; S.metricLog[tkey()]=S.metricLog[tkey()]||{}; if(v==="") delete S.metricLog[tkey()][id]; else S.metricLog[tkey()][id]=+v; save(); toast("✓ Saved — chart updated"); render(); }
+function delMetric(id){ confirmDo("Remove this metric and its history?", ()=>{ S.customMetrics=(S.customMetrics||[]).filter(m=>m.id!==id); save(); render(); }); }
+let weekStart = null;
+function mondayOf(d){ const x=new Date(d); const dow=(x.getDay()+6)%7; x.setDate(x.getDate()-dow); x.setHours(0,0,0,0); return x; }
+function renderWeekly(){ if(!weekStart) weekStart = dkey(mondayOf(today())); const start=parseK(weekStart); const plan=S.weeklyPlan[weekStart]||{focus:"",days:{}};
+ let dayCards=""; for(let i=0;i<7;i++){ const k=dkey(addDays(start,i)); dayCards+=`<div class="card"><b>${parseK(k).toLocaleDateString("en-US",{weekday:"long"})}</b><div class="small mut">${fmtDate(k)}${k===tkey()?" · Today":""}</div><textarea style="margin-top:8px" placeholder="Plan for this day…" oninput="setWeekDay('${weekStart}','${k}',this.value)">${esc((plan.days||{})[k]||"")}</textarea><div class="small mut" style="margin-top:6px">✅ ${dayDone(k)}/${S.habits.length} habits · 😊 ${(S.daily[k]||{}).mood?["","😖","😕","😐","🙂","😄"][S.daily[k].mood]:"—"}</div></div>`; }
+ $("#view").innerHTML = secHead("🗓️ Weekly Planner","52 weeks, generated for you — no static pages to run out of") + `
+ <div class="row no-print" style="margin-bottom:12px"><button class="btn ghost small" onclick="weekStart=dkey(addDays(parseK(weekStart),-7));render()">← Prev week</button><b>Week of ${fmtDate(weekStart)}</b><button class="btn ghost small" onclick="weekStart=dkey(addDays(parseK(weekStart),7));render()">Next week →</button><button class="btn ghost small" onclick="weekStart=dkey(mondayOf(today()));render()">This week</button></div>
+ <div class="card" style="margin-bottom:12px"><label style="margin-top:0">🎯 This week's #1 focus</label><input value="${esc(plan.focus||"")}" oninput="setWeekFocus('${weekStart}',this.value)" placeholder="If only one thing happens this week, it is…"></div>
+ <div class="grid g2">${dayCards}</div>
+ <div class="card no-print" style="margin-top:12px"><button class="btn ghost small" onclick="printCurrent()">🖨️ Print this week</button> <button class="btn small" onclick="go('weeklyreview')">Do the Weekly Review →</button></div>`; }
+function setWeekDay(ws,k,v){ S.weeklyPlan[ws]=S.weeklyPlan[ws]||{focus:"",days:{}}; S.weeklyPlan[ws].days=S.weeklyPlan[ws].days||{}; S.weeklyPlan[ws].days[k]=v; save(); }
+function setWeekFocus(ws,v){ S.weeklyPlan[ws]=S.weeklyPlan[ws]||{focus:"",days:{}}; S.weeklyPlan[ws].focus=v; save(); }
+function renderWeeklyReview(){ if(!weekStart) weekStart=dkey(mondayOf(today())); const ws=weekStart; const r=S.weeklyReview[ws]||{wins:"",lessons:"",next:""}; let ticks=0; for(let i=0;i<7;i++){ ticks+=dayDone(dkey(addDays(parseK(ws),i))); } const possible=S.habits.length*7;
+ $("#view").innerHTML = secHead("🔄 Weekly Review & Reset","Ten honest minutes that make next week better") + `
+ <div class="row no-print" style="margin-bottom:12px"><button class="btn ghost small" onclick="weekStart=dkey(addDays(parseK(weekStart),-7));render()">← Prev week</button><b>Week of ${fmtDate(ws)}</b><button class="btn ghost small" onclick="weekStart=dkey(addDays(parseK(weekStart),7));render()">Next week →</button></div>
+ <div class="card" style="margin-bottom:12px"><b>📊 Your week in numbers (auto-filled)</b><div class="row" style="margin-top:8px"><span class="chip">✅ ${ticks}/${possible} habit ticks</span><span class="chip">⏱️ ${S.focusLog.filter(f=>{ const dk=f.date; return dk>=ws && dk<=dkey(addDays(parseK(ws),6)); }).reduce((a,f)=>a+(+f.minutes||0),0)} focus minutes</span><span class="chip">🏆 ${S.wins.filter(w=>w.date>=ws&&w.date<=dkey(addDays(parseK(ws),6))).length} wins logged</span></div></div>
+ <div class="card"><label style="margin-top:0">🏆 This week's wins</label><textarea oninput="setWR('${ws}','wins',this.value)">${esc(r.wins||"")}</textarea>
+ <label>📚 Lessons learned</label><textarea oninput="setWR('${ws}','lessons',this.value)">${esc(r.lessons||"")}</textarea>
+ <label>🎯 Next week's focus</label><textarea oninput="setWR('${ws}','next',this.value)">${esc(r.next||"")}</textarea></div>
+ <div class="card no-print" style="margin-top:12px"><button class="btn small" onclick="go('weekly')">← Plan next week in the Weekly Planner</button></div>`; }
+function setWR(ws,f,v){ S.weeklyReview[ws]=S.weeklyReview[ws]||{wins:"",lessons:"",next:""}; S.weeklyReview[ws][f]=v; save(); }
+</script>
+<script>
+let monthSel = null;
+function curMonthIdx(){ const n=today(); return n.getFullYear()===YEAR? n.getMonth() : 0; }
+function renderMonthly(){ if(monthSel===null) monthSel=curMonthIdx(); const m=monthSel; const g=S.monthlyGoals[m]||{focus:"",plan:""};
+ $("#view").innerHTML = secHead("🌙 Monthly Goals",`${MONTHS[m]} 2027 — one focused page per month`) + `
+ <div class="row no-print" style="margin-bottom:12px">${MONTHS.map((mn,i)=>`<button class="btn ${i===m?"":"ghost"} small" onclick="monthSel=${i};render()">${mn.slice(0,3)}</button>`).join("")}</div>
+ <div class="card"><label style="margin-top:0">🎯 ${MONTHS[m]} focus</label><input value="${esc(g.focus||"")}" oninput="setMG(${m},'focus',this.value)" placeholder="This month's one big theme">
+ <label>📋 Plan & goals for ${MONTHS[m]}</label><textarea style="min-height:130px" oninput="setMG(${m},'plan',this.value)" placeholder="One per line works well…">${esc(g.plan||"")}</textarea>
+ <div class="row" style="margin-top:10px"><button class="btn ghost small" onclick="habitView.m=${m};go('habits')">Open ${MONTHS[m]} habit grid →</button><button class="btn small" onclick="go('monthlyreview')">Monthly Review →</button></div></div>`; }
+function setMG(m,f,v){ S.monthlyGoals[m]=S.monthlyGoals[m]||{focus:"",plan:""}; S.monthlyGoals[m][f]=v; save(); }
+function renderMonthlyReview(){ if(monthSel===null) monthSel=curMonthIdx(); const m=monthSel; const r=S.monthlyReview[m]||{best:"",hard:"",lesson:"",next:""}; let ticks=0; const dim=daysInMonth(YEAR,m); for(let d=1;d<=dim;d++) ticks+=dayDone(`${YEAR}-${pad2(m+1)}-${pad2(d)}`);
+ $("#view").innerHTML = secHead("📝 Monthly Review",`${MONTHS[m]} 2027`) + `
+ <div class="row no-print" style="margin-bottom:12px">${MONTHS.map((mn,i)=>`<button class="btn ${i===m?"":"ghost"} small" onclick="monthSel=${i};render()">${mn.slice(0,3)}</button>`).join("")}</div>
+ <div class="card" style="margin-bottom:12px"><b>📊 ${MONTHS[m]} in numbers (auto-filled)</b><div class="row" style="margin-top:8px"><span class="chip">✅ ${ticks} habit ticks</span><span class="chip">🌅 ${Object.keys(S.daily).filter(k=>k.startsWith(`${YEAR}-${pad2(m+1)}`)).length} daily logs</span><span class="chip">🏆 ${S.wins.filter(w=>w.date.startsWith(`${YEAR}-${pad2(m+1)}`)).length} wins</span></div></div>
+ <div class="card"><label style="margin-top:0">🌟 Best moment</label><textarea oninput="setMR(${m},'best',this.value)">${esc(r.best||"")}</textarea>
+ <label>🧗 Hardest part</label><textarea oninput="setMR(${m},'hard',this.value)">${esc(r.hard||"")}</textarea>
+ <label>📚 Lesson</label><textarea oninput="setMR(${m},'lesson',this.value)">${esc(r.lesson||"")}</textarea>
+ <label>🎯 Next month, I will…</label><textarea oninput="setMR(${m},'next',this.value)">${esc(r.next||"")}</textarea></div>
+ <div class="card no-print" style="margin-top:12px"><div class="row"><button class="btn ghost small" onclick="go('monthly')">← Monthly Goals</button><button class="btn ghost small" onclick="habitView.m=${m};go('habits')">${MONTHS[m]} Habit Tracker →</button></div></div>`; }
+function setMR(m,f,v){ S.monthlyReview[m]=S.monthlyReview[m]||{best:"",hard:"",lesson:"",next:""}; S.monthlyReview[m][f]=v; save(); }
+function qOfMonth(m){ return Math.floor(m/3); }
+function renderRoadmap(){ const qs=[0,1,2,3].map(q=>{ const plan=S.quarterlyPlan[q]||{focus:"",notes:""}; const goals=S.goals.filter(g=>g.deadline && qOfMonth(parseK(g.deadline).getMonth())===q);
+ return `<div class="card"><b>Q${q+1} · ${MONTHS[q*3]} – ${MONTHS[q*3+2]}</b><label>Focus</label><input value="${esc(plan.focus||"")}" oninput="setQP(${q},'focus',this.value)" placeholder="Quarter theme">
+ ${goals.map(g=>`<div class="item row spread"><span>🎯 ${esc(g.title)}</span><span class="chip">${g.progress||0}%</span></div>`).join("") || '<p class="mut small">No goal deadlines land in this quarter yet.</p>'}
+ <label>Notes</label><textarea oninput="setQP(${q},'notes',this.value)">${esc(plan.notes||"")}</textarea></div>`; }).join("");
+ $("#view").innerHTML = secHead("🗺️ Quarterly Roadmap","The whole year on one page") + `<div class="grid g2">${qs}</div>`; }
+function setQP(q,f,v){ S.quarterlyPlan[q]=S.quarterlyPlan[q]||{focus:"",notes:""}; S.quarterlyPlan[q][f]=v; save(); }
+function renderQuarterlyReview(){ const now=today(); const cq = now.getFullYear()===YEAR? qOfMonth(now.getMonth()) : 0; const q = renderQuarterlyReview._q!=null? renderQuarterlyReview._q : cq; const startM=q*3; let ticks=0; for(let m=startM;m<startM+3;m++){ const dim=daysInMonth(YEAR,m); for(let d=1;d<=dim;d++) ticks+=dayDone(`${YEAR}-${pad2(m+1)}-${pad2(d)}`); }
+ const r=S.quarterlyReview[q]||{reflection:"",carried:false}; const unfinished=S.goals.filter(g=>(+g.progress||0)<100);
+ $("#view").innerHTML = secHead("🏁 Quarterly Review","Pre-written from your real data — just add your reflection") + `
+ <div class="row no-print" style="margin-bottom:12px">${[0,1,2,3].map(i=>`<button class="btn ${i===q?"":"ghost"} small" onclick="renderQuarterlyReview._q=${i};render()">Q${i+1}</button>`).join("")}</div>
+ <div class="card" style="margin-bottom:12px"><b>📊 Q${q+1} in numbers</b><div class="row" style="margin-top:8px"><span class="chip">✅ ${ticks} habit ticks</span><span class="chip">🎯 ${S.goals.filter(g=>(+g.progress||0)>=100).length} goals completed</span><span class="chip">⏱️ ${S.focusLog.reduce((a,f)=>a+(+f.minutes||0),0)} total focus minutes</span><span class="chip">⭐ Live Score ${liveScore()}</span></div>
+ <p class="mut" style="margin-top:8px">Top habit: ${S.habits.length? esc(S.habits.slice().sort((a,b)=>habitTotal(b.id)-habitTotal(a.id))[0].name) : "—"} · Best streak: ${S.habits.length? Math.max.apply(null,S.habits.map(h=>habitStreak(h.id))) : 0} days</p></div>
+ <div class="card"><label style="margin-top:0">🪞 Your reflection on Q${q+1}</label><textarea style="min-height:110px" oninput="setQR(${q},this.value)" placeholder="What did this quarter teach you?">${esc(r.reflection||"")}</textarea>
+ ${q<3?`<div class="row" style="margin-top:12px"><button class="btn gold" onclick="carryOver(${q})" ${r.carried?"disabled":""}>${r.carried?"✓ Unfinished goals carried to Q"+(q+2):"↪ Carry unfinished goals into Q"+(q+2)}</button></div><p class="small mut" style="margin-top:6px">${unfinished.length} unfinished goal(s) will be noted in next quarter's roadmap.</p>`:""}</div>`; }
+function setQR(q,v){ S.quarterlyReview[q]=S.quarterlyReview[q]||{reflection:"",carried:false}; S.quarterlyReview[q].reflection=v; save(); }
+function carryOver(q){ const unfinished=S.goals.filter(g=>(+g.progress||0)<100); S.quarterlyPlan[q+1]=S.quarterlyPlan[q+1]||{focus:"",notes:""}; const note="Carried from Q"+(q+1)+": "+unfinished.map(g=>g.title).join(", "); S.quarterlyPlan[q+1].notes=((S.quarterlyPlan[q+1].notes||"")+" "+note).trim(); S.quarterlyReview[q]=S.quarterlyReview[q]||{reflection:"",carried:false}; S.quarterlyReview[q].carried=true; save(); confetti(); toast("↪ Carried into Q"+(q+2)+"'s roadmap!"); render(); }
+function renderMidyear(){ const m=S.midyear||{proud:"",letgo:"",refocus:""};
+ $("#view").innerHTML = secHead("🌗 Mid-Year Reset","July is halftime — review, release, refocus") + `
+ <div class="card"><div class="row"><span class="chip gold">⭐ Score so far: ${liveScore()}</span><span class="chip">🏆 ${S.wins.length} wins logged</span><span class="chip">✅ ${S.habits.reduce((a,h)=>a+habitTotal(h.id),0)} total ticks</span></div>
+ <label>🌟 What I'm proud of</label><textarea oninput="setMY('proud',this.value)">${esc(m.proud||"")}</textarea>
+ <label>🍂 What I'm letting go of</label><textarea oninput="setMY('letgo',this.value)">${esc(m.letgo||"")}</textarea>
+ <label>🎯 My refocus for July–December</label><textarea oninput="setMY('refocus',this.value)">${esc(m.refocus||"")}</textarea></div>`; }
+function setMY(f,v){ S.midyear=S.midyear||{}; S.midyear[f]=v; save(); }
+function renderYear(){ const r=S.yearReview||{best:"",hardest:"",learned:"",grateful:""};
+ $("#view").innerHTML = secHead("📖 My Year","Your word, and the year that was") + `
+ <div class="hero" style="margin-bottom:14px"><div class="sub">My word for 2027</div><h1 style="font-size:34px">${S.profile.word? esc(S.profile.word) : "— not set yet —"}</h1><div class="sub">Change it any time in Settings.</div></div>
+ <div class="card"><b>🔙 Looking back at last year</b>
+ <label>🌟 Best moment of last year</label><textarea oninput="setYR('best',this.value)">${esc(r.best||"")}</textarea>
+ <label>🧗 Hardest challenge</label><textarea oninput="setYR('hardest',this.value)">${esc(r.hardest||"")}</textarea>
+ <label>📚 Biggest lesson</label><textarea oninput="setYR('learned',this.value)">${esc(r.learned||"")}</textarea>
+ <label>🙏 Most grateful for</label><textarea oninput="setYR('grateful',this.value)">${esc(r.grateful||"")}</textarea></div>`; }
+function setYR(f,v){ S.yearReview=S.yearReview||{}; S.yearReview[f]=v; save(); }
+function renderWheel(){ const vals=AREAS.map(a=>S.wheel[a]||5); const avg=(vals.reduce((a,b)=>a+b,0)/8).toFixed(1);
+ $("#view").innerHTML = secHead("🎡 Wheel of Life","Rate each area honestly, 1–10 — the wheel shows where 2027 needs love") + `
+ <div class="card">${AREAS.map((a,i)=>`<div class="row" style="margin:10px 0"><span style="width:150px"><b>${AREA_ICONS[a]} ${a}</b></span><input type="range" min="1" max="10" value="${vals[i]}" style="flex:1" oninput="setWheel('${a}',this.value)"><b style="width:28px;text-align:center" id="wv_${a}">${vals[i]}</b></div><div class="bar"><i style="width:${vals[i]*10}%"></i></div>`).join("")}
+ <p style="margin-top:12px"><b>Average balance: ${avg} / 10</b> <span class="mut">— lowest area is your highest-leverage goal area.</span></p></div>`; }
+function setWheel(a,v){ S.wheel[a]=+v; const el=$("#wv_"+a); if(el) el.textContent=v; save(); }
+function renderVision(){ $("#view").innerHTML = secHead("🖼️ Vision Board","See it daily, become it gradually") + `
+ <div class="row no-print" style="margin-bottom:12px"><button class="btn gold" onclick="visionForm()">+ Add vision card</button></div>
+ <div class="grid g3">${S.vision.map(v=>`<div class="card" style="text-align:center;${v.grad?`background:${v.grad};color:#fff;border:none`:""}">${v.photo?`<img src="${v.photo}" style="width:100%;height:150px;object-fit:cover;border-radius:10px">`:`<div style="font-size:64px;padding:22px 0">${esc(v.emoji||"🌟")}</div>`}<b>${esc(v.caption||"")}</b><div style="margin-top:8px"><button class="btn ghost small" onclick="delVision('${v.id}')">Remove</button></div></div>`).join("") || '<div class="card"><b>Your board is empty.</b><p class="mut">Add pictures of the 2027 you are building — a finish line, a saved fund, a calm home. Tap + Add vision card and pick from the ready gallery, or use your own photo.</p></div>'}</div>`; }
+const VISION_ART = [
+ ["🏃","Cross the 10K finish line","linear-gradient(135deg,#0E6B5C,#3FBFA4)"],["💰","Save my first $10,000","linear-gradient(135deg,#8A6414,#E9B44C)"],["🏡","A calm, beautiful home","linear-gradient(135deg,#5C7A3D,#9CC184)"],["✈️","Travel somewhere new","linear-gradient(135deg,#2E6FA8,#6FB3E0)"],["💪","Strong & fit all year","linear-gradient(135deg,#B04A5A,#E87FA3)"],["🧘","A calm, clear mind","linear-gradient(135deg,#7A5CA8,#B07FE8)"],["🎓","Finish my course","linear-gradient(135deg,#1E3448,#2E6FA8)"],["💼","Grow my career","linear-gradient(135deg,#453322,#C46A28)"],["❤️","More time with family","linear-gradient(135deg,#C2432F,#F0956B)"],["📚","Read 24 books","linear-gradient(135deg,#6B4E12,#C9962C)"],["🌅","Peaceful mornings","linear-gradient(135deg,#E08A3C,#F6D492)"],["🚗","My dream car","linear-gradient(135deg,#37474F,#78909C)"],["🎨","Create something weekly","linear-gradient(135deg,#AD1457,#EC407A)"],["🏔️","Climb a mountain","linear-gradient(135deg,#455A64,#90A4AE)"],["🐾","Adopt a pet","linear-gradient(135deg,#6D4C41,#A1887F)"],["🎵","Learn an instrument","linear-gradient(135deg,#4527A0,#7E57C2)"],["🌌","See the Northern Lights","linear-gradient(135deg,#0D3B2E,#26A69A)"],["🎉","A special celebration","linear-gradient(135deg,#8E24AA,#CE93D8)"],["🏖️","A beach holiday","linear-gradient(135deg,#00838F,#4DD0E1)"],["📈","Invest with confidence","linear-gradient(135deg,#1B5E20,#66BB6A)"],["🥗","Cook healthy meals","linear-gradient(135deg,#558B2F,#9CCC65)"],["🤝","Help others every month","linear-gradient(135deg,#00695C,#4DB6AC)"],["⭐","Earn a promotion","linear-gradient(135deg,#7A4D00,#FFB300)"],["🔥","A 100-day streak","linear-gradient(135deg,#BF360C,#FF7043)"]];
+function addPreset(i){ const p=VISION_ART[i]; S.vision.push({id:uid(),emoji:p[0],caption:p[1],grad:p[2],photo:null}); save(); closeModal(); toast("🖼️ Added to your Vision Board!"); render(); }
+function visionForm(){ openModal(`<h3>New vision card 🖼️</h3><p class="mut">✨ <b>Ready gallery</b> — one tap adds a designed card to your board:</p><div class="vgrid" style="margin-top:10px">${VISION_ART.map((p,i)=>`<button class="vpreset" style="background:${p[2]}" onclick="addPreset(${i})"><span class="ve">${p[0]}</span>${p[1]}</button>`).join("")}</div><p class="mut" style="margin-top:14px">…or make your own:</p><label>Emoji</label><input id="vf_e" maxlength="4" value="🌟"><label>Caption</label><input id="vf_c" placeholder="e.g. Cross the 10K finish line"><label>Photo (optional)</label><input id="vf_p" type="file" accept="image/*"><div class="row" style="margin-top:16px"><button class="btn gold" id="vf_save">Add my own card</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>`);
+ $("#vf_save").onclick=()=>{ const f=$("#vf_p").files[0]; const push=(photo)=>{ S.vision.push({id:uid(),emoji:$("#vf_e").value||"🌟",caption:$("#vf_c").value.trim(),photo:photo||null}); save(); closeModal(); render(); }; if(f){ readImage(f, 700, push); } else push(null); }; }
+function delVision(id){ S.vision=S.vision.filter(v=>v.id!==id); save(); render(); }
+function readImage(file, maxW, cb){ const img=new Image(); const url=URL.createObjectURL(file); img.onload=()=>{ const scale=Math.min(1, maxW/img.width); const cv=document.createElement("canvas"); cv.width=Math.round(img.width*scale); cv.height=Math.round(img.height*scale); cv.getContext("2d").drawImage(img,0,0,cv.width,cv.height); URL.revokeObjectURL(url); cb(cv.toDataURL("image/jpeg",0.82)); }; img.src=url; }
+function renderChallenges(){ $("#view").innerHTML = secHead("🔥 Challenges","30-day and 100-day runs — tick each day, watch the chain grow") + `
+ <div class="row no-print" style="margin-bottom:12px"><button class="btn gold" onclick="challengeForm()">+ New challenge</button></div>
+ ${S.challenges.map(c=>{ const done=Object.keys(c.ticks||{}).length; let boxes=""; for(let i=0;i<c.days;i++){ const k=dkey(addDays(parseK(c.start),i)); const on=(c.ticks||{})[k]; boxes+=`<button class="tick ${on?"on":""}" style="width:34px;height:34px;font-size:12px" title="${fmtDate(k)}" onclick="toggleChallengeDay('${c.id}','${k}')">${i+1}</button>`; } return `<div class="card" style="margin-bottom:12px"><div class="row spread"><b>${esc(c.name)}</b><span class="chip gold">${done}/${c.days} days</span></div><div class="bar"><i style="width:${Math.round(100*done/c.days)}%"></i></div><div class="row" style="margin-top:10px;gap:5px">${boxes}</div><div style="margin-top:8px"><button class="btn ghost small" onclick="delChallenge('${c.id}')">Delete challenge</button></div></div>`; }).join("") || '<div class="card"><b>No challenges yet.</b><p class="mut">A 30-day challenge is the fastest way to make a habit automatic.</p></div>'}`; }
+function challengeForm(){ openModal(`<h3>New challenge 🔥</h3><label>Name</label><input id="cf_n" placeholder="e.g. 30-Day Morning Walk"><label>Length</label><select id="cf_d"><option value="30">30 days</option><option value="100">100 days</option><option value="7">7 days</option></select><label>Start date</label><input id="cf_s" type="date" value="${tkey()}"><div class="row" style="margin-top:16px"><button class="btn gold" id="cf_save">Start challenge</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>`);
+ $("#cf_save").onclick=()=>{ const n=$("#cf_n").value.trim(); if(!n) return toast("Name the challenge first."); S.challenges.push({id:uid(),name:n,days:+$("#cf_d").value,start:$("#cf_s").value||tkey(),ticks:{}}); save(); closeModal(); confetti(); toast("🔥 Challenge started!"); render(); }; }
+function toggleChallengeDay(cid,k){ const c=S.challenges.find(x=>x.id===cid); c.ticks=c.ticks||{}; if(c.ticks[k]) delete c.ticks[k]; else { c.ticks[k]=true; if(Object.keys(c.ticks).length===c.days){ confetti(); toast("🏆 CHALLENGE COMPLETE! Incredible!"); } } save(); render(); }
+function delChallenge(cid){ confirmDo("Delete this challenge?", ()=>{ S.challenges=S.challenges.filter(x=>x.id!==cid); save(); render(); }); }
+function entryForm(kind, id){ const isW = kind==="win"; const list = isW? S.wins : S.gratitude; const e = id? list.find(x=>x.id===id) : {text:"",date:tkey()};
+ openModal(`<h3>${id?"Edit":"Add"} ${isW?"win 🏆":"gratitude 🙏"}</h3><label>Text</label><textarea id="ef_t">${esc(e.text)}</textarea><label>Date</label><input id="ef_d" type="date" value="${esc(e.date)}"><div class="row" style="margin-top:16px"><button class="btn gold" id="ef_save">Save</button><button class="btn ghost" onclick="closeModal()">Cancel</button>${id?`<button class="btn danger" id="ef_del">Delete</button>`:""}</div>`);
+ $("#ef_save").onclick=()=>{ const t=$("#ef_t").value.trim(); if(!t) return toast("Write something first."); if(id){ Object.assign(list.find(x=>x.id===id),{text:t,date:$("#ef_d").value}); } else list.unshift({id:uid(),text:t,date:$("#ef_d").value||tkey()}); save(); closeModal(); render(); };
+ if(id) $("#ef_del").onclick=()=>confirmDo("Delete this entry?", ()=>{ if(isW) S.wins=S.wins.filter(x=>x.id!==id); else S.gratitude=S.gratitude.filter(x=>x.id!==id); save(); render(); }); }
+function renderWins(){ $("#view").innerHTML = secHead("🏆 Wins Log","Proof that you are moving — read it on hard days") + `<div class="row no-print" style="margin-bottom:12px"><button class="btn gold" onclick="entryForm('win')">+ Add a win</button><span class="chip">${S.wins.length} wins logged</span></div>` + (S.wins.map(w=>`<div class="item row spread"><span>🏆 ${esc(w.text)}</span><span class="row"><span class="chip">${fmtDate(w.date)}</span><button class="btn ghost small" onclick="entryForm('win','${w.id}')">Edit</button></span></div>`).join("") || '<div class="card"><b>No wins logged yet.</b><p class="mut">Finished something small today? That counts. Log it.</p></div>'); }
+function renderGratitude(){ $("#view").innerHTML = secHead("🙏 Gratitude Log","One good thing a day rewires a year") + `<div class="row no-print" style="margin-bottom:12px"><button class="btn gold" onclick="entryForm('gratitude')">+ Add gratitude</button><span class="chip">${S.gratitude.length} entries</span></div>` + (S.gratitude.map(w=>`<div class="item row spread"><span>🙏 ${esc(w.text)}</span><span class="row"><span class="chip">${fmtDate(w.date)}</span><button class="btn ghost small" onclick="entryForm('gratitude','${w.id}')">Edit</button></span></div>`).join("") || '<div class="card"><b>Nothing here yet.</b><p class="mut">Start with one small thing from today.</p></div>'); }
+function renderBadges(){ const maxStreak = S.habits.length? Math.max.apply(null, S.habits.map(h=>habitStreak(h.id))) : 0; const focusMin=S.focusLog.reduce((a,f)=>a+(+f.minutes||0),0); const anyGold=S.habits.some(h=>ladderOf(h.id).name==="Gold");
+ const badges=[["🌱","First Tick","Tick any habit once", S.habits.reduce((a,h)=>a+habitTotal(h.id),0)>0],["🔥","Week Streak","Reach a 7-day streak", maxStreak>=7],["⚡","Month Streak","Reach a 30-day streak", maxStreak>=30],["🎯","First Goal Done","Complete a goal at 100%", S.goals.some(g=>(+g.progress||0)>=100)],["⏱️","Focus 100","Log 100 focus minutes", focusMin>=100],["🏆","Winner x10","Log 10 wins", S.wins.length>=10],["🥇","Golden Habit","Take any habit to Gold", anyGold],["⭐","Score 50+","Reach a Live Score of 50", liveScore()>=50]];
+ $("#view").innerHTML = secHead("🎖️ Badges & Rewards","Your Habit Ladder levels and achievement badges") + `
+ <h3 style="margin-bottom:10px">🪜 Habit Ladder — per habit</h3>
+ ${S.habits.map(h=>{ const lad=ladderOf(h.id); const tot=habitTotal(h.id); const pct=lad.next? Math.min(100,Math.round(100*tot/lad.next)) : 100; return `<div class="item"><div class="row spread"><span>${h.icon||"✅"} <b>${esc(h.name)}</b></span><span class="chip gold">${lad.icon} ${lad.name}</span></div><div class="bar"><i style="width:${pct}%"></i></div><div class="small mut">${tot} total ticks ${lad.next? "· "+(lad.next-tot)+" to the next level" : "· top of the ladder!"}</div></div>`; }).join("") || '<p class="mut">Add habits to start climbing.</p>'}
+ <h3 style="margin:16px 0 10px">🏅 Achievement badges</h3><div class="grid g4">${badges.map(b=>`<div class="card" style="text-align:center;${b[3]?"":"opacity:.45"}"><div style="font-size:36px">${b[0]}</div><b>${b[1]}</b><div class="small mut">${b[2]}</div><div class="chip ${b[3]?"gold":""}" style="margin-top:6px">${b[3]?"Earned ✓":"Locked"}</div></div>`).join("")}</div>`; }
+let timer = {sec:1500, total:1500, mode:"focus", running:false, int:null, goalId:""};
+function renderFocus(){ const mm=pad2(Math.floor(timer.sec/60)), ss=pad2(timer.sec%60);
+ $("#view").innerHTML = secHead("⏱️ Focus Timer","Pomodoro 25 / 5 / 15 — plus Focus Sprints that feed your goals") + `
+ <div class="card" style="text-align:center"><div class="row" style="justify-content:center">${[["focus","Focus · 25",1500],["short","Short break · 5",300],["long","Long break · 15",900]].map(m=>`<button class="btn ${timer.mode===m[0]?"gold":"ghost"} small" onclick="setTimerMode('${m[0]}',${m[2]})">${m[1]}</button>`).join("")}</div>
+ <div class="kbd-num" style="font-size:64px;margin:12px 0" id="clock">${mm}:${ss}</div>
+ <div class="row" style="justify-content:center"><button class="btn gold" id="tStart" onclick="toggleTimer()">${timer.running?"⏸ Pause":"▶ Start"}</button><button class="btn ghost" onclick="resetTimer()">↺ Reset</button><button class="btn" onclick="enterFocusMode()">🖥️ Focus Mode</button></div>
+ <div style="max-width:420px;margin:16px auto 0"><label>🏃 Focus Sprint — work on a goal's steps (minutes auto-log to that goal)</label><select id="sprintGoal"><option value="">— Just focus —</option>${S.goals.map(g=>`<option value="${g.id}" ${timer.goalId===g.id?"selected":""}>${esc(g.title)}</option>`).join("")}</select></div>
+ <p class="mut small" style="margin-top:10px">Total focus logged: <b>${S.focusLog.reduce((a,f)=>a+(+f.minutes||0),0)} minutes</b> across ${S.focusLog.length} sessions</p></div>
+ <div class="card" style="margin-top:12px"><b>Recent sessions</b>${S.focusLog.slice(-6).reverse().map(f=>`<div class="item row spread"><span>⏱️ ${f.minutes} min ${f.goalId? "· 🎯 "+esc((S.goals.find(g=>g.id===f.goalId)||{}).title||"goal") : ""}</span><span class="chip">${fmtDate(f.date)}</span></div>`).join("") || '<p class="mut">No sessions yet — your first 25 minutes start now.</p>'}</div>`; }
+function setTimerMode(mode, sec){ stopTimer(); timer.mode=mode; timer.total=sec; timer.sec=sec; render(); }
+function resetTimer(){ stopTimer(); timer.sec=timer.total; render(); }
+function stopTimer(){ if(timer.int){ clearInterval(timer.int); timer.int=null; } timer.running=false; }
+function toggleTimer(){ if(timer.running){ stopTimer(); render(); return; } const sel=$("#sprintGoal"); if(sel) timer.goalId=sel.value; timer.running=true; timer.int=setInterval(()=>{ timer.sec--; const c=$("#clock"); if(c) c.textContent=pad2(Math.floor(timer.sec/60))+":"+pad2(timer.sec%60); if(timer.sec<=0){ finishTimer(); } },1000); render(); }
+function finishTimer(){ stopTimer(); const mins=Math.round(timer.total/60); if(timer.mode==="focus"){ S.focusLog.push({id:uid(),date:tkey(),minutes:mins,goalId:timer.goalId||"",label:"Focus"}); if(timer.goalId){ const g=S.goals.find(x=>x.id===timer.goalId); if(g) g.focusMin=(g.focusMin||0)+mins; } save(); confetti(); toast(`⏱️ Session complete — ${mins} minutes logged!`); } else toast("☕ Break over — back to it!"); timer.sec=timer.total; render(); }
+function enterFocusMode(){ const div=document.createElement("div"); div.className="focusmode"; div.id="fm"; div.innerHTML=`<div class="mut">FOCUS MODE</div><div class="clock" id="fmClock">${pad2(Math.floor(timer.sec/60))}:${pad2(timer.sec%60)}</div><div class="mut">${timer.goalId? "Sprint: "+esc((S.goals.find(g=>g.id===timer.goalId)||{}).title||"") : "One thing at a time."}</div><div class="row"><button class="btn gold" onclick="toggleTimer();syncFM()">${timer.running?"⏸ Pause":"▶ Start"}</button><button class="btn ghost" onclick="document.getElementById('fm').remove()">Exit Focus Mode</button></div>`; document.body.appendChild(div); }
+function syncFM(){ const c=$("#fmClock"); if(c) c.textContent=pad2(Math.floor(timer.sec/60))+":"+pad2(timer.sec%60); }
+function startSprint(gid){ timer.goalId=gid; timer.mode="focus"; timer.total=1500; timer.sec=1500; go("focus"); toast("🏃 Sprint ready — press Start when you are."); }
+function renderSavings(){ const cur=S.profile.currency||"$"; const total=S.savings.entries.reduce((a,e)=>a+(+e.amount||0),0); const pct=S.savings.target? Math.min(100,Math.round(100*total/S.savings.target)) : 0;
+ $("#view").innerHTML = secHead("🐷 Savings Tracker","Small deposits, big calm") + `
+ <div class="card"><div class="row spread"><b>Goal: ${cur}${(+S.savings.target||0).toLocaleString()}</b><span class="chip gold">${cur}${total.toLocaleString()} saved · ${pct}%</span></div><div class="bar" style="height:14px"><i style="width:${pct}%"></i></div><p class="mut small" style="margin-top:6px">${S.savings.target>total? `${cur}${(S.savings.target-total).toLocaleString()} to go — you have got this.` : "🎉 Target reached! Set a new one below."}</p>
+ <div class="row no-print" style="margin-top:10px"><input type="number" id="sv_amt" placeholder="Amount" style="max-width:140px"><input id="sv_note" placeholder="Note — e.g. Payday transfer"><button class="btn gold" onclick="addSaving()">+ Add</button></div>
+ <label>Change target</label><div class="row"><input type="number" id="sv_target" value="${S.savings.target||1000}" style="max-width:160px"><button class="btn ghost small" onclick="setSavTarget()">Update target</button></div></div>
+ <div style="margin-top:12px">${S.savings.entries.slice().reverse().map(e=>`<div class="item row spread"><span>💵 ${cur}${(+e.amount).toLocaleString()} <span class="mut">${esc(e.note||"")}</span></span><span class="row"><span class="chip">${fmtDate(e.date)}</span><button class="btn ghost small" onclick="delSaving('${e.id}')">✕</button></span></div>`).join("") || '<p class="mut">No deposits yet — the first one is the hardest and the best.</p>'}</div>`; }
+function addSaving(){ const a=+$("#sv_amt").value; if(!a) return toast("Enter an amount."); S.savings.entries.push({id:uid(),date:tkey(),amount:a,note:$("#sv_note").value.trim()}); save(); const total=S.savings.entries.reduce((x,e)=>x+(+e.amount||0),0); if(S.savings.target && total>=S.savings.target){ confetti(); toast("🎉 SAVINGS TARGET REACHED!"); } else toast("🐷 Deposit added!"); render(); }
+function delSaving(id){ S.savings.entries=S.savings.entries.filter(e=>e.id!==id); save(); render(); }
+function setSavTarget(){ S.savings.target=+$("#sv_target").value||0; save(); render(); }
+function renderReading(){ $("#view").innerHTML = secHead("📚 Reading Tracker","12 books a year is just 10 pages a day") + `
+ <div class="row no-print" style="margin-bottom:12px"><button class="btn gold" onclick="bookForm()">+ Add a book</button><span class="chip">${S.books.filter(b=>b.status==="Finished").length} finished</span></div>
+ ${S.books.map(b=>{ const pct=b.pages? Math.min(100,Math.round(100*(+b.read||0)/b.pages)) : 0; return `<div class="item"><div class="row spread"><span class="t">📖 ${esc(b.title)}</span><span class="chip ${b.status==="Finished"?"gold":""}">${esc(b.status)}</span></div><div class="mut small">${esc(b.author||"")} · ${b.read||0}/${b.pages||"?"} pages</div><div class="bar"><i style="width:${pct}%"></i></div><div class="row" style="margin-top:8px"><input type="number" min="0" value="${b.read||0}" style="max-width:110px" oninput="setBookRead('${b.id}',this.value)"><span class="small mut">pages read</span><button class="btn ghost small" onclick="bookForm('${b.id}')">Edit</button></div></div>`; }).join("") || '<div class="card"><b>No books yet.</b><p class="mut">Add the one on your nightstand right now.</p></div>'}`; }
+function bookForm(id){ const b=id? S.books.find(x=>x.id===id) : {title:"",author:"",pages:"",read:0,status:"Reading"};
+ openModal(`<h3>${id?"Edit book":"Add a book"} 📚</h3><label>Title</label><input id="bf_t" value="${esc(b.title)}"><label>Author</label><input id="bf_a" value="${esc(b.author)}"><label>Total pages</label><input id="bf_p" type="number" value="${b.pages||""}"><label>Status</label><select id="bf_s">${["Want to read","Reading","Finished"].map(s=>`<option ${s===b.status?"selected":""}>${s}</option>`).join("")}</select><div class="row" style="margin-top:16px"><button class="btn gold" id="bf_save">Save</button><button class="btn ghost" onclick="closeModal()">Cancel</button>${id?`<button class="btn danger" id="bf_del">Delete</button>`:""}</div>`);
+ $("#bf_save").onclick=()=>{ const t=$("#bf_t").value.trim(); if(!t) return toast("Add a title."); const data={title:t,author:$("#bf_a").value.trim(),pages:+$("#bf_p").value||0,status:$("#bf_s").value}; if(id) Object.assign(S.books.find(x=>x.id===id),data); else S.books.push(Object.assign({id:uid(),read:0},data)); save(); closeModal(); render(); };
+ if(id) $("#bf_del").onclick=()=>confirmDo("Remove this book?", ()=>{ S.books=S.books.filter(x=>x.id!==id); save(); render(); }); }
+function setBookRead(id,v){ const b=S.books.find(x=>x.id===id); b.read=+v||0; if(b.pages && b.read>=b.pages){ b.status="Finished"; confetti(); toast("📚 Book finished! Add it to your Wins Log."); } save(); render(); }
+function renderBucket(){ $("#view").innerHTML = secHead("🪣 Bucket List","The moments that make 2027 a story worth telling") + `
+ <div class="row no-print" style="margin-bottom:12px"><input id="bk_new" placeholder="Add a bucket-list moment…" onkeydown="if(event.key==='Enter')addBucket()"><button class="btn gold" onclick="addBucket()">Add</button></div>
+ ${S.bucket.map(b=>`<div class="item row spread"><span style="${b.done?"text-decoration:line-through;color:var(--muted)":""}">🪣 ${esc(b.text)}</span><span class="row"><button class="tick ${b.done?"on":""}" onclick="toggleBucket('${b.id}')">${b.done?"✓":""}</button><button class="btn ghost small" onclick="delBucket('${b.id}')">✕</button></span></div>`).join("") || '<p class="mut">Empty for now — dream a little, then write it down.</p>'}`; }
+function addBucket(){ const v=$("#bk_new").value.trim(); if(!v) return; S.bucket.push({id:uid(),text:v,done:false}); save(); render(); }
+function toggleBucket(id){ const b=S.bucket.find(x=>x.id===id); b.done=!b.done; save(); if(b.done){ confetti(); toast("🪣 Bucket-list moment DONE!"); } render(); }
+function delBucket(id){ S.bucket=S.bucket.filter(x=>x.id!==id); save(); render(); }
+function pixelDay(k){ const mood=(S.daily[k]||{}).mood||0; const names=["","😖 Rough","😕 Low","😐 Okay","🙂 Good","😄 Great"]; const faces=["","😖","😕","😐","🙂","😄"];
+ openModal(`<h3>📅 ${fmtDate(k)}</h3><div style="text-align:center;font-size:68px;margin:8px 0">${mood?faces[mood]:"⬜"}</div><p class="mut" style="text-align:center">${mood? "That day's mood: <b>"+names[mood]+"</b>" : "No mood logged for this day yet — set it in the Daily Log."}</p><div class="row" style="margin-top:16px;justify-content:center"><button class="btn gold" onclick="closeModal();dailyDate='${k}';go('daily')">Open that day's Daily Log →</button><button class="btn ghost" onclick="closeModal()">Close</button></div>`); }
+function renderPixels(){ const moodName=["","😖 Rough","😕 Low","😐 Okay","🙂 Good","😄 Great"]; let rows=""; for(let m=0;m<12;m++){ const dim=daysInMonth(YEAR,m); let cells=""; for(let d=1;d<=31;d++){ if(d>dim){ cells+=`<i style="opacity:0"></i>`; } else { const k=`${YEAR}-${pad2(m+1)}-${pad2(d)}`; const mood=(S.daily[k]||{}).mood||0; cells+=`<i class="${mood?"m"+mood:""}" title="${MONTHS[m]} ${d}${mood?" · "+moodName[mood]:""}" onclick="pixelDay('${k}')" style="cursor:pointer"></i>`; } } rows+=`<div class="row" style="gap:8px;margin-bottom:5px"><span class="small" style="width:74px"><b>${MONTHS[m].slice(0,3)}</b></span><div class="pix" style="flex:1">${cells}</div></div>`; }
+ $("#view").innerHTML = secHead("🎨 Year in Pixels","Every day gets a colour — set your mood in the Daily Log (tap a square to open that day)") + `<div class="card">${rows}<div class="row" style="margin-top:10px">${[1,2,3,4,5].map(n=>`<span class="chip"><i style="display:inline-block;width:12px;height:12px;border-radius:3px" class="pix"><i class="m${n}" style="width:12px;height:12px"></i></i> ${moodName[n]}</span>`).join("")}</div><p class="mut small" style="margin-top:8px">${Object.keys(S.daily).filter(k=>S.daily[k].mood).length} days coloured so far.</p></div>`; }
+function renderNotes(){ $("#view").innerHTML = secHead("🗒️ Notes","Lined, dotted and grid pages for every kind of thinking") + `
+ <div class="row no-print" style="margin-bottom:12px"><button class="btn gold" onclick="noteForm()">+ New note</button></div>
+ <div class="grid g2">${S.notes.map(n=>`<div><div class="note-paper note-${n.style||"lined"}"><b>${esc(n.title)}</b><div class="small mut">${fmtDate(n.date||tkey())} · ${esc(n.style||"lined")}</div><div style="margin-top:6px">${esc(n.text)}</div></div><div class="row" style="margin-top:6px"><button class="btn ghost small" onclick="noteForm('${n.id}')">Edit</button><button class="btn ghost small" onclick="delNote('${n.id}')">Delete</button></div></div>`).join("") || '<div class="card"><b>No notes yet.</b></div>'}</div>`; }
+function noteForm(id){ const n=id? S.notes.find(x=>x.id===id) : {title:"",style:"lined",text:""};
+ openModal(`<h3>${id?"Edit note":"New note"} 🗒️</h3><label>Title</label><input id="nf_t" value="${esc(n.title)}"><label>Paper style</label><select id="nf_s">${["lined","dotted","gridp"].map(s=>`<option value="${s}" ${s===n.style?"selected":""}>${s==="gridp"?"grid":s}</option>`).join("")}</select><label>Note</label><textarea id="nf_x" style="min-height:130px">${esc(n.text)}</textarea><div class="row" style="margin-top:16px"><button class="btn gold" id="nf_save">Save note</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>`);
+ $("#nf_save").onclick=()=>{ const data={title:$("#nf_t").value.trim()||"Untitled",style:$("#nf_s").value,text:$("#nf_x").value}; if(id) Object.assign(S.notes.find(x=>x.id===id),data); else S.notes.unshift(Object.assign({id:uid(),date:tkey()},data)); save(); closeModal(); render(); }; }
+function delNote(id){ confirmDo("Delete this note?", ()=>{ S.notes=S.notes.filter(x=>x.id!==id); save(); render(); }); }
+function renderLetter(){ const open = tkey() >= (S.letter.openOn||"2027-12-31");
+ $("#view").innerHTML = secHead("✉️ Letter to Future Self","Write it now, open it at the end of 2027") + `
+ <div class="card">${open? "" : `<p class="chip gold">🔒 Sealed until ${fmtDate(S.letter.openOn||"2027-12-31")}</p>`}
+ <label>Open on</label><input type="date" value="${esc(S.letter.openOn||"2027-12-31")}" oninput="S.letter.openOn=this.value;save()">
+ <label>Your letter</label><textarea style="min-height:200px" oninput="S.letter.text=this.value;save()" placeholder="Dear future me…">${esc(S.letter.text||"")}</textarea>
+ <p class="mut small">Be kind and specific — future you will be glad you wrote it.</p></div>`; }
+let calY = YEAR, calM = null;
+function renderCalendar(){ if(calM===null) calM=curMonthIdx(); const y=calY, m=calM; const first=new Date(y,m,1); const startDow=(first.getDay()+6)%7; const dim=daysInMonth(y,m);
+ let cells=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d=>`<div class="dow">${d}</div>`).join(""); for(let i=0;i<startDow;i++) cells+=`<div></div>`;
+ for(let d=1;d<=dim;d++){ const k=`${y}-${pad2(m+1)}-${pad2(d)}`; const done=dayDone(k); const dl=S.goals.filter(g=>g.deadline===k); const evs=(S.events||[]).filter(e=>e.date===k); const mood=(S.daily[k]||{}).mood||0; cells+=`<div class="cd ${k===tkey()?"today":""}" onclick="calDay('${k}')" title="Tap to add or view events"><div class="n">${d}</div>${done?`<div>✅ ${done}/${S.habits.length}</div>`:""}${dl.map(g=>`<div>🎯 ${esc(g.title.slice(0,14))}</div>`).join("")}${evs.map(e=>`<div>${e.type==="reminder"?"⏰":"📌"} ${esc(e.title.slice(0,14))}</div>`).join("")}${mood?`<div>${["","😖","😕","😐","🙂","😄"][mood]}</div>`:""}</div>`; }
+ $("#view").innerHTML = secHead("📅 Calendar","Tap any date to add an event or reminder") + `
+ <div class="row no-print" style="margin-bottom:12px"><button class="btn ghost small" onclick="calM=Math.max(0,calM-1);render()">←</button><b>${MONTHS[m]} ${y}</b><button class="btn ghost small" onclick="calM=Math.min(11,calM+1);render()">→</button><button class="btn gold small" onclick="exportICS()">⬇ Export .ics (deadlines + events)</button></div>
+ <div class="cal">${cells}</div>`; }
+function calDay(k){ const dl=S.goals.filter(g=>g.deadline===k); const evs=(S.events||[]).filter(e=>e.date===k); const done=dayDone(k); const mood=(S.daily[k]||{}).mood||0;
+ openModal(`<h3>📅 ${fmtDate(k)}</h3>
+ ${done?`<p class="mut">✅ Habits done: ${done}/${S.habits.length}${mood?` · Mood: ${["","😖","😕","😐","🙂","😄"][mood]}`:""}</p>`:""}
+ ${dl.map(g=>`<div class="item">🎯 Goal deadline: <b>${esc(g.title)}</b></div>`).join("")}
+ ${evs.map(e=>`<div class="item row spread"><span>${e.type==="reminder"?"⏰":"📌"} ${esc(e.title)}</span><button class="btn ghost small" onclick="delEvent('${e.id}','${k}')">Delete</button></div>`).join("")}
+ <label style="margin-top:12px">Add to this date</label><input id="ev_t" placeholder="e.g. Dentist at 10am, or Call the bank">
+ <label>Type</label><select id="ev_ty"><option value="event">📌 Event</option><option value="reminder">⏰ Reminder</option></select>
+ <div class="row" style="margin-top:16px"><button class="btn gold" onclick="addEvent('${k}')">Add</button><button class="btn ghost" onclick="closeModal()">Close</button><button class="btn ghost" onclick="closeModal();dailyDate='${k}';go('daily')">Open Daily Log →</button></div>`); }
+function addEvent(k){ const t=$("#ev_t").value.trim(); if(!t) return toast("Write the event first."); S.events=S.events||[]; S.events.push({id:uid(),date:k,title:t,type:$("#ev_ty").value}); save(); toast("📌 Saved on "+fmtDate(k)); calDay(k); render(); }
+function delEvent(id,k){ S.events=(S.events||[]).filter(e=>e.id!==id); save(); calDay(k); render(); }
+function exportICS(){ const evs=S.goals.filter(g=>g.deadline).map(g=>`BEGIN:VEVENT\nUID:${g.id}@digitalplannerera\nDTSTART;VALUE=DATE:${g.deadline.replace(/-/g,"")}\nSUMMARY:🎯 Goal deadline: ${g.title.replace(/,/g," ")}\nEND:VEVENT`).concat((S.events||[]).map(e=>`BEGIN:VEVENT\nUID:${e.id}@digitalplannerera\nDTSTART;VALUE=DATE:${e.date.replace(/-/g,"")}\nSUMMARY:${e.type==="reminder"?"⏰":"📌"} ${e.title.replace(/,/g," ")}\nEND:VEVENT`)).join("\n"); const ics=`BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//The Digital Planner Era//Goal Habit Tracker 2027//EN\n${evs}\nEND:VCALENDAR`; const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([ics],{type:"text/calendar"})); a.download="planner-2027.ics"; a.click(); toast("📅 .ics exported — import it into any calendar app."); }
+function renderSprints(){ $("#view").innerHTML = secHead("🏃 Focus Sprints","Start a Pomodoro from a goal — the minutes land on that goal automatically") + `
+ <div class="card" style="margin-bottom:12px"><b>How it works</b><p class="mut">Pick a goal below and press Sprint. A 25-minute Focus Timer starts, already linked to that goal. When it finishes, the minutes are added to the goal's focus total — no manual logging, ever.</p></div>
+ ${S.goals.length? S.goals.map(g=>{ const sessions=S.focusLog.filter(f=>f.goalId===g.id); return `<div class="item"><div class="row spread"><span class="t">${AREA_ICONS[g.area]} ${esc(g.title)}</span><span class="chip gold">⏱️ ${g.focusMin||0} focus min</span></div><div class="small mut">${sessions.length} sprint session(s) · goal progress ${g.progress||0}%</div><div class="bar"><i style="width:${g.progress||0}%"></i></div><div class="row" style="margin-top:8px"><button class="btn gold small" onclick="startSprint('${g.id}')">🏃 Start 25-min Sprint</button><button class="btn ghost small" onclick="go('steps')">See its steps →</button></div></div>`; }).join("") : `<div class="card"><b>No goals yet.</b><p class="mut">Sprints attach to goals — create one first.</p><button class="btn gold" onclick="go('goals')">Go to My Goals</button></div>`}`; }
+function renderSettings(){ const th=THEMES.map(t=>`<button class="themebtn ${S.settings.theme===t.id?"sel":""}" onclick="setTheme('${t.id}')">${t.dark?"🌙":"☀️"} ${t.n}</button>`).join("");
+ const accents=["#0E6B5C","#2E6FA8","#B04A5A","#5C7A3D","#C46A28","#7A5CA8","#17352F"].map(c=>`<span class="swatch ${S.settings.accent===c?"sel":""}" style="background:${c}" onclick="setAccent('${c}')"></span>`).join("");
+ $("#view").innerHTML = secHead("⚙️ Settings","Make it yours — themes, backup, print") + `
+ <div class="grid g2">
+ <div class="card"><b>👤 Profile</b><label>Your name</label><input id="st_name" value="${esc(S.profile.name)}"><label>Word of the year</label><input id="st_word" value="${esc(S.profile.word)}"><label>Currency symbol</label><input id="st_cur" value="${esc(S.profile.currency||"$")}" maxlength="3" style="max-width:90px"><label>Profile photo</label><input type="file" id="st_photo" accept="image/*"><div class="row" style="margin-top:12px"><button class="btn gold" onclick="saveProfile()">Save profile</button></div></div>
+ <div class="card"><b>🎨 Look</b><label>Theme (10 named themes — 5 light, 5 dark)</label><div class="themerow">${th}</div>
+ <label>Custom accent colour</label><div class="themerow">${accents}<input type="color" id="st_accent" value="${S.settings.accent||"#0E6B5C"}" style="width:52px;height:38px;padding:2px" onchange="setAccent(this.value)"><button class="btn ghost small" onclick="setAccent('')">Reset</button></div>
+ <label>Background photo</label><input type="file" id="st_bg" accept="image/*"><div class="row" style="margin-top:8px"><button class="btn ghost small" onclick="setBg()">Apply background</button>${S.settings.bgPhoto?'<button class="btn ghost small" onclick="S.settings.bgPhoto=null;save();applyTheme();render()">Remove</button>':""}</div>
+ <label style="display:flex;gap:8px;align-items:center;margin-top:14px"><input type="checkbox" style="width:auto" ${S.settings.colourful?"checked":""} onchange="S.settings.colourful=this.checked;save();applyTheme()"> 🌈 Colourful mode</label></div>
+ <div class="card"><b>💾 Backup</b><p class="mut small">Your data lives only in this browser, on this device. Export a backup file regularly${S.lastBackup? ` — last backup: ${new Date(S.lastBackup).toLocaleDateString()}` : ""}.</p><div class="row" style="margin-top:10px"><button class="btn gold" onclick="exportBackup()">⬇ Export backup (JSON)</button><label class="btn ghost" style="margin:0;cursor:pointer">⬆ Import backup<input type="file" id="impFile" accept=".json" style="display:none" onchange="importBackup(this)"></label></div></div>
+ <div class="card"><b>🖨️ Print</b><p class="mut small">Print the section you are viewing, or a full-year summary.</p><div class="row" style="margin-top:10px"><button class="btn" onclick="printCurrent()">Print current view</button><button class="btn ghost" onclick="printFull()">Print full summary</button></div>
+ <b style="display:block;margin-top:18px">♻️ Data</b><div class="row" style="margin-top:8px"><button class="btn ghost" onclick="restoreSample()">Restore sample data</button><button class="btn danger" onclick="resetAll()">Archive & reset everything</button></div></div>
+ </div>
+ <div class="card" style="margin-top:12px"><b>About this planner</b><p class="mut small">Goal &amp; Habit Tracker 2027 · 30 sections · 513+ dated screens generated for the real 2027 calendar (leap-aware) · Works fully offline · Your data never leaves your device. · The Digital Planner Era — Every Era of Your Life, Beautifully Planned.</p></div>`; }
+function setTheme(id){ S.settings.theme=id; save(); applyTheme(); render(); }
+function setAccent(c){ S.settings.accent=c; save(); applyTheme(); render(); }
+function setBg(){ const f=$("#st_bg").files[0]; if(!f) return toast("Choose a photo first."); readImage(f, 1400, url=>{ S.settings.bgPhoto=url; save(); applyTheme(); render(); toast("🖼️ Background applied"); }); }
+function saveProfile(){ S.profile.name=$("#st_name").value.trim(); S.profile.word=$("#st_word").value.trim(); S.profile.currency=$("#st_cur").value||"$"; const f=$("#st_photo").files[0]; const done=()=>{ save(); applyTheme(); toast("👤 Profile saved"); render(); }; if(f){ readImage(f, 300, url=>{ S.profile.photo=url; done(); }); } else done(); }
+function exportBackup(){ const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:"application/json"})); a.download="goal-habit-tracker-2027-backup.json"; a.click(); S.lastBackup=Date.now(); save(); toast("💾 Backup downloaded — keep it somewhere safe."); }
+function importBackup(inp){ const f=inp.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const data=JSON.parse(r.result); if(!data || typeof data!=="object" || !("profile" in data)) throw 0; S=Object.assign(blankState(), data); save(); applyTheme(); toast("✅ Backup restored!"); go("home"); }catch(e){ toast("That file does not look like a backup from this planner."); } }; r.readAsText(f); }
+function restoreSample(){ confirmDo("Replace everything with the sample data? Your current data will be lost (export a backup first if you need it).", ()=>{ S=sampleState(); save(); applyTheme(); toast("Sample data restored."); go("home"); }); }
+function resetAll(){ confirmDo("Archive & reset: this wipes ALL data in this planner and starts blank. Export a backup first if you might want it back.", ()=>{ S=blankState(); S.profile.onboarded=true; save(); applyTheme(); toast("Fresh start — all clear."); go("home"); }); }
+function printCurrent(){ const pa=$("#printArea"); const clone=$("#view").cloneNode(true); clone.querySelectorAll(".no-print").forEach(el=>el.remove()); pa.innerHTML=`<h1 style="margin-bottom:10px">Goal & Habit Tracker 2027</h1>`+clone.innerHTML; window.print(); }
+function printFull(){ const pa=$("#printArea"); const cur=S.profile.currency||"$"; const saved=S.savings.entries.reduce((a,e)=>a+(+e.amount||0),0);
+ pa.innerHTML=`<h1>Goal & Habit Tracker 2027 — Full Summary</h1><p>${S.profile.name? esc(S.profile.name)+" · ":""}Word of the year: ${esc(S.profile.word||"—")} · Live 2027 Score: ${liveScore()}/100</p>
+ <h2 style="margin-top:16px">🎯 Goals</h2>${S.goals.map(g=>`<p>• ${esc(g.title)} (${esc(g.area)}) — ${g.progress||0}%${g.deadline? " · by "+fmtDate(g.deadline):""}</p>`).join("") || "<p>No goals yet.</p>"}
+ <h2 style="margin-top:16px">✅ Habits</h2>${S.habits.map(h=>`<p>• ${esc(h.name)} — ${habitTotal(h.id)} ticks · streak ${habitStreak(h.id)} · ${ladderOf(h.id).name}</p>`).join("") || "<p>No habits yet.</p>"}
+ <h2 style="margin-top:16px">🐷 Savings</h2><p>${cur}${saved.toLocaleString()} of ${cur}${(+S.savings.target||0).toLocaleString()}</p>
+ <h2 style="margin-top:16px">🏆 Wins</h2>${S.wins.map(w=>`<p>• ${esc(w.text)} (${fmtDate(w.date)})</p>`).join("") || "<p>None yet.</p>"}
+ <h2 style="margin-top:16px">🙏 Gratitude</h2>${S.gratitude.map(w=>`<p>• ${esc(w.text)} (${fmtDate(w.date)})</p>`).join("") || "<p>None yet.</p>"}
+ <p style="margin-top:20px;font-size:12px">The Digital Planner Era — Every Era of Your Life, Beautifully Planned.</p>`; window.print(); }
+const RENDER = {home:renderHome, year:renderYear, wheel:renderWheel, goals:renderGoals, steps:renderSteps, roadmap:renderRoadmap, habits:renderHabits, ideas:renderIdeas, daily:renderDaily, wellness:renderWellness, weekly:renderWeekly, weeklyreview:renderWeeklyReview, monthly:renderMonthly, monthlyreview:renderMonthlyReview, quarterlyreview:renderQuarterlyReview, midyear:renderMidyear, vision:renderVision, challenges:renderChallenges, wins:renderWins, badges:renderBadges, focus:renderFocus, sprints:renderSprints, savings:renderSavings, reading:renderReading, bucket:renderBucket, pixels:renderPixels, gratitude:renderGratitude, notes:renderNotes, letter:renderLetter, calendar:renderCalendar, settings:renderSettings};
+function render(){ const sec=S.lastSection||"home"; document.body.classList.toggle("on-home", sec==="home"); (RENDER[sec]||renderHome)(); buildSidebar(); }
+function showOnboarding(){ openModal(`<h3>Welcome to your 2027 ✦</h3><p class="mut">Thirty seconds of setup, then the year is yours. Everything stays on this device — nothing is uploaded, ever.</p>
+ <label>Your name (optional)</label><input id="ob_name" placeholder="e.g. Alex">
+ <label>Your word for 2027 (optional)</label><input id="ob_word" placeholder="e.g. Consistency">
+ <label>Currency</label><select id="ob_cur"><option>$</option><option>£</option><option>€</option><option>₹</option><option>₨</option></select>
+ <label>Theme</label><select id="ob_theme">${THEMES.map(t=>`<option value="${t.id}">${t.n}</option>`).join("")}</select>
+ <label>Profile photo (optional)</label><input type="file" id="ob_photo" accept="image/*">
+ <div class="row" style="margin-top:18px"><button class="btn gold" id="ob_done">Start my 2027 →</button><button class="btn ghost" id="ob_skip">Skip for now</button></div>
+ <p class="small mut" style="margin-top:10px">🔒 Privacy note: this planner works fully offline. Your entries are stored only in this browser on this device.</p>`);
+ const finish=(photo)=>{ S.profile.name=$("#ob_name").value.trim(); S.profile.word=$("#ob_word").value.trim(); S.profile.currency=$("#ob_cur").value; S.settings.theme=$("#ob_theme").value; if(photo) S.profile.photo=photo; S.profile.onboarded=true; save(); applyTheme(); closeModal(); confetti(); toast("✦ Welcome to 2027 — let's make it count!"); go("home"); };
+ $("#ob_done").onclick=()=>{ const f=$("#ob_photo").files[0]; if(f) readImage(f,300,url=>finish(url)); else finish(null); };
+ $("#ob_skip").onclick=()=>{ S.profile.onboarded=true; save(); closeModal(); go("home"); }; }
+document.getElementById("searchBtn").addEventListener("click", ()=>{ go("home"); setTimeout(()=>{ const s=$("#homeSearch"); if(s) s.focus(); },60); });
+if(DEMO) document.body.classList.add("demo");
+load(); applyTheme();
+if(!S.profile.onboarded && !DEMO){ render(); showOnboarding(); } else { render(); }
+</script>
+</body>
+</html>
