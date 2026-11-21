@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="chalkmint">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEMO — Teacher Planner App — Today Board, Gradebook & One-Tap Sub Folder — The Digital Planner Era</title>
+<style>
+:root{
+  --bg:#FAF5EA; --card:#FFFFFF; --ink:#26343F; --muted:#71808C; --line:#E7DCC4;
+  --accent:#2E7D5B; --accent2:#40586E; --accent-soft:#E2F2E8; --good:#1E9E6A; --bad:#D64545; --warn:#E8871E;
+  --grad:linear-gradient(120deg,#2E7D5B,#57B98A); --shadow:0 8px 24px rgba(46,90,70,.12); --radius:16px;
+}
+html[data-theme="chalkboard"]{--bg:#22302A;--card:#2E4238;--ink:#F2F7F1;--muted:#A9C4B2;--line:#3D5A4B;--accent:#7FE0B2;--accent2:#FFD166;--accent-soft:#35503F;--shadow:0 8px 24px rgba(0,0,0,.35)}
+html[data-theme="midnightmarking"]{--bg:#10182B;--card:#1B2742;--ink:#EAF0FF;--muted:#9DB1DC;--line:#2A3A63;--accent:#7CA6FF;--accent2:#FFB86B;--accent-soft:#22335C;--shadow:0 8px 24px rgba(0,0,0,.35)}
+html[data-theme="plumnotes"]{--bg:#2B1030;--card:#3D1745;--ink:#FBEFFD;--muted:#D3A6DC;--line:#52255E;--accent:#E58BE8;--accent2:#7FE0B2;--accent-soft:#481E52;--shadow:0 8px 24px rgba(0,0,0,.35)}
+html[data-theme="foreststaff"]{--bg:#0F241A;--card:#1A3A2A;--ink:#EBF7EF;--muted:#9DC4AC;--line:#2A5240;--accent:#5ED598;--accent2:#E9C46A;--accent-soft:#21452F;--shadow:0 8px 24px rgba(0,0,0,.35)}
+html[data-theme="charcoalgold"]{--bg:#1C1C1E;--card:#2A2A2E;--ink:#F4F4F0;--muted:#B5B5AC;--line:#3D3D42;--accent:#E9C46A;--accent2:#7FE0B2;--accent-soft:#33332A;--shadow:0 8px 24px rgba(0,0,0,.35)}
+html[data-theme="staffroom"]{--bg:#FBF3E4;--card:#FFFFFF;--ink:#43301C;--muted:#A3805C;--line:#EFDFC2;--accent:#B5651D;--accent2:#2E7D5B;--accent-soft:#FBEED3}
+html[data-theme="skytimetable"]{--bg:#EDF5FF;--card:#FFFFFF;--ink:#173A5E;--muted:#64819F;--line:#D2E4F7;--accent:#2272C9;--accent2:#E8873A;--accent-soft:#DCEBFC}
+html[data-theme="peachplanner"]{--bg:#FFF4EA;--card:#FFFFFF;--ink:#4A2C14;--muted:#A97E56;--line:#F5DEC4;--accent:#E85D04;--accent2:#2E7D5B;--accent-soft:#FFE8D1}
+html[data-theme="lavenderdesk"]{--bg:#F4F0FD;--card:#FFFFFF;--ink:#33255C;--muted:#8B7BB8;--line:#E0D6F5;--accent:#7C4DFF;--accent2:#0E9F6E;--accent-soft:#EAE2FD}
+html[data-colourful="off"]{--accent2:var(--accent)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:15px;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);border-color:transparent}
+textarea{resize:vertical;min-height:56px}
+label{font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin:12px 0 5px}
+#bgphoto{position:fixed;inset:0;background-size:cover;background-position:center;opacity:.16;pointer-events:none;z-index:0}
+#appbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--card);border-bottom:2px solid var(--line)}
+#appbar .logo{font-size:21px}
+#appbar .ttl{font-weight:800;font-size:16.5px;line-height:1.1}
+#appbar .ttl small{display:block;font-size:11px;color:var(--muted);font-weight:600}
+#appbar .sp{flex:1}
+.ava{width:40px;height:40px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;overflow:hidden;cursor:pointer;border:2.5px solid var(--accent2);flex:none;position:relative}
+.ava img{width:100%;height:100%;object-fit:cover}
+.ava:hover::after{content:'📷';position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;font-size:15px}
+.iconbtn{background:var(--accent-soft);border:none;border-radius:11px;padding:9px 12px;font-size:16px;color:var(--ink)}
+.iconbtn:hover{background:var(--accent);color:#fff}
+#shell{display:flex;max-width:1280px;margin:0 auto;position:relative;z-index:1}
+#sidebar{width:238px;flex:none;padding:16px 10px;display:none}
+#sidebar.open{display:block}
+@media(min-width:900px){#sidebar{display:block;position:sticky;top:62px;height:calc(100vh - 62px);overflow:auto}}
+@media(max-width:899px){#sidebar{position:fixed;left:0;top:62px;bottom:0;background:var(--card);z-index:35;box-shadow:var(--shadow)}}
+#sidebar a{display:flex;gap:9px;align-items:center;padding:8.5px 11px;border-radius:10px;color:var(--ink);text-decoration:none;font-size:14px;font-weight:600;margin-bottom:2px}
+#sidebar a:hover{background:var(--accent-soft)}
+#sidebar a.on{background:var(--grad);color:#fff}
+#sidebar .grp{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:1px;margin:13px 11px 5px;text-transform:uppercase}
+main{flex:1;padding:18px 16px 70px;min-width:0}
+.hero{background:var(--grad);border-radius:20px;color:#fff;padding:24px 22px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero::after{content:'🎓';position:absolute;right:14px;top:8px;font-size:64px;opacity:.22}
+.hero h1{font-size:27px;line-height:1.15}
+.hero .sub{opacity:.92;margin-top:5px;font-size:14.5px}
+.daycount{display:flex;gap:14px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.ring{width:92px;height:92px;flex:none}
+.ring circle{fill:none;stroke-width:9}
+.ring .tr{stroke:rgba(255,255,255,.3)}
+.ring .pr{stroke:#FFD166;stroke-linecap:round;transform:rotate(-90deg);transform-origin:center}
+.ring text{fill:#fff;font-weight:800;font-size:19px}
+.pacebadge{background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.5);padding:9px 14px;border-radius:12px;font-weight:800;font-size:15px}
+.quickrow{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}
+.qbtn{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:10px 15px;font-weight:700;font-size:14px;color:var(--ink);box-shadow:var(--shadow)}
+.qbtn:hover{border-color:var(--accent);color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:13px;margin-top:8px}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow);cursor:pointer;transition:transform .15s,border-color .15s;position:relative}
+.card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.card .ic{font-size:27px}
+.card h3{font-size:16px;margin:8px 0 4px}
+.card p{font-size:13px;color:var(--muted);line-height:1.45}
+.card .bar{height:7px;background:var(--accent-soft);border-radius:5px;margin-top:11px;overflow:hidden}
+.card .bar i{display:block;height:100%;background:var(--grad);border-radius:5px}
+.card .pct{font-size:11.5px;font-weight:800;color:var(--accent);margin-top:5px}
+.secttl{display:flex;align-items:center;gap:11px;margin-bottom:6px;flex-wrap:wrap}
+.secttl h2{font-size:23px}
+.secttl .sp{flex:1}
+.infobtn{margin-left:auto;background:var(--accent2);border:none;width:34px;height:34px;border-radius:50%;font-size:16px;box-shadow:var(--shadow)}
+.backbtn{background:none;border:none;font-size:15px;font-weight:700;color:var(--accent);padding:6px 0}
+.panel{background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-top:14px}
+.panel h3{font-size:16.5px;margin-bottom:8px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>*{flex:1;min-width:150px}
+.btn{background:var(--grad);color:#fff;border:none;border-radius:11px;padding:10px 18px;font-weight:800;font-size:14.5px}
+.btn.ghost{background:var(--card);color:var(--accent);border:1.5px solid var(--accent)}
+.btn.soft{background:var(--accent-soft);color:var(--ink)}
+.btn.danger{background:#D64545}
+.btn:disabled{opacity:.5}
+.chip{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:20px;padding:3.5px 11px;font-size:12px;font-weight:800;margin:2px 3px 2px 0}
+.chip.amber{background:#FDEBC8;color:#8A5A00}
+html[data-theme="chalkboard"] .chip.amber,html[data-theme="midnightmarking"] .chip.amber,html[data-theme="plumnotes"] .chip.amber,html[data-theme="foreststaff"] .chip.amber,html[data-theme="charcoalgold"] .chip.amber{background:#4A3603;color:#FFD166}
+.item{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:9px}
+.item .grow{flex:1;min-width:0}
+.item .t{font-weight:700;font-size:15px}
+.item .d{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.45}
+.mini{background:none;border:none;font-size:16px;padding:4px}
+.tick{width:27px;height:27px;flex:none;border-radius:9px;border:2px solid var(--accent);background:var(--card);font-size:15px;color:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.tick.on{background:var(--accent);color:#fff}
+.done-t{text-decoration:line-through;opacity:.55}
+.empty{border:2px dashed var(--line);border-radius:var(--radius);padding:26px;text-align:center;color:var(--muted);margin-top:14px;font-size:14.5px;line-height:1.55}
+.modal{position:fixed;inset:0;background:rgba(20,10,40,.55);display:none;align-items:center;justify-content:center;z-index:80;padding:16px}
+.modal.open{display:flex}
+.modal .box{background:var(--card);border-radius:18px;max-width:520px;width:100%;max-height:88vh;overflow:auto;padding:22px;box-shadow:var(--shadow)}
+.modal h3{font-size:19px;margin-bottom:8px}
+.modal .x{float:right;background:none;border:none;font-size:20px;color:var(--muted)}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:12px;font-weight:700;font-size:14.5px;z-index:99;transition:transform .3s;box-shadow:var(--shadow);max-width:90vw;text-align:center}
+#toast.show{transform:translateX(-50%) translateY(0)}
+.paceline{height:16px;background:var(--accent-soft);border-radius:9px;position:relative;margin:10px 0 4px}
+.paceline .ideal{position:absolute;top:-3px;bottom:-3px;width:3px;background:var(--muted);border-radius:2px}
+.paceline .actual{height:100%;background:var(--grad);border-radius:9px}
+table.cal{width:100%;border-collapse:collapse;margin-top:8px}
+table.cal th{font-size:11.5px;color:var(--muted);padding:5px 2px;text-transform:uppercase}
+table.cal td{border:1px solid var(--line);height:52px;vertical-align:top;padding:4px;font-size:12px;width:14.28%}
+table.cal td .dn{font-weight:800;font-size:13px}
+table.cal td.sprint{background:var(--accent-soft)}
+table.cal td.today{outline:2.5px solid var(--accent2);outline-offset:-2px}
+table.cal td{cursor:pointer}
+.hgrid{display:flex;flex-wrap:wrap;gap:3px;margin-top:8px}
+.hgrid .cell{width:19px;height:19px;border-radius:5px;background:var(--accent-soft);border:1px solid var(--line);cursor:pointer;font-size:0}
+.hgrid .cell.on{background:var(--accent)}
+.hgrid .cell.today{outline:2px solid var(--accent2)}
+.hgrid .cell.future{opacity:.35;cursor:default}
+.scorebig{font-size:44px;font-weight:900;line-height:1}
+.cert{background:linear-gradient(135deg,#FFFDF5,#FBF3DC);color:#2A2140;border:3px solid #C9A227;border-radius:14px;padding:34px 26px;text-align:center;position:relative}
+.cert::before{content:'';position:absolute;inset:9px;border:1.5px solid #C9A227;border-radius:9px;pointer-events:none}
+.cert h2{font-family:Georgia,serif;font-size:31px;color:#6C2BD9}
+.cert .nm{font-family:Georgia,serif;font-size:27px;font-weight:700;margin:10px 0}
+.paper{background:var(--card);border:1.5px solid var(--line);border-radius:12px;min-height:300px;padding:14px;margin-top:10px}
+.paper.lined{background-image:repeating-linear-gradient(transparent,transparent 27px,var(--line) 28px)}
+.paper.dotted{background-image:radial-gradient(var(--line) 1.3px,transparent 1.4px);background-size:22px 22px}
+.paper.gridp{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:24px 24px}
+.paper textarea{background:transparent;border:none;width:100%;min-height:280px;line-height:28px;font-size:15px}
+.paper textarea:focus{outline:none}
+.honest{text-align:center;color:var(--muted);font-size:12.5px;margin-top:34px;line-height:1.6}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:11px;margin-top:14px}
+.kpi{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px;text-align:center;box-shadow:var(--shadow)}
+.kpi b{font-size:23px;display:block}
+.kpi span{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.donutwrap{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+svg text{font-family:inherit}
+.badge{display:inline-flex;flex-direction:column;align-items:center;gap:3px;width:104px;padding:13px 6px;border-radius:14px;background:var(--card);border:1.5px solid var(--line);text-align:center;font-size:12px;font-weight:700}
+.badge .bi{font-size:29px}
+.badge.off{opacity:.38;filter:grayscale(1)}
+#timerov{position:fixed;inset:0;background:#1D1233;color:#fff;display:none;z-index:90;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+#timerov.open{display:flex}
+#timerov .clock{font-size:84px;font-weight:900;font-variant-numeric:tabular-nums}
+@media print{ #appbar,#sidebar,.quickrow,.infobtn,.backbtn,#toast,.noprint{display:none!important} body{background:#fff} main{padding:0} .panel,.card{box-shadow:none} }
+</style>
+</head>
+<body>
+<div id="bgphoto"></div>
+<header id="appbar">
+  <button class="iconbtn" id="menubtn" title="Menu">☰</button>
+  <div class="logo">🍎</div>
+  <div class="ttl">Teacher Desk<small>THE DIGITAL PLANNER ERA</small></div>
+  <div class="sp"></div>
+  <button class="iconbtn" id="themebtn" title="Themes & colours">🎨</button>
+  <button class="iconbtn" id="printbtn" title="Print this section">🖨️</button>
+  <div class="ava" id="avatar" title="Your profile photo — tap to change">S</div>
+  <input type="file" id="avatarFile" accept="image/*" style="display:none">
+</header>
+<div id="shell">
+  <nav id="sidebar"></nav>
+  <main id="main"></main>
+</div>
+<div class="modal" id="modal"><div class="box" id="modalbox"></div></div>
+<div class="modal" id="infomodal"><div class="box" id="infobox"></div></div>
+<div id="timerov">
+  <div style="font-size:19px;font-weight:700" id="ovlabel">Focus Sprint</div>
+  <div class="clock" id="ovclock">25:00</div>
+  <div style="opacity:.85" id="ovgoal"></div>
+  <div class="row" style="max-width:340px;width:90%">
+    <button class="btn" id="ovpause" style="flex:1">⏸ Pause</button>
+    <button class="btn ghost" id="ovend" style="flex:1;background:transparent;color:#fff;border-color:#fff">⏹ End & log</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="modal" id="onboard"><div class="box" id="onboardbox"></div></div>
+<script>
+/* ============ TEACHER DESK — CORE ============ */
+const LS_KEY='teacherDesk_v1';
+const DEMO = document.title.includes('DEMO');
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const uid=()=> 'id'+Math.random().toString(36).slice(2,9);
+const esc=s=> String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const todayISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const fmtDate=iso=>{ if(!iso) return '—'; const d=new Date(iso+'T12:00:00'); return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); };
+const addDays=(iso,n)=>{ const d=new Date(iso+'T12:00:00'); d.setDate(d.getDate()+n); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+const daysUntil=iso=> Math.round((new Date(iso+'T12:00:00')-new Date(todayISO()+'T12:00:00'))/86400000);
+const dowName=iso=> new Date(iso+'T12:00:00').toLocaleDateString('en-GB',{weekday:'short'});
+const nextSchoolDay=(iso)=>{ let d=addDays(iso||todayISO(),1); while([0,6].includes(new Date(d+'T12:00:00').getDay())) d=addDays(d,1); return d; };
+const THEMES=[
+ ['chalkmint','🍎 Chalk & Mint','light'],['chalkboard','🖤 Chalkboard Slate','dark'],
+ ['staffroom','☕ Staffroom Cream','light'],['midnightmarking','🌙 Midnight Marking','dark'],
+ ['skytimetable','☁️ Sky Timetable','light'],['plumnotes','📚 Plum Notes','dark'],
+ ['peachplanner','🍑 Peach Planner','light'],['foreststaff','🌲 Forest Staffroom','dark'],
+ ['lavenderdesk','💜 Lavender Desk','light'],['charcoalgold','✏️ Charcoal & Gold','dark']];
+const CATS=['Test','Quiz','Homework','Project'];
+const CLASSCOLORS=['#2E7D5B','#2272C9','#E85D04','#7C4DFF','#C2185B','#00838F','#6D4C41','#5E35B1'];
+function blankState(){ return {
+ profile:{name:'',school:'',yearTerm:'',theme:'chalkmint',accent:'',colourful:true,photo:'',onboarded:false},
+ classes:[], students:[], bell:[{n:1,label:'Period 1',start:'08:00',end:'08:50'},{n:2,label:'Period 2',start:'09:00',end:'09:50'},{n:3,label:'Period 3',start:'10:10',end:'11:00'},{n:4,label:'Period 4',start:'11:10',end:'12:00'},{n:5,label:'Period 5',start:'13:00',end:'13:50'},{n:6,label:'Period 6',start:'14:00',end:'14:50'}],
+ units:[], lessons:[], assignments:[], grades:{}, attendance:{}, seating:{},
+ incidents:[], contacts:[], meetings:[], skills:[], duties:[],
+ weights:{Test:40,Quiz:20,Homework:20,Project:20}, subNotes:'',
+ notes:{paper:'lined',text:''}, lastBackup:'', lastSection:'home', createdAt:Date.now() }; }
+let S;
+function save(){ if(DEMO) return; try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){} }
+function load(){ try{ const raw=localStorage.getItem(LS_KEY); if(raw){ S=Object.assign(blankState(), JSON.parse(raw)); return; } }catch(e){} S=blankState(); }
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2600); }
+function openModal(html){ $('#modalbox').innerHTML='<button class="x" onclick="closeModal()">✕</button>'+html; $('#modal').classList.add('open'); }
+function closeModal(){ $('#modal').classList.remove('open'); }
+function confirmBox(msg, fn){ openModal('<h3>Are you sure?</h3><p style="line-height:1.55;color:var(--muted)">'+esc(msg)+'</p><div class="row" style="margin-top:16px"><button class="btn danger" id="cfYes">Yes, do it</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>'); $('#cfYes').onclick=()=>{ closeModal(); fn(); }; }
+/* ============ SECTIONS ============ */
+const SECTIONS=[
+ ['home','🏠','Today Board','Live bell schedule, today\u2019s lessons, your Tomorrow-Ready Score'],
+ ['classes','🎒','My Classes & Rosters','Up to 6 classes — names, subjects, rooms and rosters'],
+ ['students','🧑‍🎓','Student Profiles','One live profile per student, built from your roster'],
+ ['calendar','📅','School Year Calendar','Lessons, duties and events across the year'],
+ ['units','🗺️','Unit Planner','Plan units week by week — they draft your lessons'],
+ ['weekly','🗓️','Weekly Lesson Plans','The week at a glance, class by class'],
+ ['daily','📖','Daily Lesson Plans','Objectives, materials and done-ticks, day by day'],
+ ['gradebook','📊','Gradebook','Auto-calculating, weighted by category'],
+ ['analytics','📈','Grade Analytics','Distribution, trends and class averages'],
+ ['attendance','✅','Attendance','One tap per student — present, absent, late'],
+ ['seating','🪑','Seating Planner','Auto-arrange desks — even data-aware'],
+ ['behaviour','📝','Behaviour & Incidents','Positives, concerns and incidents, logged'],
+ ['atrisk','🚨','At-Risk Radar','Cross-module flags before they become problems'],
+ ['parents','📞','Parent Contact Log','Every call, email and meeting with home'],
+ ['reports','🖨️','Report Season','Comments drafted from real grades — autopilot'],
+ ['meetings','🤝','Meetings & Notes','Staff, parents, leadership — notes and actions'],
+ ['subfolder','🆘','Sub Folder','One tap — built from today\u2019s real plans'],
+ ['retakes','🔁','Retakes & Missing Work','Missing work tracked until it lands'],
+ ['skills','🎯','Student Data Tracker','Skill-by-skill levels for every student'],
+ ['duties','🎽','Duties & School Events','Playground duty, clubs, assemblies, trips'],
+ ['birthdays','🎂','Birthdays & Celebrations','Never miss a birthday in your classes'],
+ ['notes','🗒️','Notes','Lined, dotted or grid — quick jottings'],
+ ['print','🖨️','Print Centre','Sub folder, reports, rosters — print-ready'],
+ ['backup','💾','Backup & Data','JSON backup, CSV exports, new-year rollover'],
+ ['guide','📘','Guide & Worked Example','How everything works + a model class'],
+ ['settings','⚙️','Settings','Themes, bell schedule, grade weights, profile']];
+const INFO={
+ home:['Your Today Board','Open it each morning: today\u2019s lessons, the live bell schedule (the current period highlights itself), your Class Timer, and your Tomorrow-Ready Score.','How to use: check the Attention list first — it collects unmarked attendance, ungraded work and at-risk flags. Tap any lesson to open its Daily Plan.','Benefit: one glance replaces five notebooks — you always know what today needs and whether tomorrow is ready.'],
+ classes:['My Classes & Rosters','Add up to 6 classes with subject, room and colour. Students are added to a class roster here or in Student Profiles.','How to use: create the class, then add students one per line in the roster box. Colours follow the class everywhere — timetable, gradebook, seating.','Benefit: every other page builds itself from these rosters — enter names once, use them all year.'],
+ students:['Student Profiles','Every roster student gets a live profile: current average, attendance rate, missing work, behaviour notes, skill levels and parent contacts — all pulled together automatically.','How to use: tap a student to open the full profile. Nothing to fill in by hand — it assembles from your gradebook, attendance and logs.','Benefit: parent meetings and report writing stop being archaeology — the evidence is already gathered.'],
+ calendar:['School Year Calendar','A month grid of everything dated: lessons, duties and school events, with dots on busy days.','How to use: tap a day to see its lessons and duties. Export duties and events as a calendar (.ics) file for your phone.','Benefit: clashes and overloaded weeks show up before they happen.'],
+ units:['Unit Planner','Plan a unit once — title plus one line per week (topic / focus). Then let it draft your lessons.','How to use: add the unit, write its weekly lines, and press "Draft next week" — the app creates that week\u2019s daily lessons from your lines. Unfinished lessons roll forward with their content.','Benefit: this is the Unit-to-Week engine no rival planner has — long-term plans become daily plans without retyping.'],
+ weekly:['Weekly Lesson Plans','Your lessons laid out Monday to Friday for the chosen class.','How to use: switch class and week with the controls; tap a lesson to edit it in Daily Plans. Draft whole weeks from the Unit Planner.','Benefit: the whole week\u2019s shape — balance, clashes, gaps — visible at a glance.'],
+ daily:['Daily Lesson Plans','Each lesson: objective, materials checklist, taught/done tick. Overdue unfinished lessons offer one-tap roll-forward — content travels with them.','How to use: add lessons by hand, or draft them from a unit. Tick materials as you pack your bag; tick Done after teaching.','Benefit: the materials ticks feed your Tomorrow-Ready Score, so "ready" is measured, not guessed.'],
+ gradebook:['Gradebook','Add assignments (Test / Quiz / Homework / Project, each out of its own maximum), then type scores into the grid. Averages are weighted by category using your Settings weights.','How to use: pick a class, add an assignment, tap any cell to enter a score. Blank = not yet graded, or missing if past due.','Benefit: no calculator, no spreadsheet formulas — every student\u2019s weighted average is always current.'],
+ analytics:['Grade Analytics','The grade distribution donut, class averages, category strengths and the trend of class averages across assignments.','How to use: read-only — it computes from the Gradebook. A sagging trend or a lopsided distribution tells you where to reteach.','Benefit: you see the class, not just the marks — and you see it while there is still time to act.'],
+ attendance:['Attendance','Pick the date and class, then tap each student: P (present), A (absent), L (late). One more tap cycles the mark.','How to use: mark during the register call; the summary and each student\u2019s attendance rate update instantly, and feed the At-Risk Radar.','Benefit: register done in under a minute, and attendance patterns surface before they become absence problems.'],
+ seating:['Seating Planner','Your classroom as a desk grid (6 across), front of class at the top.','How to use: Auto-arrange three ways — Shuffle, A–Z, or Data-aware (students flagged by the At-Risk Radar get front rows). Tap two desks to swap them.','Benefit: seating plans that use what you know about your students, not just alphabet luck.'],
+ behaviour:['Behaviour & Incidents Log','Log positives, concerns and incidents with date, student and what happened — plus whether home was contacted.','How to use: log it the day it happens (30 seconds). Un-contacted recent incidents appear on the At-Risk Radar until followed up.','Benefit: patterns become visible, positives get noticed too, and your records are straight if a meeting ever asks.'],
+ atrisk:['At-Risk Radar','The radar cross-checks every module: missing-work pile-ups (2+), attendance sliding under 90%, averages dropping under 65%, and recent incidents not yet followed up with home.','How to use: work the list top-down; use "Log contact" right from a flag once you\u2019ve spoken to home. Flags clear themselves when the data heals.','Benefit: no student quietly sinks — the app watches the joins between your records, where problems hide.'],
+ parents:['Parent Contact Log','Every contact with home: date, student, method (call / email / meeting / note), reason and outcome.','How to use: log straight after the conversation — it lands on the student\u2019s profile and clears related Radar flags.','Benefit: a complete, dated contact history — gold at parents\u2019 evening and essential if anything is ever disputed.'],
+ reports:['Report Season — Autopilot','For each student the app drafts a report comment from their REAL data: weighted average band, attendance, behaviour balance and strongest skill. Edit freely — the draft is a starting point, not a cage.','How to use: pick a class, read each draft, tweak the wording, then print the whole term pack from the Print Centre.','Benefit: report season shrinks from evenings of blank-page dread to one editing pass — and every comment is backed by evidence.'],
+ meetings:['Meetings & Notes','Staff meetings, parent meetings, leadership catch-ups: date, who with, notes and action points.','How to use: add the meeting, jot notes during it, list actions — they stay visible until deleted.','Benefit: actions stop evaporating between the meeting room and your classroom.'],
+ subfolder:['One-Tap Sub Folder','Press generate and the app builds today\u2019s substitute pack from your REAL data: today\u2019s lessons with objectives and materials, the bell schedule, rosters, seating plan and your standing notes.','How to use: keep your standing notes current (routines, medical alerts, who to ask for help), then generate and print whenever you\u2019re out.','Benefit: rivals give you blank sub pages to fill at 6am with a fever — yours writes itself from the plans you already made.'],
+ retakes:['Retakes & Missing Work','Every assignment past its due date with a missing score appears here automatically, per student.','How to use: when the work lands or the retake is done, enter the score right here — it flows into the Gradebook and clears the flag.','Benefit: missing work stops living in your head and sticky notes — nothing falls through.'],
+ skills:['Student Data Tracker','Track skill levels per student (0 = not yet, 1 = developing, 2 = secure, 3 = exceeding) for the skills that matter in your subject.','How to use: add a skill row, then tap a student\u2019s cell to cycle their level. Report drafts quote each student\u2019s strongest skill.','Benefit: assessment-for-learning data that actually gets used — in reports, groups and planning.'],
+ duties:['Duties & School Events','Playground duties, clubs, assemblies, trips and parents\u2019 evenings — dated, with places.','How to use: add them as they\u2019re announced; they show on the Calendar, the Today Board and export to .ics for your phone.','Benefit: the "wait, I\u2019m on duty?!" moment, retired forever.'],
+ birthdays:['Birthdays & Celebrations','Student birthdays from the roster dates of birth, sorted by what\u2019s coming up.','How to use: just add dates of birth on the roster; this page keeps the next celebrations in view.','Benefit: the small kindness of a remembered birthday, without a separate birthday book.'],
+ notes:['Notes','A quick notebook with lined, dotted or grid paper styles. Autosaves as you type.','How to use: pick a paper style and write — staffroom thoughts, seating ideas, that one idea from the corridor.','Benefit: one notebook that is always in the same place: inside your planner.'],
+ print:['Print Centre','One-tap printing for the documents school actually asks for: today\u2019s Sub Folder, the term Report Pack, class Rosters, the Gradebook and the Seating Chart.','How to use: tap a document — the app opens the right page in a clean print view. Use "Save as PDF" in the print dialog for a file.','Benefit: print-ready paperwork in seconds, formatted the same way every time.'],
+ backup:['Backup & Data','Export a full JSON backup (everything), import it on any device, and export rosters and grades as CSV — the honest way to share data with school systems. Also here: restore the worked example, and the new-year rollover (rosters carry forward, grades archive away).','How to use: back up monthly — the app nudges you after 30 days. Keep the file somewhere safe; it contains student data.','Benefit: your data is yours — portable, private, and never held hostage by an account or a subscription.'],
+ guide:['Guide & Worked Example','A short tour of every feature, the five things this app does that others don\u2019t, and how the demo\u2019s worked-example class (Ms Rivera, Grade 5) is put together.','How to use: read once at setup; the 📝 icon on every page also explains that page on the spot.','Benefit: you\u2019re fluent in ten minutes — and the privacy promise is spelt out in plain words.'],
+ settings:['Settings','Your profile, the 10 themes, custom accent and background photo, Colourful on/off, the bell schedule editor and the grade-category weights used by the Gradebook.','How to use: set the bell schedule and weights once at the start of the year; change themes whenever the mood strikes.','Benefit: the planner bends to your school\u2019s real timetable and grading policy — not the other way round.']};
+function showInfo(id){ const t=INFO[id]; if(!t) return; $('#infobox').innerHTML='<button class="x" onclick="document.getElementById(\'infomodal\').classList.remove(\'open\')">✕</button><h3>📝 '+esc(t[0])+'</h3><p style="line-height:1.6">'+esc(t[1])+'</p><p style="line-height:1.6">'+esc(t[2])+'</p><p style="line-height:1.6"><b>Faida:</b> '+esc(t[3])+'</p>'; $('#infomodal').classList.add('open'); }
+function secHead(id, icon, title){ return '<button class="backbtn" onclick="goBack()">← Back</button><button class="infobtn" title="About this page" onclick="showInfo(\''+id+'\')">📝</button><h2 style="font-size:24px;margin:2px 0 14px">'+icon+' '+esc(title)+'</h2>'; }
+/* ============ NAV ============ */
+let currentSection='home'; const navStack=[];
+function go(id){ if(id!==currentSection) navStack.push(currentSection); currentSection=id; S.lastSection=id; save(); render(); const sb=$('#sidebar'); if(sb) sb.classList.remove('open'); window.scrollTo(0,0); }
+function goBack(){ const prev=navStack.pop()||'home'; currentSection=prev; S.lastSection=prev; save(); render(); window.scrollTo(0,0); }
+function buildSidebar(){ const nav=$('#sidebar'); if(!nav) return; nav.innerHTML='<div style="padding:6px 10px 12px;font-weight:800">🍎 Teacher Desk</div>'+SECTIONS.map(s=>'<button class="navbtn '+(currentSection===s[0]?'on':'')+'" onclick="go(\''+s[0]+'\')"><span>'+s[1]+'</span>'+esc(s[2])+'</button>').join('')+'<div style="padding:12px 10px;font-size:12px;color:var(--muted);line-height:1.5">🔒 Student data never leaves this device.<br>No account. No cloud. No sync.</div>'; const av=$('#avatar'); if(av){ if(S.profile.photo){ av.style.backgroundImage='url('+S.profile.photo+')'; av.textContent=''; } else { av.style.backgroundImage=''; av.textContent=(S.profile.name||'T').trim().charAt(0).toUpperCase()||'T'; } } }
+/* ============ THEME ============ */
+function applyTheme(){ const p=S.profile; document.documentElement.dataset.theme=p.theme||'chalkmint'; document.documentElement.dataset.colourful=p.colourful===false?'off':'on'; if(p.accent) document.documentElement.style.setProperty('--accent',p.accent); else document.documentElement.style.removeProperty('--accent'); const bg=$('#bgphoto'); if(bg){ if(p.bgphoto){ bg.style.backgroundImage='url('+p.bgphoto+')'; bg.classList.add('on'); } else { bg.style.backgroundImage=''; bg.classList.remove('on'); } } buildSidebar(); }
+function setTheme(id){ S.profile.theme=id; save(); applyTheme(); render(); }
+/* ============ ENGINES ============ */
+const studentsOf=cid=> S.students.filter(s=>s.classId===cid);
+const className=cid=> (S.classes.find(c=>c.id===cid)||{}).name||'—';
+const studentName=sid=> (S.students.find(s=>s.id===sid)||{}).name||'—';
+function scorePct(aid, sid){ const g=(S.grades[aid]||{})[sid]; if(g===undefined||g===null||g==='') return null; const a=S.assignments.find(x=>x.id===aid); return a? (g/a.max)*100 : null; }
+function studentAvg(sid){ const st=S.students.find(s=>s.id===sid); if(!st) return null; let num=0, den=0; CATS.forEach(cat=>{ const as=S.assignments.filter(a=>a.cat===cat && a.classId===st.classId); const ps=as.map(a=>scorePct(a.id,sid)).filter(p=>p!==null); if(ps.length){ num+= (ps.reduce((x,y)=>x+y,0)/ps.length) * (S.weights[cat]||0); den+= (S.weights[cat]||0); } }); return den? Math.round(num/den) : null; }
+function attRecord(sid){ let rec=0, att=0; Object.values(S.attendance).forEach(day=>{ const m=day[sid]; if(m){ rec++; if(m==='P'||m==='L') att++; } }); return {rec, att, rate: rec? Math.round(att/rec*100) : null}; }
+function missingFor(sid){ const st=S.students.find(s=>s.id===sid); if(!st) return []; return S.assignments.filter(a=>a.classId===st.classId && a.due<todayISO() && scorePct(a.id,sid)===null); }
+function riskFlags(sid){ const f=[]; const st=S.students.find(s=>s.id===sid); if(!st) return f; const miss=missingFor(sid); if(miss.length>=2) f.push({icon:'📚', text:miss.length+' missing assignments piling up', sev:3}); else if(miss.length===1) f.push({icon:'📚', text:'1 missing assignment', sev:1});
+ const ar=attRecord(sid); if(ar.rec>=5 && ar.rate<90) f.push({icon:'🕐', text:'Attendance sliding — '+ar.rate+'% of '+ar.rec+' days', sev:3});
+ const avg=studentAvg(sid); if(avg!==null && avg<65) f.push({icon:'📉', text:'Weighted average at '+avg+'%', sev:2});
+ const recent=S.incidents.filter(i=>i.studentId===sid && i.type!=='Positive' && daysUntil(i.date)>=-14 && daysUntil(i.date)<=0 && !i.contacted); if(recent.length) f.push({icon:'📞', text:recent.length+' recent incident(s) not yet followed up with home', sev:2});
+ return f; }
+function allFlags(){ return S.students.map(st=>({st, flags:riskFlags(st.id)})).filter(x=>x.flags.length).sort((a,b)=> b.flags.reduce((n,f)=>n+f.sev,0)-a.flags.reduce((n,f)=>n+f.sev,0)); }
+function gradingBacklog(){ return S.assignments.filter(a=>a.due<todayISO()).map(a=>({a, ungraded:studentsOf(a.classId).filter(st=>scorePct(a.id,st.id)===null).length, total:studentsOf(a.classId).length})).filter(x=>x.ungraded>0); }
+function tomorrowReady(){ const tm=nextSchoolDay(todayISO()); const tl=S.lessons.filter(l=>l.date===tm); const planned= tl.length? 30:0; const mats= tl.length? Math.round(25 * (tl.filter(l=>l.materialsDone).length/tl.length)) : 0;
+ const dueA=S.assignments.filter(a=>a.due<=todayISO()); let gr=25; if(dueA.length){ let tot=0, got=0; dueA.forEach(a=>{ studentsOf(a.classId).forEach(st=>{ tot++; if(scorePct(a.id,st.id)!==null) got++; }); }); gr= tot? Math.round(25*got/tot):25; }
+ const attDone= S.classes.some(c=> S.attendance[todayISO()+'|'+c.id] && Object.keys(S.attendance[todayISO()+'|'+c.id]).length>0 ) ? 20:0;
+ return {score:planned+mats+gr+attDone, planned, mats, gr, attDone, tm, lessons:tl}; }
+function gradeDist(){ const b={'A (90+)':0,'B (80–89)':0,'C (70–79)':0,'D (60–69)':0,'F (under 60)':0}; S.students.forEach(st=>{ const a=studentAvg(st.id); if(a===null) return; if(a>=90)b['A (90+)']++; else if(a>=80)b['B (80–89)']++; else if(a>=70)b['C (70–79)']++; else if(a>=60)b['D (60–69)']++; else b['F (under 60)']++; }); return b; }
+function bandWord(avg){ if(avg===null) return 'is settling into the class routines'; if(avg>=90) return 'is producing excellent work'; if(avg>=80) return 'is working very well'; if(avg>=70) return 'is making good, steady progress'; if(avg>=60) return 'is making progress, with some areas to strengthen'; return 'is finding some areas difficult at the moment and is being supported'; }
+function reportComment(st){ const avg=studentAvg(st.id); const ar=attRecord(st.id); const pos=S.incidents.filter(i=>i.studentId===st.id&&i.type==='Positive').length; const con=S.incidents.filter(i=>i.studentId===st.id&&i.type!=='Positive').length; const sk=S.skills.filter(k=>k.classId===st.classId).map(k=>({skill:k.skill, lvl:(k.levels||{})[st.id]||0})).sort((a,b)=>b.lvl-a.lvl)[0];
+ let c=st.name.split(' ')[0]+' '+bandWord(avg)+(avg!==null? ' this term, with a weighted average of '+avg+'%':'')+'. ';
+ if(ar.rate!==null) c+='Attendance stands at '+ar.rate+'%'+(ar.rate>=95?' — exemplary.':ar.rate>=90?' — good.':' and improving attendance would support further progress.');
+ if(sk&&sk.lvl>=2) c+=' A particular strength is '+sk.skill.toLowerCase()+' ('+(sk.lvl===3?'exceeding expectations':'secure')+').';
+ if(pos>con&&pos>0) c+=' In class, '+st.name.split(' ')[0]+' contributes positively and is a pleasure to teach.';
+ else if(con>0) c+=' We are working together on consistent routines and focus in lessons.';
+ const miss=missingFor(st.id); if(miss.length) c+=' Completing the '+miss.length+' outstanding assignment(s) promptly will lift results further.';
+ c+=' Keep up the effort next term.'; return c; }
+/* ============ PRINT / EXPORT ============ */
+function printSection(){ window.print(); }
+function download(name, content, type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([content],{type:type||'text/plain'})); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),2000); }
+function csvCell(v){ return '"'+String(v??'').replace(/"/g,'""')+'"'; }
+function exportICS(){ const items=S.duties.map(d=>({date:d.date,title:d.title,where:d.where||''})); if(!items.length){ toast('No duties or events to export yet'); return; } let ics='BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//TeacherDesk//EN\r\n'; items.forEach((e,i)=>{ ics+='BEGIN:VEVENT\r\nUID:duty'+i+'@teacherdesk\r\nDTSTAMP:20260101T000000Z\r\nDTSTART;VALUE=DATE:'+e.date.replace(/-/g,'')+'\r\nSUMMARY:'+e.title.replace(/,/g,'\\,')+'\r\nLOCATION:'+e.where.replace(/,/g,'\\,')+'\r\nEND:VEVENT\r\n'; }); ics+='END:VCALENDAR\r\n'; download('teacher-duties-events.ics', ics, 'text/calendar'); toast('📅 Calendar file downloaded'); }
+function backupNudge(){ if(!S.lastBackup) return true; return (Date.now()-new Date(S.lastBackup).getTime())>30*86400000; }
+/* ============ SHARED BITS ============ */
+function ringSVG(pct, label){ const C=2*Math.PI*40; return '<div style="text-align:center"><svg class="ring" viewBox="0 0 92 92" style="width:84px;height:84px"><circle class="tr" cx="46" cy="46" r="40" style="stroke:var(--accent-soft)"></circle><circle class="pr" cx="46" cy="46" r="40" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-(pct||0)/100))+'" style="stroke:var(--accent2)"></circle><text x="46" y="52" text-anchor="middle" style="fill:var(--ink);font-size:19px">'+(pct===null||pct===undefined?'—':pct+'%')+'</text></svg><div style="font-size:12.5px;font-weight:700;color:var(--muted)">'+esc(label)+'</div></div>'; }
+function sectionProgress(id){ switch(id){
+ case 'classes': return Math.min(1,S.classes.length/3);
+ case 'students': return Math.min(1,S.students.length/20);
+ case 'units': return Math.min(1,S.units.length/3);
+ case 'weekly': case 'daily': return Math.min(1,S.lessons.length/20);
+ case 'gradebook': return Math.min(1,S.assignments.length/6);
+ case 'attendance': { const days=Object.keys(S.attendance).length; return Math.min(1,days/20); }
+ case 'behaviour': return Math.min(1,S.incidents.length/8);
+ case 'parents': return Math.min(1,S.contacts.length/6);
+ case 'skills': return Math.min(1,S.skills.length/4);
+ case 'duties': return Math.min(1,S.duties.length/6);
+ case 'meetings': return Math.min(1,S.meetings.length/4);
+ default: return 0; } }
+function classPicker(id, current, onchange){ return '<select id="'+id+'" onchange="'+onchange+'">'+S.classes.map(c=>'<option value="'+c.id+'"'+(c.id===current?' selected':'')+'>'+esc(c.name)+' — '+esc(c.subject)+'</option>').join('')+'</select>'; }
+let uiClass='', uiDate=todayISO(), uiWeekStart='';
+function curClass(){ if(!S.classes.find(c=>c.id===uiClass)) uiClass=(S.classes[0]||{}).id||''; return uiClass; }
+function weekStartOf(iso){ const d=new Date(iso+'T12:00:00'); const day=(d.getDay()+6)%7; return addDays(iso,-day); }
+/* ============ HOME — TODAY BOARD ============ */
+let classTimer={left:10*60,total:10*60,run:false,iv:null};
+function renderHome(){ const t=todayISO(); const tr=tomorrowReady(); const flags=allFlags(); const backlog=gradingBacklog();
+ const todays=S.lessons.filter(l=>l.date===t).sort((a,b)=>(a.period||9)-(b.period||9));
+ const now=new Date(); const nowMin=now.getHours()*60+now.getMinutes();
+ let attention=[];
+ S.classes.forEach(c=>{ const marked=S.attendance[t+'|'+c.id]; if(studentsOf(c.id).length && (!marked||!Object.keys(marked).length)) attention.push('✅ Attendance not yet marked for '+esc(c.name)+' today.'); });
+ backlog.slice(0,2).forEach(b=> attention.push('📊 "'+esc(b.a.title)+'" — '+b.ungraded+' of '+b.total+' still ungraded.'));
+ flags.slice(0,3).forEach(f=> attention.push('🚨 '+esc(f.st.name)+': '+f.flags.map(x=>x.text).join(' · ')));
+ S.duties.filter(d=>d.date===t).forEach(d=> attention.push('🎽 Today: '+esc(d.title)+(d.where?' — '+esc(d.where):'')));
+ if(backupNudge() && S.students.length) attention.push('💾 No backup in the last 30 days — export one from Backup & Data.');
+ if(!attention.length) attention.push('✅ All clear — attendance done, grading current, no radar flags. Enjoy the day.');
+ let h='<div class="hero"><h1>'+(S.profile.name? 'Good day, '+esc(S.profile.name.split(' ')[0]) : 'Your Today Board')+'</h1><div class="sub">'+new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+(S.profile.school?' · '+esc(S.profile.school):'')+(S.profile.yearTerm?' · '+esc(S.profile.yearTerm):'')+'</div>'
+ +'<div class="daycount"><div class="pacebadge">🍎 '+S.classes.length+' CLASSES · '+S.students.length+' STUDENTS</div><div class="pacebadge">📖 '+todays.length+' LESSONS TODAY</div><div class="pacebadge">🚨 '+flags.length+' ON THE RADAR</div></div></div>';
+ h+='<div class="quickrow"><button class="qbtn" onclick="go(\'attendance\')">✅ Mark Attendance</button><button class="qbtn" onclick="go(\'subfolder\')">🆘 Sub Folder</button><button class="qbtn" onclick="quickLesson()">➕ Quick Lesson</button><button class="qbtn" onclick="window.print()">🖨️ Print</button><input id="homesearch" placeholder="🔍 Search sections…" style="flex:1;min-width:170px" oninput="filterCards(this.value)"></div>';
+ h+='<div style="display:flex;gap:14px;flex-wrap:wrap">'
+ +'<div class="panel" style="flex:1;min-width:280px"><h3>⏰ Bell schedule — live</h3>'+S.bell.map(b=>{ const bs=b.start.split(':'); const be=b.end.split(':'); const sm=+bs[0]*60+ +bs[1], em=+be[0]*60+ +be[1]; const live=nowMin>=sm&&nowMin<em; return '<div style="display:flex;gap:8px;padding:5px 8px;border-radius:8px;'+(live?'background:var(--accent-soft);font-weight:800':'')+'"><span style="flex:1">'+esc(b.label)+(live?' — NOW':'')+'</span><span>'+esc(b.start)+'–'+esc(b.end)+'</span></div>'; }).join('')+'<h3 style="margin-top:16px">⏱️ Class Timer</h3><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span id="ctclock" style="font-size:30px;font-weight:900;font-variant-numeric:tabular-nums">'+fmtTimer()+'</span><button class="btn soft" onclick="timerSet(5)">5m</button><button class="btn soft" onclick="timerSet(10)">10m</button><button class="btn soft" onclick="timerSet(20)">20m</button><button class="btn" onclick="timerToggle()">'+(classTimer.run?'⏸ Pause':'▶ Start')+'</button><button class="btn ghost" onclick="timerReset()">↺</button></div></div>'
+ +'<div class="panel" style="min-width:230px;text-align:center"><h3>🌅 Tomorrow-Ready</h3>'+ringSVG(tr.score,'Ready for '+dowName(tr.tm)+' '+fmtDate(tr.tm))+'<div style="font-size:13px;color:var(--muted);line-height:1.7;text-align:left;margin-top:8px">Lessons planned: '+tr.planned+'/30<br>Materials ticked: '+tr.mats+'/25<br>Grading cleared: '+tr.gr+'/25<br>Attendance today: '+tr.attDone+'/20</div></div>'
+ +'<div class="panel" style="flex:1;min-width:280px"><h3>📖 Today\u2019s lessons</h3>'+(todays.length? todays.map(l=>'<div style="padding:6px 0;border-bottom:1px dashed var(--line)"><b>'+esc(l.title)+'</b> <span class="chip">'+esc(className(l.classId))+'</span>'+(l.period?' <span class="chip amber">P'+l.period+'</span>':'')+'<div style="font-size:13px;color:var(--muted)">'+esc(l.objective||'')+'</div><button class="mini" onclick="go(\'daily\')">Open plan →</button></div>').join('') : '<p style="color:var(--muted)">No lessons planned for today. Draft a week from the Unit Planner, or add one in Daily Plans.</p>')+'</div></div>';
+ h+='<div class="panel"><h3>⚠️ Attention</h3>'+attention.map(a=>'<div style="font-size:14.5px;padding:3px 0">'+a+'</div>').join('')+'</div>';
+ h+='<div class="grid" id="cardgrid">'+SECTIONS.filter(s=>s[0]!=='home').map(s=>{ const pr=Math.round(sectionProgress(s[0])*100); return '<div class="card" data-name="'+esc(s[2].toLowerCase())+'" onclick="go(\''+s[0]+'\')"><div class="ic">'+s[1]+'</div><h3>'+esc(s[2])+'</h3><p>'+esc(s[3])+'</p><div class="bar"><i style="width:'+pr+'%"></i></div><div class="pct">'+pr+'%</div></div>'; }).join('')+'</div>';
+ h+='<p class="honest">🔒 Your students\u2019 data never leaves your device — no account, no cloud, no sync. Back it up from Backup & Data. A planning tool, not a promise: results depend on the teaching. The Digital Planner Era.</p>';
+ return h; }
+function filterCards(q){ q=q.toLowerCase(); $$('#cardgrid .card').forEach(c=>{ c.style.display= c.dataset.name.includes(q)? '':'none'; }); }
+function fmtTimer(){ const m=Math.floor(classTimer.left/60), s=classTimer.left%60; return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); }
+function timerSet(m){ classTimer.left=classTimer.total=m*60; classTimer.run=false; clearInterval(classTimer.iv); render(); }
+function timerReset(){ classTimer.left=classTimer.total; classTimer.run=false; clearInterval(classTimer.iv); render(); }
+function timerToggle(){ if(classTimer.run){ classTimer.run=false; clearInterval(classTimer.iv); render(); return; } classTimer.run=true; classTimer.iv=setInterval(()=>{ classTimer.left--; const el=$('#ctclock'); if(el) el.textContent=fmtTimer(); if(classTimer.left<=0){ clearInterval(classTimer.iv); classTimer.run=false; toast('⏱️ Time!'); render(); } },1000); render(); }
+function quickLesson(){ if(!S.classes.length){ toast('Add a class first'); go('classes'); return; } openModal('<h3>➕ Quick Lesson — today</h3><label>Class</label>'+classPicker('ql_c',curClass(),'').replace('<select','<select')+'<label>Title</label><input id="ql_t" placeholder="e.g. Fractions — halves and quarters"><label>Objective</label><input id="ql_o" placeholder="By the end, pupils can…"><div class="row" style="margin-top:16px"><button class="btn" onclick="quickLessonSave()">Add for today</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>'); }
+function quickLessonSave(){ const t=$('#ql_t').value.trim(); if(!t){ toast('Give the lesson a title'); return; } S.lessons.push({id:uid(), date:todayISO(), classId:$('#ql_c').value, unitId:'', title:t, objective:$('#ql_o').value.trim(), materials:'', materialsDone:false, done:false, period:0}); save(); closeModal(); toast('📖 Lesson added for today'); render(); }
+/* ============ CLASSES & ROSTERS ============ */
+function renderClasses(){ let h=secHead('classes','🎒','My Classes & Rosters');
+ if(!S.classes.length) h+='<div class="empty">No classes yet.<br>Add your first class below — everything else in the app builds from your rosters.</div>';
+ S.classes.forEach(c=>{ const sts=studentsOf(c.id); h+='<div class="panel"><div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap"><span style="width:16px;height:16px;border-radius:50%;background:'+esc(c.color||'#2E7D5B')+';display:inline-block"></span><h3 style="margin:0">'+esc(c.name)+'</h3><span class="chip">'+esc(c.subject)+'</span>'+(c.room?'<span class="chip amber">Room '+esc(c.room)+'</span>':'')+'<span class="chip">'+sts.length+' students</span><span style="flex:1"></span><button class="mini" onclick="delClass(\''+c.id+'\')">🗑️</button></div>'
+ +'<div style="margin-top:8px;font-size:14px;line-height:1.9">'+(sts.length? sts.map(s=>esc(s.name)).join(' · ') : '<span style="color:var(--muted)">Roster empty — add students below.</span>')+'</div>'
+ +'<label style="margin-top:10px">Add students — one per line (Name or Name, YYYY-MM-DD for birthday)</label><textarea id="ros_'+c.id+'" rows="3" placeholder="Aisha Khan, 2016-03-14&#10;Ben Carter"></textarea><div style="display:flex;gap:8px;margin-top:8px"><button class="btn soft" onclick="addRoster(\''+c.id+'\')">➕ Add to roster</button><button class="btn ghost" onclick="go(\'students\')">Open profiles →</button></div></div>'; });
+ if(S.classes.length<6) h+='<div class="panel"><h3>Add a class ('+S.classes.length+'/6)</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="cl_n" placeholder="Class name — e.g. 5A" style="flex:1;min-width:130px"><input id="cl_s" placeholder="Subject — e.g. Maths" style="flex:1;min-width:130px"><input id="cl_r" placeholder="Room (optional)" style="width:130px"><button class="btn" onclick="addClass()">➕ Add class</button></div></div>';
+ else h+='<div class="panel"><h3>6 classes — full house 🍎</h3><p style="color:var(--muted)">That is the app\u2019s maximum. Delete a class to make room.</p></div>';
+ return h; }
+function addClass(){ const n=$('#cl_n').value.trim(), s=$('#cl_s').value.trim(); if(!n||!s){ toast('Class name and subject needed'); return; } S.classes.push({id:uid(), name:n, subject:s, room:$('#cl_r').value.trim(), color:CLASSCOLORS[S.classes.length%CLASSCOLORS.length]}); save(); toast('🎒 Class added'); render(); }
+function delClass(id){ confirmBox('Delete this class? Its students, lessons, grades and seating go with it. This cannot be undone.', ()=>{ S.classes=S.classes.filter(c=>c.id!==id); S.students=S.students.filter(s=>s.classId!==id); S.lessons=S.lessons.filter(l=>l.classId!==id); S.assignments=S.assignments.filter(a=>a.classId!==id); delete S.seating[id]; save(); render(); }); }
+function addRoster(cid){ const lines=$('#ros_'+cid).value.split('\n').map(l=>l.trim()).filter(Boolean); if(!lines.length){ toast('Paste at least one name'); return; } lines.forEach(l=>{ const [name,dob]=l.split(',').map(x=>x.trim()); S.students.push({id:uid(), classId:cid, name, dob:dob||'', guardian:'', notes:''}); }); save(); toast('🧑‍🎓 '+lines.length+' student(s) added'); render(); }
+/* ============ STUDENT PROFILES ============ */
+function renderStudents(){ let h=secHead('students','🧑‍🎓','Student Profiles');
+ if(!S.classes.length){ h+='<div class="empty">Add a class first — profiles are generated from your rosters.</div>'; return h; }
+ h+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:12px"><label style="margin:0">Class</label>'+classPicker('st_c',curClass(),'uiClass=this.value;render()')+'</div>';
+ const sts=studentsOf(curClass());
+ if(!sts.length) h+='<div class="empty">This roster is empty — add students in My Classes.</div>';
+ h+='<div class="grid">'+sts.map(st=>{ const avg=studentAvg(st.id); const ar=attRecord(st.id); const fl=riskFlags(st.id); return '<div class="card" onclick="openProfile(\''+st.id+'\')"><div class="ic">🧑‍🎓</div><h3>'+esc(st.name)+'</h3><p>Avg: '+(avg===null?'—':avg+'%')+' · Att: '+(ar.rate===null?'—':ar.rate+'%')+'<br>Missing: '+missingFor(st.id).length+(fl.length? '<br>🚨 '+fl.length+' radar flag(s)':'')+'</p></div>'; }).join('')+'</div>';
+ h+='<div class="panel"><h3>Add one student</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="st_n" placeholder="Full name" style="flex:1;min-width:150px"><input id="st_d" type="date" title="Date of birth"><button class="btn" onclick="addStudent()">➕ Add</button></div></div>';
+ return h; }
+function addStudent(){ const n=$('#st_n').value.trim(); if(!n){ toast('Name needed'); return; } S.students.push({id:uid(), classId:curClass(), name:n, dob:$('#st_d').value, guardian:'', notes:''}); save(); render(); }
+function openProfile(sid){ const st=S.students.find(s=>s.id===sid); if(!st) return; const avg=studentAvg(sid); const ar=attRecord(sid); const fl=riskFlags(st.id);
+ const inc=S.incidents.filter(i=>i.studentId===sid).sort((a,b)=>b.date<a.date?-1:1);
+ const con=S.contacts.filter(c=>c.studentId===sid).sort((a,b)=>b.date<a.date?-1:1);
+ const sk=S.skills.filter(k=>k.classId===st.classId);
+ openModal('<h3>🧑‍🎓 '+esc(st.name)+'</h3><p style="color:var(--muted)">'+esc(className(st.classId))+(st.dob?' · 🎂 '+fmtDate(st.dob):'')+'</p>'
+ +'<div class="kpis"><div class="kpi"><b>'+(avg===null?'—':avg+'%')+'</b><span>Weighted avg</span></div><div class="kpi"><b>'+(ar.rate===null?'—':ar.rate+'%')+'</b><span>Attendance ('+ar.rec+' days)</span></div><div class="kpi"><b>'+missingFor(sid).length+'</b><span>Missing</span></div><div class="kpi"><b>'+fl.length+'</b><span>Radar flags</span></div></div>'
+ +(fl.length? '<div class="panel" style="margin:10px 0"><h3>🚨 Radar</h3>'+fl.map(f=>'<div>'+f.icon+' '+esc(f.text)+'</div>').join('')+'</div>':'')
+ +(sk.length? '<p><b>🎯 Skills:</b> '+sk.map(k=>esc(k.skill)+' — '+['Not yet','Developing','Secure','Exceeding'][(k.levels||{})[sid]||0]).join(' · ')+'</p>':'')
+ +'<p><b>📝 Log:</b></p>'+(inc.length? inc.slice(0,6).map(i=>'<div style="font-size:14px;padding:2px 0">'+fmtDate(i.date)+' · '+esc(i.type)+' — '+esc(i.what)+'</div>').join('') : '<p style="color:var(--muted);font-size:14px">Nothing logged yet.</p>')
+ +'<p style="margin-top:8px"><b>📞 Contacts:</b></p>'+(con.length? con.slice(0,5).map(c=>'<div style="font-size:14px;padding:2px 0">'+fmtDate(c.date)+' · '+esc(c.method)+' — '+esc(c.reason)+'</div>').join('') : '<p style="color:var(--muted);font-size:14px">No contacts logged yet.</p>')
+ +'<label>Guardian / contact note</label><input id="pf_g" value="'+esc(st.guardian||'')+'" placeholder="e.g. Mum — prefers email"><label>Private note</label><textarea id="pf_n" rows="2">'+esc(st.notes||'')+'</textarea>'
+ +'<div class="row" style="margin-top:14px"><button class="btn" onclick="saveProfile(\''+sid+'\')">Save</button><button class="btn ghost" onclick="closeModal()">Close</button><button class="btn danger" onclick="delStudent(\''+sid+'\')">Delete student</button></div>'); }
+function saveProfile(sid){ const st=S.students.find(s=>s.id===sid); st.guardian=$('#pf_g').value; st.notes=$('#pf_n').value; save(); closeModal(); toast('💾 Profile saved'); render(); }
+function delStudent(sid){ confirmBox('Delete this student and their grades, attendance and logs?', ()=>{ S.students=S.students.filter(s=>s.id!==sid); save(); closeModal(); render(); }); }
+/* ============ CALENDAR ============ */
+let calCursor='';
+function renderCalendar(){ let h=secHead('calendar','📅','School Year Calendar'); const base=calCursor||todayISO(); const y=+base.slice(0,4), m=+base.slice(5,7)-1; const first=base.slice(0,8)+'01'; const startDow=(new Date(first+'T12:00:00').getDay()+6)%7; const dim=new Date(y,m+1,0).getDate();
+ h+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:12px"><button class="btn soft" onclick="calMove(-1)">←</button><b style="font-size:17px">'+new Date(y,m,1).toLocaleDateString('en-GB',{month:'long',year:'numeric'})+'</b><button class="btn soft" onclick="calMove(1)">→</button><button class="btn ghost" onclick="calCursor=todayISO();render()">Today</button><span style="flex:1"></span><button class="btn soft" onclick="exportICS()">📅 Export .ics</button></div>';
+ h+='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">'+['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>'<div style="text-align:center;font-weight:800;font-size:12.5px;color:var(--muted)">'+d+'</div>').join('');
+ for(let i=0;i<startDow;i++) h+='<div></div>';
+ for(let d=1;d<=dim;d++){ const iso=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'); const nl=S.lessons.filter(l=>l.date===iso).length; const nd=S.duties.filter(x=>x.date===iso).length; h+='<div onclick="calDay(\''+iso+'\')" style="cursor:pointer;border:1.5px solid '+(iso===todayISO()?'var(--accent)':'var(--line)')+';border-radius:10px;padding:7px;min-height:56px;background:var(--card)"><b>'+d+'</b><div style="font-size:12px">'+(nl?'📖'.repeat(Math.min(3,nl)):'')+(nd?' 🎽':'')+'</div></div>'; }
+ h+='</div><div id="calday"></div>'; return h; }
+function calMove(n){ const base=calCursor||todayISO(); const d=new Date(base.slice(0,8)+'01T12:00:00'); d.setMonth(d.getMonth()+n); calCursor=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-01'; render(); }
+function calDay(iso){ const ls=S.lessons.filter(l=>l.date===iso); const ds=S.duties.filter(x=>x.date===iso); $('#calday').innerHTML='<div class="panel" style="margin-top:14px"><h3>'+dowName(iso)+' '+fmtDate(iso)+'</h3>'+(ls.length? ls.map(l=>'<div>📖 <b>'+esc(l.title)+'</b> — '+esc(className(l.classId))+'</div>').join(''):'<div style="color:var(--muted)">No lessons.</div>')+(ds.length? ds.map(d=>'<div>🎽 '+esc(d.title)+(d.where?' — '+esc(d.where):'')+'</div>').join(''):'')+'</div>'; }
+/* ============ UNITS ============ */
+function renderUnits(){ let h=secHead('units','🗺️','Unit Planner');
+ if(!S.classes.length){ h+='<div class="empty">Add a class first — units belong to classes.</div>'; return h; }
+ h+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:12px"><label style="margin:0">Class</label>'+classPicker('un_c',curClass(),'uiClass=this.value;render()')+'</div>';
+ const us=S.units.filter(u=>u.classId===curClass());
+ if(!us.length) h+='<div class="empty">No units for this class yet.<br>Plan a unit below: one line per week, then draft lessons from it.</div>';
+ us.forEach(u=>{ const drafted=S.lessons.filter(l=>l.unitId===u.id); const weeks=u.topics.split('\n').filter(Boolean); h+='<div class="panel"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><h3 style="margin:0">🗺️ '+esc(u.title)+'</h3><span class="chip">'+weeks.length+' weeks planned</span><span class="chip amber">'+drafted.length+' lessons drafted</span><span style="flex:1"></span><button class="mini" onclick="delUnit(\''+u.id+'\')">🗑️</button></div>'
+ + weeks.map((w,i)=>'<div style="font-size:14px;padding:2px 0">Week '+(i+1)+': '+esc(w)+'</div>').join('')
+ +'<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><input type="date" id="dw_'+u.id+'" value="'+nextSchoolDay(todayISO())+'"><button class="btn" onclick="draftWeek(\''+u.id+'\')">✨ Draft week from…</button><select id="dww_'+u.id+'">'+weeks.map((w,i)=>'<option value="'+i+'">Week '+(i+1)+'</option>').join('')+'</select></div>'
+ +'<p style="font-size:12.5px;color:var(--muted);margin-top:6px">Drafting creates Mon–Fri daily lessons for the chosen week, starting on the date above (set it to that week\u2019s Monday).</p></div>'; });
+ const overdue=S.lessons.filter(l=>!l.done && l.date<todayISO());
+ if(overdue.length) h+='<div class="panel"><h3>↪ Unfinished lessons — roll forward</h3>'+overdue.map(l=>'<div style="display:flex;gap:8px;align-items:center;padding:4px 0"><span style="flex:1"><b>'+esc(l.title)+'</b> — '+fmtDate(l.date)+' · '+esc(className(l.classId))+'</span><button class="mini" onclick="rollLesson(\''+l.id+'\')">Roll to next school day →</button></div>').join('')+'</div>';
+ h+='<div class="panel"><h3>Add a unit</h3><label>Unit title</label><input id="un_t" placeholder="e.g. Fractions — Spring term"><label>Weekly lines — one per week (topic — focus)</label><textarea id="un_w" rows="4" placeholder="Halves and quarters — sharing and number lines&#10;Equivalent fractions — wall and games&#10;Adding fractions — same denominator"></textarea><button class="btn" style="margin-top:10px" onclick="addUnit()">➕ Add unit</button></div>';
+ return h; }
+function addUnit(){ const t=$('#un_t').value.trim(), w=$('#un_w').value.trim(); if(!t||!w){ toast('Title and at least one weekly line'); return; } S.units.push({id:uid(), classId:curClass(), title:t, topics:w}); save(); toast('🗺️ Unit planned'); render(); }
+function delUnit(id){ confirmBox('Delete this unit? Lessons already drafted from it stay.', ()=>{ S.units=S.units.filter(u=>u.id!==id); save(); render(); }); }
+function draftWeek(uidv){ const u=S.units.find(x=>x.id===uidv); const wi=+$('#dww_'+uidv).value; const start=$('#dw_'+uidv).value||nextSchoolDay(todayISO()); const line=u.topics.split('\n').filter(Boolean)[wi]||u.title; let made=0;
+ for(let i=0;i<5;i++){ const date=addDays(start,i); const dow=new Date(date+'T12:00:00').getDay(); if(dow===0||dow===6) continue; if(S.lessons.some(l=>l.unitId===u.id&&l.date===date)) continue; S.lessons.push({id:uid(), date, classId:u.classId, unitId:u.id, title:u.title+' — Wk '+(wi+1)+': '+line.split('—')[0].trim(), objective:line, materials:'', materialsDone:false, done:false, period:0}); made++; }
+ save(); toast(made? '✨ '+made+' lessons drafted into Daily Plans' : 'Those days already have drafted lessons'); render(); }
+function rollLesson(id){ const l=S.lessons.find(x=>x.id===id); l.date=nextSchoolDay(todayISO()); save(); toast('↪ Rolled forward — content travelled with it'); render(); }
+/* ============ WEEKLY & DAILY ============ */
+function renderWeekly(){ let h=secHead('weekly','🗓️','Weekly Lesson Plans');
+ if(!S.classes.length){ h+='<div class="empty">Add a class first.</div>'; return h; }
+ if(!uiWeekStart) uiWeekStart=weekStartOf(todayISO());
+ h+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap"><label style="margin:0">Class</label>'+classPicker('wk_c',curClass(),'uiClass=this.value;render()')+'<button class="btn soft" onclick="wkMove(-1)">← Prev week</button><b>Week of '+fmtDate(uiWeekStart)+'</b><button class="btn soft" onclick="wkMove(1)">Next week →</button></div>';
+ h+='<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">';
+ for(let i=0;i<5;i++){ const iso=addDays(uiWeekStart,i); const ls=S.lessons.filter(l=>l.classId===curClass()&&l.date===iso).sort((a,b)=>(a.period||9)-(b.period||9)); h+='<div style="border:1.5px solid var(--line);border-radius:12px;padding:9px;background:var(--card);min-height:130px"><b>'+dowName(iso)+' '+iso.slice(8)+'</b>'+(ls.length? ls.map(l=>'<div style="font-size:13px;margin-top:7px;padding:6px;border-radius:8px;background:var(--accent-soft)"><b>'+esc(l.title)+'</b>'+(l.done?' ✓':'')+'<br><button class="mini" onclick="go(\'daily\')">Open</button></div>').join('') : '<div style="font-size:12.5px;color:var(--muted);margin-top:8px">No lessons</div>')+'</div>'; }
+ h+='</div><p style="font-size:13px;color:var(--muted);margin-top:10px">Draft whole weeks from the Unit Planner — or add single lessons in Daily Plans.</p>'; return h; }
+function wkMove(n){ uiWeekStart=addDays(uiWeekStart||weekStartOf(todayISO()), n*7); render(); }
+function renderDaily(){ let h=secHead('daily','📖','Daily Lesson Plans');
+ if(!S.classes.length){ h+='<div class="empty">Add a class first.</div>'; return h; }
+ h+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap"><label style="margin:0">Date</label><input type="date" id="dl_d" value="'+uiDate+'" onchange="uiDate=this.value;render()"><label style="margin:0">Class</label>'+classPicker('dl_c',curClass(),'uiClass=this.value;render()')+'</div>';
+ const ls=S.lessons.filter(l=>l.classId===curClass()&&l.date===uiDate).sort((a,b)=>(a.period||9)-(b.period||9));
+ if(!ls.length) h+='<div class="empty">No lessons for this class on '+fmtDate(uiDate)+'.<br>Add one below, or draft a week from the Unit Planner.</div>';
+ ls.forEach(l=>{ h+='<div class="panel"><div style="display:flex;gap:8px;align-items:flex-start"><button class="tick '+(l.done?'on':'')+'" title="Taught / done" onclick="toggleDone(\''+l.id+'\')">'+(l.done?'✓':'')+'</button><div style="flex:1"><b style="font-size:16px">'+esc(l.title)+'</b>'+(l.period?' <span class="chip amber">Period '+l.period+'</span>':'')+(l.unitId?' <span class="chip">From unit plan</span>':'')+'<div style="font-size:14px;margin-top:4px"><b>Objective:</b> '+esc(l.objective||'—')+'</div><div style="font-size:14px;margin-top:2px"><b>Materials:</b> '+esc(l.materials||'—')+'</div><label style="display:flex;gap:7px;align-items:center;margin-top:7px;font-size:14px"><input type="checkbox" style="width:auto" '+(l.materialsDone?'checked':'')+' onchange="toggleMats(\''+l.id+'\')"> Materials ready (feeds Tomorrow-Ready)</label></div><button class="mini" onclick="editLesson(\''+l.id+'\')">✏️</button><button class="mini" onclick="delLesson(\''+l.id+'\')">🗑️</button></div></div>'; });
+ const overdue=S.lessons.filter(l=>l.classId===curClass()&&!l.done&&l.date<todayISO());
+ if(overdue.length) h+='<div class="panel"><h3>↪ Roll forward</h3>'+overdue.map(l=>'<div style="display:flex;gap:8px;align-items:center;padding:3px 0"><span style="flex:1"><b>'+esc(l.title)+'</b> — '+fmtDate(l.date)+'</span><button class="mini" onclick="rollLesson(\''+l.id+'\')">Roll →</button></div>').join('')+'</div>';
+ h+='<div class="panel"><h3>Add a lesson</h3><label>Title</label><input id="dl_t" placeholder="e.g. Fractions — halves and quarters"><div style="display:flex;gap:8px;flex-wrap:wrap"><div style="flex:1;min-width:110px"><label>Period (optional)</label><input id="dl_p" type="number" min="0" max="9"></div><div style="flex:2;min-width:180px"><label>Objective</label><input id="dl_o" placeholder="By the end, pupils can…"></div></div><label>Materials (comma list)</label><input id="dl_m" placeholder="Fraction walls, whiteboards, worksheet A"><button class="btn" style="margin-top:10px" onclick="addLesson()">➕ Add lesson</button></div>';
+ return h; }
+function addLesson(){ const t=$('#dl_t').value.trim(); if(!t){ toast('Give the lesson a title'); return; } S.lessons.push({id:uid(), date:uiDate, classId:curClass(), unitId:'', title:t, objective:$('#dl_o').value.trim(), materials:$('#dl_m').value.trim(), materialsDone:false, done:false, period:+$('#dl_p').value||0}); save(); toast('📖 Lesson added'); render(); }
+function toggleDone(id){ const l=S.lessons.find(x=>x.id===id); l.done=!l.done; save(); render(); }
+function toggleMats(id){ const l=S.lessons.find(x=>x.id===id); l.materialsDone=!l.materialsDone; save(); render(); }
+function delLesson(id){ S.lessons=S.lessons.filter(l=>l.id!==id); save(); render(); }
+function editLesson(id){ const l=S.lessons.find(x=>x.id===id); openModal('<h3>✏️ Edit lesson</h3><label>Title</label><input id="el_t" value="'+esc(l.title)+'"><label>Objective</label><input id="el_o" value="'+esc(l.objective||'')+'"><label>Materials</label><input id="el_m" value="'+esc(l.materials||'')+'"><label>Date</label><input id="el_d" type="date" value="'+l.date+'"><div class="row" style="margin-top:14px"><button class="btn" onclick="saveLesson(\''+id+'\')">Save</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>'); }
+function saveLesson(id){ const l=S.lessons.find(x=>x.id===id); l.title=$('#el_t').value; l.objective=$('#el_o').value; l.materials=$('#el_m').value; l.date=$('#el_d').value||l.date; save(); closeModal(); render(); }
+/* ============ GRADEBOOK ============ */
+function renderGradebook(){ let h=secHead('gradebook','📊','Gradebook — weighted & automatic');
+ if(!S.classes.length){ h+='<div class="empty">Add a class first.</div>'; return h; }
+ h+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap"><label style="margin:0">Class</label>'+classPicker('gb_c',curClass(),'uiClass=this.value;render()')+'<span class="chip">Weights: '+CATS.map(c=>c+' '+S.weights[c]+'%').join(' · ')+'</span></div>';
+ const sts=studentsOf(curClass()); const as=S.assignments.filter(a=>a.classId===curClass()).sort((a,b)=>a.due<b.due?-1:1);
+ if(!sts.length) h+='<div class="empty">Roster empty — add students in My Classes.</div>';
+ else if(!as.length) h+='<div class="empty">No assignments yet for this class.<br>Add one below — then tap any cell in the grid to enter scores.</div>';
+ else { h+='<div style="overflow-x:auto"><table style="border-collapse:collapse;min-width:640px;width:100%"><tr><th style="text-align:left;padding:7px;border-bottom:2px solid var(--line)">Student</th>'+as.map(a=>'<th style="padding:7px;border-bottom:2px solid var(--line);font-size:12.5px">'+esc(a.title)+'<br><span style="color:var(--muted)">'+esc(a.cat)+' /'+a.max+'</span></th>').join('')+'<th style="padding:7px;border-bottom:2px solid var(--line)">Avg</th></tr>'
+ + sts.map(st=>'<tr><td style="padding:6px;border-bottom:1px solid var(--line)"><b>'+esc(st.name)+'</b></td>'+as.map(a=>{ const g=(S.grades[a.id]||{})[st.id]; const missing=a.due<todayISO()&&(g===undefined||g===''); return '<td style="padding:4px;border-bottom:1px solid var(--line);text-align:center"><input style="width:64px;text-align:center;'+(missing?'border-color:var(--bad);background:#FDECEC':'')+'" type="number" min="0" max="'+a.max+'" value="'+(g===undefined?'':g)+'" placeholder="'+(missing?'missing':'—')+'" onchange="setGrade(\''+a.id+'\',\''+st.id+'\',this.value)"></td>'; }).join('')+'<td style="padding:6px;border-bottom:1px solid var(--line);text-align:center"><b>'+(studentAvg(st.id)===null?'—':studentAvg(st.id)+'%')+'</b></td></tr>').join('')+'</table></div><p style="font-size:12.5px;color:var(--muted);margin-top:8px">Red cells = past due and still missing — they also appear in Retakes & Missing Work. Averages weight each category by your Settings weights.</p>'; }
+ h+='<div class="panel"><h3>Add an assignment</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="gb_t" placeholder="Title — e.g. Fractions test" style="flex:2;min-width:170px"><select id="gb_cat">'+CATS.map(c=>'<option>'+c+'</option>').join('')+'</select><input id="gb_max" type="number" value="100" style="width:90px" title="Max score"><input id="gb_due" type="date" value="'+todayISO()+'"><button class="btn" onclick="addAssignment()">➕ Add</button></div>'
+ +(as.length? '<div style="margin-top:12px">'+as.map(a=>'<div style="display:flex;gap:8px;align-items:center;padding:3px 0"><span style="flex:1"><b>'+esc(a.title)+'</b> · '+esc(a.cat)+' · due '+fmtDate(a.due)+'</span><button class="mini" onclick="delAssignment(\''+a.id+'\')">🗑️</button></div>').join('')+'</div>':'')+'</div>';
+ return h; }
+function addAssignment(){ const t=$('#gb_t').value.trim(); if(!t){ toast('Title needed'); return; } S.assignments.push({id:uid(), classId:curClass(), title:t, cat:$('#gb_cat').value, max:+$('#gb_max').value||100, due:$('#gb_due').value||todayISO()}); save(); toast('📊 Assignment added'); render(); }
+function delAssignment(id){ confirmBox('Delete this assignment and all its scores?', ()=>{ S.assignments=S.assignments.filter(a=>a.id!==id); delete S.grades[id]; save(); render(); }); }
+function setGrade(aid, sid, val){ if(!S.grades[aid]) S.grades[aid]={}; if(val===''||val===null) delete S.grades[aid][sid]; else S.grades[aid][sid]=Math.max(0,+val||0); save(); render(); }
+/* ============ ANALYTICS ============ */
+function renderAnalytics(){ let h=secHead('analytics','📈','Grade Analytics'); const dist=gradeDist(); const total=Object.values(dist).reduce((a,b)=>a+b,0);
+ if(!total){ h+='<div class="empty">No graded students yet.<br>Once the Gradebook has scores, your distribution, trends and class averages appear here.</div>'; return h; }
+ const cols={'A (90+)':'#1E9E6A','B (80–89)':'#57B98A','C (70–79)':'#E9C46A','D (60–69)':'#E8871E','F (under 60)':'#D64545'}; let acc=0; const C=2*Math.PI*40; let segs='';
+ Object.keys(dist).forEach(k=>{ const p=dist[k]/total; if(p>0){ segs+='<circle cx="46" cy="46" r="40" fill="none" stroke="'+cols[k]+'" stroke-width="13" stroke-dasharray="'+(p*C)+' '+C+'" stroke-dashoffset="'+(-acc*C)+'" transform="rotate(-90 46 46)"></circle>'; acc+=p; } });
+ h+='<div style="display:flex;gap:14px;flex-wrap:wrap"><div class="panel" style="min-width:250px;text-align:center"><h3>Grade distribution</h3><svg viewBox="0 0 92 92" style="width:150px;height:150px">'+segs+'<text x="46" y="52" text-anchor="middle" style="fill:var(--ink);font-size:15px;font-weight:800">'+total+' students</text></svg><div style="text-align:left;font-size:13.5px;line-height:1.8">'+Object.keys(dist).map(k=>'<div><span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:'+cols[k]+'"></span> '+k+': <b>'+dist[k]+'</b></div>').join('')+'</div></div>';
+ h+='<div class="panel" style="flex:1;min-width:280px"><h3>Class averages</h3>'+S.classes.map(c=>{ const avs=studentsOf(c.id).map(s=>studentAvg(s.id)).filter(a=>a!==null); const avg=avs.length? Math.round(avs.reduce((a,b)=>a+b,0)/avs.length):null; return '<div style="margin:8px 0"><div style="display:flex;justify-content:space-between;font-size:14px"><b>'+esc(c.name)+'</b><span>'+(avg===null?'—':avg+'%')+'</span></div><div class="bar"><i style="width:'+(avg||0)+'%"></i></div></div>'; }).join('')
+ +'<h3 style="margin-top:16px">Category strengths (all classes)</h3>'+CATS.map(cat=>{ const ps=[]; S.assignments.filter(a=>a.cat===cat).forEach(a=> S.students.filter(s=>s.classId===a.classId).forEach(st=>{ const p=scorePct(a.id,st.id); if(p!==null) ps.push(p); })); const avg=ps.length? Math.round(ps.reduce((a,b)=>a+b,0)/ps.length):null; return '<div style="margin:8px 0"><div style="display:flex;justify-content:space-between;font-size:14px"><span>'+cat+'</span><span>'+(avg===null?'—':avg+'%')+'</span></div><div class="bar"><i style="width:'+(avg||0)+'%"></i></div></div>'; }).join('')+'</div></div>';
+ const trend=S.assignments.filter(a=>studentsOf(a.classId).some(st=>scorePct(a.id,st.id)!==null)).sort((x,y)=>x.due<y.due?-1:1).map(a=>{ const ps=studentsOf(a.classId).map(st=>scorePct(a.id,st.id)).filter(p=>p!==null); return {t:a.title, avg:Math.round(ps.reduce((x,y)=>x+y,0)/ps.length)}; });
+ if(trend.length>1) h+='<div class="panel"><h3>📉 Trend — class average per assignment</h3>'+trend.map(x=>'<div style="margin:7px 0"><div style="display:flex;justify-content:space-between;font-size:13.5px"><span>'+esc(x.t)+'</span><b>'+x.avg+'%</b></div><div class="bar"><i style="width:'+x.avg+'%"></i></div></div>').join('')+'</div>';
+ return h; }
+/* ============ ATTENDANCE ============ */
+function renderAttendance(){ let h=secHead('attendance','✅','Attendance');
+ if(!S.classes.length){ h+='<div class="empty">Add a class first.</div>'; return h; }
+ h+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap"><label style="margin:0">Date</label><input type="date" id="at_d" value="'+uiDate+'" onchange="uiDate=this.value;render()"><label style="margin:0">Class</label>'+classPicker('at_c',curClass(),'uiClass=this.value;render()')+'</div>';
+ const key=uiDate+'|'+curClass(); const marks=S.attendance[key]||{}; const sts=studentsOf(curClass());
+ if(!sts.length){ h+='<div class="empty">Roster empty — add students in My Classes.</div>'; return h; }
+ const counts={P:0,A:0,L:0}; Object.values(marks).forEach(m=>counts[m]++);
+ h+='<div class="kpis"><div class="kpi"><b>'+counts.P+'</b><span>Present</span></div><div class="kpi"><b>'+counts.L+'</b><span>Late</span></div><div class="kpi"><b>'+counts.A+'</b><span>Absent</span></div><div class="kpi"><b>'+Object.keys(marks).length+'/'+sts.length+'</b><span>Marked</span></div></div>';
+ h+='<div class="panel">'+sts.map(st=>{ const m=marks[st.id]||''; return '<div style="display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line)"><span style="flex:1"><b>'+esc(st.name)+'</b> <span style="font-size:12.5px;color:var(--muted)">(term: '+(attRecord(st.id).rate===null?'—':attRecord(st.id).rate+'%')+')</span></span>'+['P','A','L'].map(x=>'<button class="mini" style="padding:8px 13px;font-weight:800;'+(m===x?'background:var(--accent);color:#fff;border-color:var(--accent)':'')+'" onclick="markAtt(\''+st.id+'\',\''+x+'\')">'+x+'</button>').join('')+'</div>'; }).join('')+'<p style="font-size:12.5px;color:var(--muted);margin-top:8px">Tap the same letter again to clear a mark. Rates feed each profile and the At-Risk Radar.</p></div>';
+ return h; }
+function markAtt(sid, mark){ const key=uiDate+'|'+curClass(); if(!S.attendance[key]) S.attendance[key]={}; if(S.attendance[key][sid]===mark) delete S.attendance[key][sid]; else S.attendance[key][sid]=mark; save(); render(); }
+/* ============ SEATING ============ */
+let seatSwap=null;
+function renderSeating(){ let h=secHead('seating','🪑','Seating Planner');
+ if(!S.classes.length){ h+='<div class="empty">Add a class first.</div>'; return h; }
+ h+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap"><label style="margin:0">Class</label>'+classPicker('se_c',curClass(),'uiClass=this.value;seatSwap=null;render()')+'<button class="btn soft" onclick="seatArrange(\'shuffle\')">🔀 Shuffle</button><button class="btn soft" onclick="seatArrange(\'az\')">🔤 A–Z</button><button class="btn" onclick="seatArrange(\'data\')">🚨 Data-aware (radar → front)</button></div>';
+ const sts=studentsOf(curClass()); let order=S.seating[curClass()]||[]; order=order.filter(id=>sts.some(s=>s.id===id)); sts.forEach(s=>{ if(!order.includes(s.id)) order.push(s.id); });
+ if(!sts.length){ h+='<div class="empty">Roster empty.</div>'; return h; }
+ h+='<div class="panel"><div style="text-align:center;font-weight:800;background:var(--accent-soft);border-radius:9px;padding:8px;margin-bottom:12px">⬆ FRONT OF CLASS — board / teacher desk ⬆</div><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px">'
+ + order.map((sid,i)=>{ const st=S.students.find(s=>s.id===sid); const fl=riskFlags(sid).length; return '<div onclick="seatTap('+i+')" style="cursor:pointer;border:2px solid '+(seatSwap===i?'var(--warn)':fl?'var(--bad)':'var(--line)')+';border-radius:10px;padding:9px 6px;text-align:center;background:var(--card);font-size:13px;min-height:56px"><b>'+esc(st?st.name:'')+'</b>'+(fl?'<div style="font-size:11px;color:var(--bad)">🚨 radar</div>':'')+'<div style="font-size:11px;color:var(--muted)">Desk '+(i+1)+'</div></div>'; }).join('')+'</div><p style="font-size:12.5px;color:var(--muted);margin-top:10px">Tap two desks to swap them. Red outline = student is on the At-Risk Radar.</p></div>';
+ return h; }
+function seatArrange(mode){ const sts=studentsOf(curClass()); let ids=sts.map(s=>s.id); if(mode==='az') ids.sort((a,b)=>studentName(a)<studentName(b)?-1:1); if(mode==='shuffle') ids.sort(()=>Math.random()-0.5); if(mode==='data'){ const sev=sid=>riskFlags(sid).reduce((n,f)=>n+f.sev,0); ids.sort((a,b)=>sev(b)-sev(a)); } S.seating[curClass()]=ids; seatSwap=null; save(); toast('🪑 Seating arranged'); render(); }
+function seatTap(i){ if(seatSwap===null){ seatSwap=i; render(); return; } const order=(S.seating[curClass()]||studentsOf(curClass()).map(s=>s.id)).slice(); const tmp=order[seatSwap]; order[seatSwap]=order[i]; order[i]=tmp; S.seating[curClass()]=order; seatSwap=null; save(); render(); }
+/* ============ BEHAVIOUR ============ */
+function renderBehaviour(){ let h=secHead('behaviour','📝','Behaviour & Incidents Log');
+ if(!S.students.length){ h+='<div class="empty">Add students first — logs attach to students.</div>'; return h; }
+ const list=[...S.incidents].sort((a,b)=>b.date<a.date?-1:1);
+ h+='<div class="kpis"><div class="kpi"><b>'+list.filter(i=>i.type==='Positive').length+'</b><span>Positives 🌟</span></div><div class="kpi"><b>'+list.filter(i=>i.type==='Concern').length+'</b><span>Concerns</span></div><div class="kpi"><b>'+list.filter(i=>i.type==='Incident').length+'</b><span>Incidents</span></div><div class="kpi"><b>'+list.filter(i=>!i.contacted&&i.type!=='Positive').length+'</b><span>Awaiting follow-up</span></div></div>';
+ h+='<div class="panel">'+(list.length? list.map(i=>'<div style="display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line)"><span>'+(i.type==='Positive'?'🌟':i.type==='Concern'?'⚠️':'🚨')+'</span><div style="flex:1"><b>'+esc(studentName(i.studentId))+'</b> · '+esc(i.type)+' · '+fmtDate(i.date)+'<div style="font-size:14px">'+esc(i.what)+'</div>'+(i.action?'<div style="font-size:13px;color:var(--muted)">Action: '+esc(i.action)+'</div>':'')+'</div>'+(i.type!=='Positive'? '<button class="mini" onclick="toggleContacted(\''+i.id+'\')">'+(i.contacted?'📞 Home contacted ✓':'📞 Not contacted')+'</button>':'')+'<button class="mini" onclick="delIncident(\''+i.id+'\')">🗑️</button></div>').join('') : '<p style="color:var(--muted)">Nothing logged yet. Log positives as eagerly as problems — the balance matters in reports.</p>')+'</div>';
+ h+='<div class="panel"><h3>Log an entry</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><select id="bh_s">'+S.classes.map(c=>'<optgroup label="'+esc(c.name)+'">'+studentsOf(c.id).map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join('')+'</optgroup>').join('')+'</select><select id="bh_t"><option>Positive</option><option>Concern</option><option>Incident</option></select><input type="date" id="bh_d" value="'+todayISO()+'"></div><label>What happened</label><input id="bh_w" placeholder="e.g. Helped a classmate without being asked"><label>Action taken (optional)</label><input id="bh_a" placeholder="e.g. Star of the day / spoke after class"><button class="btn" style="margin-top:10px" onclick="addIncident()">➕ Log it</button></div>';
+ return h; }
+function addIncident(){ const w=$('#bh_w').value.trim(); if(!w){ toast('Describe what happened'); return; } S.incidents.push({id:uid(), date:$('#bh_d').value||todayISO(), studentId:$('#bh_s').value, type:$('#bh_t').value, what:w, action:$('#bh_a').value.trim(), contacted:false}); save(); toast('📝 Logged'); render(); }
+function toggleContacted(id){ const i=S.incidents.find(x=>x.id===id); i.contacted=!i.contacted; save(); render(); }
+function delIncident(id){ S.incidents=S.incidents.filter(i=>i.id!==id); save(); render(); }
+/* ============ AT-RISK RADAR ============ */
+function renderAtrisk(){ let h=secHead('atrisk','🚨','At-Risk Radar — cross-module'); const flags=allFlags();
+ if(!S.students.length){ h+='<div class="empty">The radar wakes up once you have students, grades and attendance.</div>'; return h; }
+ if(!flags.length) h+='<div class="panel" style="text-align:center"><div style="font-size:36px">🌤️</div><h3>All clear</h3><p style="color:var(--muted)">No student is flagging right now — missing work, attendance, averages and follow-ups all healthy.</p></div>';
+ flags.forEach(x=>{ h+='<div class="panel"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><h3 style="margin:0">🚨 '+esc(x.st.name)+'</h3><span class="chip">'+esc(className(x.st.classId))+'</span><span class="chip amber">Avg '+(studentAvg(x.st.id)===null?'—':studentAvg(x.st.id)+'%')+'</span><span style="flex:1"></span><button class="mini" onclick="openProfile(\''+x.st.id+'\')">Profile</button><button class="mini" onclick="quickContact(\''+x.st.id+'\')">📞 Log contact</button></div>'+x.flags.map(f=>'<div style="font-size:14.5px;padding:3px 0">'+f.icon+' '+esc(f.text)+'</div>').join('')+'</div>'; });
+ h+='<p style="font-size:13px;color:var(--muted)">Flags clear themselves when the data heals — a score entered, attendance improving, a contact logged. The radar watches the joins between your records: Gradebook × Attendance × Behaviour × Contacts.</p>';
+ return h; }
+function quickContact(sid){ openModal('<h3>📞 Log a parent contact</h3><p style="color:var(--muted)">'+esc(studentName(sid))+'</p><label>Method</label><select id="qc_m"><option>Phone call</option><option>Email</option><option>Meeting</option><option>Note home</option></select><label>Reason</label><input id="qc_r" value="Radar follow-up"><label>Outcome</label><input id="qc_o" placeholder="e.g. Mum aware, plan agreed"><div class="row" style="margin-top:14px"><button class="btn" onclick="saveQuickContact(\''+sid+'\')">Save contact</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>'); }
+function saveQuickContact(sid){ S.contacts.push({id:uid(), date:todayISO(), studentId:sid, method:$('#qc_m').value, reason:$('#qc_r').value.trim(), outcome:$('#qc_o').value.trim()}); S.incidents.forEach(i=>{ if(i.studentId===sid && !i.contacted && i.type!=='Positive' && daysUntil(i.date)>=-14) i.contacted=true; }); save(); closeModal(); toast('📞 Contact logged — flag updated'); render(); }
+/* ============ PARENT CONTACTS ============ */
+function renderParents(){ let h=secHead('parents','📞','Parent Contact Log'); const list=[...S.contacts].sort((a,b)=>b.date<a.date?-1:1);
+ h+='<div class="panel">'+(list.length? list.map(c=>'<div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px dashed var(--line)"><div style="flex:1"><b>'+esc(studentName(c.studentId))+'</b> · '+esc(c.method)+' · '+fmtDate(c.date)+'<div style="font-size:14px">'+esc(c.reason)+(c.outcome?' — <span style="color:var(--muted)">'+esc(c.outcome)+'</span>':'')+'</div></div><button class="mini" onclick="delContact(\''+c.id+'\')">🗑️</button></div>').join('') : '<p style="color:var(--muted)">No contacts logged yet.</p>')+'</div>';
+ if(S.students.length) h+='<div class="panel"><h3>Log a contact</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><select id="pc_s">'+S.classes.map(c=>'<optgroup label="'+esc(c.name)+'">'+studentsOf(c.id).map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join('')+'</optgroup>').join('')+'</select><select id="pc_m"><option>Phone call</option><option>Email</option><option>Meeting</option><option>Note home</option></select><input type="date" id="pc_d" value="'+todayISO()+'"></div><label>Reason</label><input id="pc_r" placeholder="e.g. Missing homework — third time"><label>Outcome</label><input id="pc_o" placeholder="e.g. Agreed: homework diary signed daily"><button class="btn" style="margin-top:10px" onclick="addContact()">➕ Log contact</button></div>';
+ return h; }
+function addContact(){ const r=$('#pc_r').value.trim(); if(!r){ toast('Add a reason'); return; } S.contacts.push({id:uid(), date:$('#pc_d').value||todayISO(), studentId:$('#pc_s').value, method:$('#pc_m').value, reason:r, outcome:$('#pc_o').value.trim()}); save(); toast('📞 Logged'); render(); }
+function delContact(id){ S.contacts=S.contacts.filter(c=>c.id!==id); save(); render(); }
+/* ============ REPORTS ============ */
+let reportEdits={};
+function renderReports(){ let h=secHead('reports','🖨️','Report Season — Autopilot');
+ if(!S.classes.length){ h+='<div class="empty">Add a class first.</div>'; return h; }
+ h+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap"><label style="margin:0">Class</label>'+classPicker('rp_c',curClass(),'uiClass=this.value;render()')+'<button class="btn" onclick="printSection()">🖨️ Print term pack</button></div>';
+ h+='<div class="panel" style="background:var(--accent-soft)"><b>✨ Drafted from real data</b> — each comment below was generated from that student\u2019s weighted average, attendance, behaviour balance and strongest skill. Edit any wording; your edits are kept for this session and print with the pack.</div>';
+ studentsOf(curClass()).forEach(st=>{ const txt=reportEdits[st.id]!==undefined? reportEdits[st.id] : reportComment(st); h+='<div class="panel"><div style="display:flex;gap:8px;align-items:center"><h3 style="margin:0;flex:1">'+esc(st.name)+'</h3><span class="chip">Avg '+(studentAvg(st.id)===null?'—':studentAvg(st.id)+'%')+'</span><span class="chip amber">Att '+(attRecord(st.id).rate===null?'—':attRecord(st.id).rate+'%')+'</span></div><textarea rows="4" oninput="reportEdits[\''+st.id+'\']=this.value">'+esc(txt)+'</textarea></div>'; });
+ return h; }
+/* ============ MEETINGS ============ */
+function renderMeetings(){ let h=secHead('meetings','🤝','Meetings & Notes'); const list=[...S.meetings].sort((a,b)=>b.date<a.date?-1:1);
+ h+='<div class="panel">'+(list.length? list.map(m=>'<div style="padding:8px 0;border-bottom:1px dashed var(--line)"><div style="display:flex;gap:8px"><b style="flex:1">'+esc(m.title)+'</b><span class="chip">'+fmtDate(m.date)+'</span><button class="mini" onclick="delMeeting(\''+m.id+'\')">🗑️</button></div><div style="font-size:13.5px;color:var(--muted)">With: '+esc(m.withWhom||'—')+'</div>'+(m.notes?'<div style="font-size:14px;white-space:pre-wrap">'+esc(m.notes)+'</div>':'')+(m.actions?'<div style="font-size:14px"><b>Actions:</b> '+esc(m.actions)+'</div>':'')+'</div>').join('') : '<p style="color:var(--muted)">No meetings logged yet.</p>')+'</div>';
+ h+='<div class="panel"><h3>Add a meeting</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="mt_t" placeholder="Title — e.g. Phase meeting" style="flex:2;min-width:160px"><input id="mt_w" placeholder="With whom" style="flex:1;min-width:130px"><input type="date" id="mt_d" value="'+todayISO()+'"></div><label>Notes</label><textarea id="mt_n" rows="3"></textarea><label>Actions</label><input id="mt_a" placeholder="e.g. Send reading data to SLT by Friday"><button class="btn" style="margin-top:10px" onclick="addMeeting()">➕ Add meeting</button></div>';
+ return h; }
+function addMeeting(){ const t=$('#mt_t').value.trim(); if(!t){ toast('Title needed'); return; } S.meetings.push({id:uid(), date:$('#mt_d').value||todayISO(), title:t, withWhom:$('#mt_w').value.trim(), notes:$('#mt_n').value, actions:$('#mt_a').value.trim()}); save(); render(); }
+function delMeeting(id){ S.meetings=S.meetings.filter(m=>m.id!==id); save(); render(); }
+/* ============ SUB FOLDER ============ */
+function renderSubfolder(){ let h=secHead('subfolder','🆘','Sub Folder — One Tap'); const t=todayISO(); const todays=S.lessons.filter(l=>l.date===t);
+ h+='<div class="panel noprint"><h3>Standing notes for any cover teacher</h3><textarea id="sb_n" rows="3" placeholder="Routines, medical alerts, who to ask for help, where things live…">'+esc(S.subNotes||'')+'</textarea><button class="btn soft" style="margin-top:8px" onclick="S.subNotes=$(\'#sb_n\').value;save();toast(\'💾 Standing notes saved\')">Save notes</button> <button class="btn" onclick="printSection()">🖨️ Print today\u2019s folder</button></div>';
+ h+='<div class="panel"><h3>🆘 SUBSTITUTE FOLDER — '+fmtDate(t)+'</h3><p style="color:var(--muted)">Teacher: '+esc(S.profile.name||'—')+(S.profile.school?' · '+esc(S.profile.school):'')+' · Generated from today\u2019s real plans.</p>'
+ +'<h3 style="margin-top:12px">⏰ Bell schedule</h3>'+S.bell.map(b=>'<div style="font-size:14px">'+esc(b.label)+': '+esc(b.start)+'–'+esc(b.end)+'</div>').join('')
+ +'<h3 style="margin-top:12px">📖 Today\u2019s lessons</h3>'+(todays.length? todays.map(l=>'<div style="padding:6px 0;border-bottom:1px dashed var(--line)"><b>'+esc(l.title)+'</b> — '+esc(className(l.classId))+(l.period?' · Period '+l.period:'')+'<div style="font-size:14px">Objective: '+esc(l.objective||'—')+'</div><div style="font-size:14px">Materials: '+esc(l.materials||'—')+'</div></div>').join('') : '<p style="color:var(--muted)">No lessons planned today — see class routines in the standing notes.</p>')
+ +(S.subNotes? '<h3 style="margin-top:12px">📌 Standing notes</h3><div style="white-space:pre-wrap;font-size:14.5px">'+esc(S.subNotes)+'</div>':'')
+ +S.classes.map(c=>{ const sts=studentsOf(c.id); if(!sts.length) return ''; const order=(S.seating[c.id]||sts.map(s=>s.id)); return '<h3 style="margin-top:12px">🎒 '+esc(c.name)+' — '+esc(c.subject)+(c.room?' · Room '+esc(c.room):'')+'</h3><div style="font-size:14px">'+sts.map(s=>esc(s.name)).join(' · ')+'</div><div style="font-size:13px;color:var(--muted);margin-top:4px">Seating (front → back): '+order.map(id=>esc(studentName(id))).join(', ')+'</div>'; }).join('')+'</div>';
+ return h; }
+/* ============ RETAKES ============ */
+function renderRetakes(){ let h=secHead('retakes','🔁','Retakes & Missing Work'); const rows=[]; S.students.forEach(st=> missingFor(st.id).forEach(a=> rows.push({st, a})));
+ if(!rows.length) h+='<div class="panel" style="text-align:center"><div style="font-size:36px">🎉</div><h3>Nothing missing</h3><p style="color:var(--muted)">Every past-due assignment has a score. When something goes missing, it lands here automatically.</p></div>';
+ else h+='<div class="panel">'+rows.map(r=>'<div style="display:flex;gap:8px;align-items:center;padding:7px 0;border-bottom:1px dashed var(--line);flex-wrap:wrap"><div style="flex:1;min-width:200px"><b>'+esc(r.st.name)+'</b> — '+esc(r.a.title)+'<div style="font-size:13px;color:var(--muted)">'+esc(r.a.cat)+' · was due '+fmtDate(r.a.due)+' · out of '+r.a.max+'</div></div><input type="number" id="rt_'+r.a.id+'_'+r.st.id+'" placeholder="Score" style="width:90px"><button class="mini" onclick="retakeSave(\''+r.a.id+'\',\''+r.st.id+'\')">✓ Work received</button></div>').join('')+'</div>';
+ h+='<p style="font-size:13px;color:var(--muted)">Entering the score here writes it straight into the Gradebook and clears the student\u2019s radar flag.</p>';
+ return h; }
+function retakeSave(aid, sid){ const v=$('#rt_'+aid+'_'+sid).value; if(v===''){ toast('Enter the score first'); return; } setGradeSilent(aid, sid, v); toast('🔁 Received — Gradebook updated'); render(); }
+function setGradeSilent(aid, sid, val){ if(!S.grades[aid]) S.grades[aid]={}; S.grades[aid][sid]=Math.max(0,+val||0); save(); }
+/* ============ SKILLS TRACKER ============ */
+function renderSkills(){ let h=secHead('skills','🎯','Student Data Tracker — Skills');
+ if(!S.classes.length){ h+='<div class="empty">Add a class first.</div>'; return h; }
+ h+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:12px"><label style="margin:0">Class</label>'+classPicker('sk_c',curClass(),'uiClass=this.value;render()')+'</div>';
+ const sts=studentsOf(curClass()); const ks=S.skills.filter(k=>k.classId===curClass());
+ if(!sts.length) h+='<div class="empty">Roster empty.</div>';
+ else if(!ks.length) h+='<div class="empty">No skills tracked yet for this class.<br>Add the first skill below — e.g. "Reading fluency" or "Times tables recall".</div>';
+ else h+='<div style="overflow-x:auto"><table style="border-collapse:collapse;min-width:560px;width:100%"><tr><th style="text-align:left;padding:7px;border-bottom:2px solid var(--line)">Student</th>'+ks.map(k=>'<th style="padding:7px;border-bottom:2px solid var(--line);font-size:12.5px">'+esc(k.skill)+'</th>').join('')+'</tr>'+sts.map(st=>'<tr><td style="padding:6px;border-bottom:1px solid var(--line)"><b>'+esc(st.name)+'</b></td>'+ks.map(k=>{ const lv=(k.levels||{})[st.id]||0; return '<td style="padding:5px;border-bottom:1px solid var(--line);text-align:center"><button class="mini" style="min-width:104px;font-weight:700" onclick="cycleSkill(\''+k.id+'\',\''+st.id+'\')">'+['0 · Not yet','1 · Developing','2 · Secure','3 · Exceeding'][lv]+'</button></td>'; }).join('')+'</tr>').join('')+'</table></div><p style="font-size:12.5px;color:var(--muted);margin-top:8px">Tap a cell to cycle the level. Each student\u2019s strongest skill is quoted in their Report Season draft.</p>';
+ h+='<div class="panel"><h3>Add a skill</h3><div style="display:flex;gap:8px"><input id="sk_n" placeholder="e.g. Reading fluency" style="flex:1"><button class="btn" onclick="addSkill()">➕ Add</button></div>'+(ks.length? '<div style="margin-top:10px">'+ks.map(k=>'<span class="chip" style="margin:2px">'+esc(k.skill)+' <a href="#" onclick="delSkill(\''+k.id+'\');return false" style="color:var(--bad);text-decoration:none">✕</a></span>').join('')+'</div>':'')+'</div>';
+ return h; }
+function addSkill(){ const n=$('#sk_n').value.trim(); if(!n){ toast('Name the skill'); return; } S.skills.push({id:uid(), classId:curClass(), skill:n, levels:{}}); save(); render(); }
+function delSkill(id){ S.skills=S.skills.filter(k=>k.id!==id); save(); render(); }
+function cycleSkill(kid, sid){ const k=S.skills.find(x=>x.id===kid); if(!k.levels) k.levels={}; k.levels[sid]=((k.levels[sid]||0)+1)%4; save(); render(); }
+/* ============ DUTIES ============ */
+function renderDuties(){ let h=secHead('duties','🎽','Duties & School Events'); const list=[...S.duties].sort((a,b)=>a.date<b.date?-1:1);
+ h+='<div class="panel">'+(list.length? list.map(d=>'<div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px dashed var(--line)"><div style="flex:1"><b>'+esc(d.title)+'</b><div style="font-size:13.5px;color:var(--muted)">'+dowName(d.date)+' '+fmtDate(d.date)+(d.where?' · '+esc(d.where):'')+(daysUntil(d.date)===0?' · <b>TODAY</b>':daysUntil(d.date)>0?' · in '+daysUntil(d.date)+'d':'')+'</div></div><button class="mini" onclick="delDuty(\''+d.id+'\')">🗑️</button></div>').join('') : '<p style="color:var(--muted)">No duties or events yet.</p>')+'<button class="btn soft" style="margin-top:10px" onclick="exportICS()">📅 Export all as .ics</button></div>';
+ h+='<div class="panel"><h3>Add a duty / event</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="du_t" placeholder="e.g. Playground duty — lunch" style="flex:2;min-width:180px"><input id="du_w" placeholder="Where" style="flex:1;min-width:120px"><input type="date" id="du_d" value="'+todayISO()+'"><button class="btn" onclick="addDuty()">➕ Add</button></div></div>';
+ return h; }
+function addDuty(){ const t=$('#du_t').value.trim(); if(!t){ toast('Title needed'); return; } S.duties.push({id:uid(), date:$('#du_d').value||todayISO(), title:t, where:$('#du_w').value.trim()}); save(); render(); }
+function delDuty(id){ S.duties=S.duties.filter(d=>d.id!==id); save(); render(); }
+/* ============ BIRTHDAYS ============ */
+function renderBirthdays(){ let h=secHead('birthdays','🎂','Birthdays & Celebrations'); const t=todayISO(); const withDob=S.students.filter(s=>s.dob);
+ if(!withDob.length){ h+='<div class="empty">No dates of birth on the rosters yet.<br>Add them when adding students (Name, YYYY-MM-DD) and birthdays appear here automatically.</div>'; return h; }
+ const up=withDob.map(s=>{ let next=t.slice(0,4)+s.dob.slice(4); if(next<t) next=(+t.slice(0,4)+1)+s.dob.slice(4); const age=(+next.slice(0,4))-(+s.dob.slice(0,4)); return {s, next, age, in:daysUntil(next)}; }).sort((a,b)=>a.in-b.in);
+ h+='<div class="panel">'+up.map(u=>'<div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px dashed var(--line)"><span style="font-size:19px">'+(u.in===0?'🎉':'🎂')+'</span><div style="flex:1"><b>'+esc(u.s.name)+'</b> — '+esc(className(u.s.classId))+'<div style="font-size:13.5px;color:var(--muted)">'+fmtDate(u.next)+' · turns '+u.age+(u.in===0?' · <b>TODAY!</b>':u.in===1?' · tomorrow':' · in '+u.in+' days')+'</div></div></div>').join('')+'</div>';
+ return h; }
+/* ============ NOTES ============ */
+function renderNotes(){ let h=secHead('notes','🗒️','Notes'); const paper=S.notes.paper||'lined';
+ const bg= paper==='grid'? 'background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:22px 22px' : paper==='dotted'? 'background-image:radial-gradient(var(--line) 1.6px,transparent 1.6px);background-size:20px 20px' : 'background-image:repeating-linear-gradient(transparent,transparent 27px,var(--line) 28px)';
+ h+='<div style="display:flex;gap:8px;margin-bottom:10px">'+['lined','dotted','grid'].map(p=>'<button class="btn '+(paper===p?'':'soft')+'" onclick="S.notes.paper=\''+p+'\';save();render()">'+p+'</button>').join('')+'</div>'
+ +'<textarea id="nt_t" rows="16" style="'+bg+';line-height:28px" placeholder="Staffroom thoughts, seating ideas, that corridor idea…" oninput="S.notes.text=this.value;save()">'+esc(S.notes.text||'')+'</textarea><p style="font-size:12.5px;color:var(--muted)">Autosaves as you type.</p>';
+ return h; }
+/* ============ PRINT CENTRE ============ */
+function renderPrint(){ let h=secHead('print','🖨️','Print Centre');
+ const docs=[['subfolder','🆘','Today\u2019s Sub Folder','Lessons, bell schedule, rosters, seating, standing notes'],['reports','🖨️','Term Report Pack','Every drafted comment, one per student'],['students','🧑‍🎓','Class Rosters & Profiles','Roster lists and profile summaries'],['gradebook','📊','Gradebook','The full grid for the chosen class'],['seating','🪑','Seating Chart','The desk grid, front of class marked'],['backup','💾','Backup & Data','Exports live here — JSON and CSV']];
+ h+='<div class="grid">'+docs.map(d=>'<div class="card" onclick="printGo(\''+d[0]+'\')"><div class="ic">'+d[1]+'</div><h3>'+d[2]+'</h3><p>'+d[3]+'</p></div>').join('')+'</div><p style="font-size:13px;color:var(--muted)">Each card opens the page and starts printing — choose "Save as PDF" in the print dialog for a file copy.</p>';
+ return h; }
+function printGo(id){ if(id==='backup'){ go('backup'); return; } go(id); setTimeout(()=>window.print(),450); }
+/* ============ BACKUP & DATA ============ */
+function renderBackup(){ let h=secHead('backup','💾','Backup & Data');
+ h+='<div class="panel"><h3>💾 Full backup (JSON)</h3><p style="font-size:14px;color:var(--muted);line-height:1.6">Everything — classes, students, grades, attendance, logs. Keep the file somewhere safe: it contains student data. Last backup: '+(S.lastBackup? fmtDate(S.lastBackup.slice(0,10)) : 'never')+'.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onclick="exportBackup()">⬇ Export backup</button><label class="btn soft" style="cursor:pointer">⬆ Import backup<input type="file" accept=".json" style="display:none" onchange="importBackup(this)"></label></div></div>';
+ h+='<div class="panel"><h3>📤 CSV exports</h3><p style="font-size:14px;color:var(--muted)">The honest way to share data with school systems — no fake "sync" promises.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn soft" onclick="exportRosterCSV()">Rosters CSV</button><button class="btn soft" onclick="exportGradesCSV()">Grades CSV</button><button class="btn soft" onclick="exportICS()">Duties & events .ics</button></div></div>';
+ h+='<div class="panel"><h3>🎬 Worked example</h3><p style="font-size:14px;color:var(--muted)">Load Ms Rivera\u2019s Grade 5 class — a full model with grades, attendance, flags and drafted reports — to explore safely.</p><button class="btn soft" onclick="restoreSample()">Restore worked example</button></div>';
+ h+='<div class="panel"><h3>🗓️ New-year rollover</h3><p style="font-size:14px;color:var(--muted);line-height:1.6">Rosters and classes carry forward; grades, attendance, incidents and lessons archive away for a clean year. Export a backup first.</p><button class="btn" onclick="rolloverYear()">Start new year</button></div>';
+ h+='<div class="panel"><h3>🗑️ Archive & reset</h3><p style="font-size:14px;color:var(--muted)">Wipe everything back to a blank planner.</p><button class="btn danger" onclick="resetAll()">Reset everything</button></div>';
+ return h; }
+function exportBackup(){ S.lastBackup=new Date().toISOString(); save(); download('teacher-desk-backup.json', JSON.stringify(S,null,1), 'application/json'); toast('💾 Backup downloaded'); render(); }
+function importBackup(inp){ const f=inp.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const obj=JSON.parse(r.result); if(!obj.profile||!obj.classes) throw 0; S=Object.assign(blankState(), obj); save(); applyTheme(); toast('⬆ Backup imported'); go('home'); }catch(e){ toast('That file is not a Teacher Desk backup'); } }; r.readAsText(f); }
+function exportRosterCSV(){ let csv='Class,Student,Date of birth,Guardian note\n'; S.classes.forEach(c=> studentsOf(c.id).forEach(s=>{ csv+=[csvCell(c.name),csvCell(s.name),csvCell(s.dob||''),csvCell(s.guardian||'')].join(',')+'\n'; })); download('rosters.csv', csv, 'text/csv'); toast('📤 Rosters exported'); }
+function exportGradesCSV(){ let csv='Class,Assignment,Category,Due,Student,Score,Max,Percent\n'; S.assignments.forEach(a=> studentsOf(a.classId).forEach(st=>{ const g=(S.grades[a.id]||{})[st.id]; csv+=[csvCell(className(a.classId)),csvCell(a.title),csvCell(a.cat),a.due,csvCell(st.name),g===undefined?'':g,a.max,g===undefined?'':Math.round(g/a.max*100)].join(',')+'\n'; })); download('grades.csv', csv, 'text/csv'); toast('📤 Grades exported'); }
+function rolloverYear(){ confirmBox('Start a new school year? Classes and rosters carry forward; grades, attendance, behaviour logs, lessons and meetings are cleared. Export a backup first if you need them.', ()=>{ S.assignments=[]; S.grades={}; S.attendance={}; S.incidents=[]; S.lessons=[]; S.meetings=[]; S.skills=[]; S.units=[]; save(); toast('🗓️ New year — rosters carried forward'); go('home'); }); }
+function resetAll(){ confirmBox('Reset EVERYTHING to a blank planner? Classes, students, grades — all gone. Export a backup first if you want to keep anything.', ()=>{ const keepTheme=S.profile.theme; localStorage.removeItem(LS_KEY); S=blankState(); S.profile.theme=keepTheme; S.profile.onboarded=true; save(); applyTheme(); toast('🗑️ Fresh start — blank and ready'); go('home'); }); }
+function restoreSample(){ confirmBox('Load the worked example? It REPLACES everything currently in the app (in the paid file). Export a backup first if you have real data.', ()=>{ S=sampleState(); save(); applyTheme(); toast('🎬 Worked example loaded — explore freely'); go('home'); }); }
+/* ============ RENDER ============ */
+const RENDERERS={ home:renderHome, classes:renderClasses, students:renderStudents, calendar:renderCalendar, units:renderUnits, weekly:renderWeekly, daily:renderDaily, gradebook:renderGradebook, analytics:renderAnalytics, attendance:renderAttendance, seating:renderSeating, behaviour:renderBehaviour, atrisk:renderAtrisk, parents:renderParents, reports:renderReports, meetings:renderMeetings, subfolder:renderSubfolder, retakes:renderRetakes, skills:renderSkills, duties:renderDuties, birthdays:renderBirthdays, notes:renderNotes, print:renderPrint, backup:renderBackup, guide:renderGuide, settings:renderSettings };
+function render(){ $('#main').innerHTML= RENDERERS[currentSection](); buildSidebar(); }
+/* ============ SAMPLE — WORKED EXAMPLE (demo) ============ */
+function sampleState(){ const t=todayISO(); const cA='classA', cB='classB';
+ const namesA=['Aisha Khan','Ben Carter','Chloe Nguyen','Dev Patel','Emma Wilson','Finn O\u2019Brien','Grace Mbeki','Harry Singh','Isla Thompson','Jack Murphy','Kira Volkov','Liam Osei'];
+ const dobsA=['2016-03-14','2015-11-02','2016-01-27','2015-09-19','2016-05-08','2015-12-25','2016-02-11','2015-10-30','2016-04-17','2015-08-23','2016-06-05','2015-07-15'];
+ const studentsA=namesA.map((n,i)=>({id:'st'+(i+1), classId:cA, name:n, dob:dobsA[i], guardian:'', notes:''}));
+ const namesB=['Maya Chen','Noah Williams','Ruby Ahmed','Sam Okafor','Tess Laurent','Omar Haddad'];
+ const studentsB=namesB.map((n,i)=>({id:'sb'+(i+1), classId:cB, name:n, dob:'', guardian:'', notes:''}));
+ const ft='asFT', qz='asQZ', hw='asHW', pj='asPJ';
+ const g={}; g[ft]={}; g[qz]={}; g[hw]={};
+ const ftS=[47,41,45,38,44,36,43,40,46,39,29]; const qzS=[19,16,18,15,17,14,18,16,19,15,11]; const hwS=[10,9,10,8,9,7,10,9,10,8,6];
+ for(let i=0;i<11;i++){ g[ft]['st'+(i+1)]=ftS[i]; g[qz]['st'+(i+1)]=qzS[i]; g[hw]['st'+(i+1)]=hwS[i]; }
+ /* Liam (st12): Fractions Test + Homework missing; Quiz low */
+ g[qz]['st12']=9;
+ const att={}; const days=[-8,-7,-6,-5,-4,-3,-2,-1].map(d=>addDays(t,d)).filter(d=>![0,6].includes(new Date(d+'T12:00:00').getDay()));
+ days.forEach((d,di)=>{ const key=d+'|'+cA; att[key]={}; studentsA.forEach(s=> att[key][s.id]='P'); att[key]['st5']= di===2? 'A':'P'; att[key]['st12']= di===1||di===4? 'A': di===6? 'L':'P'; });
+ const un='unitFrac';
+ return { profile:{name:'Sarah Rivera', school:'Lincoln Elementary', yearTerm:'2026–27 · Grade 5', theme:'chalkmint', accent:'', colourful:true, photo:'', onboarded:true},
+ classes:[{id:cA,name:'5A',subject:'Maths & Homeroom',room:'12',color:'#2E7D5B'},{id:cB,name:'5B',subject:'Science',room:'Lab 2',color:'#2272C9'}],
+ students:[...studentsA, ...studentsB], bell:blankState().bell,
+ units:[{id:un, classId:cA, title:'Fractions — Spring Term', topics:'Halves and quarters — sharing, number lines\nEquivalent fractions — fraction wall games\nAdding fractions — same denominator, bar models'}],
+ lessons:[{id:'l1',date:addDays(t,-1),classId:cA,unitId:un,title:'Fractions — Wk 2: Equivalent fractions',objective:'Find equivalent fractions using the fraction wall',materials:'Fraction walls, whiteboards',materialsDone:true,done:true,period:1},
+ {id:'l2',date:t,classId:cA,unitId:un,title:'Fractions — Wk 2: Equivalent fractions (2)',objective:'Generate families of equivalent fractions; spot the multiplier',materials:'Fraction walls, Worksheet B, mini whiteboards',materialsDone:true,done:false,period:1},
+ {id:'l3',date:t,classId:cB,unitId:'',title:'Science — Habitats walk',objective:'Record species in the school grounds; group by habitat',materials:'Clipboards, species cards, magnifiers',materialsDone:false,done:false,period:4},
+ {id:'l4',date:nextSchoolDay(t),classId:cA,unitId:un,title:'Fractions — Wk 3: Adding fractions',objective:'Add fractions with the same denominator using bar models',materials:'Bar model mats, Worksheet C',materialsDone:true,done:false,period:1},
+ {id:'l5',date:nextSchoolDay(t),classId:cA,unitId:'',title:'Reading — Guided group B',objective:'Inference questions on chapter 6',materials:'Novel sets, question cards',materialsDone:false,done:false,period:3}],
+ assignments:[{id:ft,classId:cA,title:'Fractions Test',cat:'Test',max:50,due:addDays(t,-6)},{id:qz,classId:cA,title:'Times Tables Quiz',cat:'Quiz',max:20,due:addDays(t,-3)},{id:hw,classId:cA,title:'Homework — Fraction Walls',cat:'Homework',max:10,due:addDays(t,-1)},{id:pj,classId:cA,title:'Project — Maths in My Kitchen',cat:'Project',max:100,due:addDays(t,7)}],
+ grades:g, attendance:att, seating:{ [cA]:['st12','st11','st1','st2','st3','st4','st5','st6','st7','st8','st9','st10'] },
+ incidents:[{id:'i1',date:addDays(t,-2),studentId:'st12',type:'Incident',what:'Left the classroom without permission during group work; found in the corridor after 10 minutes.',action:'Spoke with Liam after class; agreed a movement-break card.',contacted:false},
+ {id:'i2',date:addDays(t,-4),studentId:'st1',type:'Positive',what:'Helped two classmates with fraction walls without being asked — patient and clear.',action:'Star of the day.',contacted:false},
+ {id:'i3',date:addDays(t,-9),studentId:'st2',type:'Concern',what:'Homework late twice this fortnight.',action:'Reminder in homework diary.',contacted:true}],
+ contacts:[{id:'ct1',date:addDays(t,-8),studentId:'st2',method:'Phone call',reason:'Homework pattern — two late pieces',outcome:'Mum aware; diary to be signed daily for two weeks.'}],
+ meetings:[{id:'m1',date:addDays(t,-1),title:'Phase meeting',withWhom:'Year 5 team',notes:'Moderation of Fractions Test agreed. Book scrutiny next Thursday.',actions:'Bring 3 sample books to next meeting.'}],
+ skills:[{id:'sk1',classId:cA,skill:'Fraction fluency',levels:{st1:3,st2:2,st3:3,st4:2,st5:2,st6:1,st7:2,st8:2,st9:3,st10:2,st11:1,st12:1}},
+ {id:'sk2',classId:cA,skill:'Times tables recall',levels:{st1:3,st2:2,st3:2,st4:2,st5:3,st6:2,st7:3,st8:2,st9:3,st10:2,st11:1,st12:0}},
+ {id:'sk3',classId:cA,skill:'Problem solving',levels:{st1:2,st2:2,st3:3,st4:1,st5:2,st6:2,st7:2,st8:3,st9:2,st10:1,st11:1,st12:1}}],
+ duties:[{id:'d1',date:t,title:'Playground duty — lunch',where:'Main yard'},{id:'d2',date:addDays(t,3),title:'Assembly — Year 5 presenting',where:'Hall'}],
+ weights:{Test:40,Quiz:20,Homework:20,Project:20},
+ subNotes:'Morning routine: register on the board, morning maths on desks. Liam (5A) has a movement-break card — he may take a 2-minute corridor walk with the card, max twice a day. Aisha is a reliable messenger. Medicines live in the office. Ask Mrs Patel (5B) for anything.',
+ notes:{paper:'lined',text:'Fractions: fraction wall game was a HIT — repeat Friday.\nLiam: movement breaks helping. Keep front-row seat.\nReports due end of term — drafts already looking good.'},
+ lastBackup:'', lastSection:'home', createdAt:Date.now() }; }
+/* ============ ONBOARDING ============ */
+function showOnboarding(){ $('#onboardbox').innerHTML='<h2>🍎 Welcome to your Teacher Desk</h2><p style="line-height:1.6;color:var(--muted)">Your whole teaching day in one private file: Today Board, gradebook, seating, reports — and a sub folder that writes itself. Sixty seconds to set up.</p>'
+ +'<label>Your name (optional)</label><input id="ob_name" placeholder="e.g. Sarah Rivera">'
+ +'<label>School (optional)</label><input id="ob_school" placeholder="e.g. Lincoln Elementary">'
+ +'<label>Year / term (optional)</label><input id="ob_term" placeholder="e.g. 2026–27 · Grade 5">'
+ +'<label>Pick your starting theme</label><select id="ob_theme">'+THEMES.map(t=>'<option value="'+t[0]+'">'+t[1]+(t[2]==='dark'?' — dark':'')+'</option>').join('')+'</select>'
+ +'<label>Profile photo (optional)</label><input id="ob_photo" type="file" accept="image/*">'
+ +'<div style="background:var(--accent-soft);border-radius:12px;padding:13px 15px;font-size:14px;line-height:1.6;margin-top:14px">🔒 <b>The privacy promise:</b> your students\u2019 data lives ONLY in this file, on your device. No account, no cloud, no sync, nothing uploaded — ever. Export a backup from Backup &amp; Data to keep it safe.</div>'
+ +'<div class="row" style="margin-top:18px"><button class="btn" onclick="finishOnboarding(false)">Start teaching →</button><button class="btn ghost" onclick="finishOnboarding(true)">Skip setup</button></div>';
+ $('#onboard').classList.add('open'); }
+function finishOnboarding(skip){ if(!skip){ S.profile.name=$('#ob_name').value.trim(); S.profile.school=$('#ob_school').value.trim(); S.profile.yearTerm=$('#ob_term').value.trim(); S.profile.theme=$('#ob_theme').value; const f=$('#ob_photo').files[0]; if(f){ const r=new FileReader(); r.onload=()=>{ S.profile.photo=r.result; save(); applyTheme(); }; r.readAsDataURL(f); } }
+ S.profile.onboarded=true; save(); applyTheme(); $('#onboard').classList.remove('open'); toast('🍎 Desk ready — add your first class'); render(); }
+/* ============ GUIDE ============ */
+function renderGuide(){ let h=secHead('guide','📘','Guide & Worked Example');
+ h+='<div class="panel"><h3>🍎 The idea</h3><p style="line-height:1.65;font-size:14.5px">One offline file that runs your teaching day: plan units, draft lessons, mark attendance in a minute, keep a weighted gradebook, spot at-risk students early, draft report comments from real data, and generate a substitute folder in one tap. No account, no Canva, no subscription — and <b>your students\u2019 data never leaves your device</b>.</p></div>';
+ h+='<div class="panel"><h3>✨ The 5 things nobody else does</h3><ol style="line-height:1.8;font-size:14.5px;margin-left:18px"><li><b>One-Tap Sub Folder</b> — built from today\u2019s real lessons, rosters and seating, not blank pages.</li><li><b>Report Season Autopilot</b> — comments drafted from each student\u2019s actual grades, attendance and behaviour.</li><li><b>At-Risk Radar</b> — cross-module flags (missing work × attendance × averages × follow-ups).</li><li><b>Unit-to-Week Drafting</b> — unit plans cascade into daily lessons; unfinished lessons roll forward with content.</li><li><b>Tomorrow-Ready Score</b> — one live % that tomorrow is genuinely ready.</li></ol></div>';
+ h+='<div class="panel"><h3>🎬 The worked example (demo)</h3><p style="line-height:1.65;font-size:14.5px">The demo is pre-loaded with Ms Rivera\u2019s Grade 5: two classes (5A Maths, 5B Science), 18 students, a Fractions unit with drafted lessons, a weighted gradebook, 8 days of attendance — and one student, Liam, quietly flagging on the Radar (2 missing assignments, sliding attendance, an un-followed-up incident). Open the Radar to see the system think. In the full version you can reload this example any time from Backup &amp; Data.</p></div>';
+ h+='<div class="panel"><h3>🔒 The privacy promise — in plain words</h3><p style="line-height:1.65;font-size:14.5px">This file stores everything in your own browser, on your own device. There is no server, no account and no sync — The Digital Planner Era never sees your students\u2019 names, grades or notes. The honest trade-off: if you lose the device or clear the browser, the data goes too — so export a JSON backup monthly (Backup &amp; Data nudges you after 30 days), and use CSV exports when school needs numbers.</p></div>';
+ h+='<div class="panel"><h3>🚀 A good first week</h3><ol style="line-height:1.8;font-size:14.5px;margin-left:18px"><li>Add your classes and paste your rosters (My Classes).</li><li>Set your bell schedule and grade weights (Settings).</li><li>Plan one unit and press "Draft week" (Unit Planner).</li><li>Mark attendance daily — it takes a minute and feeds everything.</li><li>Glance at the Radar every Friday. That\u2019s the habit that changes outcomes.</li></ol></div>';
+ return h; }
+/* ============ SETTINGS ============ */
+function renderSettings(){ let h=secHead('settings','⚙️','Settings'); const p=S.profile;
+ h+='<div class="panel"><h3>👤 Your profile</h3><label>Name</label><input id="pf_name" value="'+esc(p.name)+'"><label>School</label><input id="pf_school" value="'+esc(p.school)+'"><label>Year / term</label><input id="pf_term" value="'+esc(p.yearTerm)+'"><button class="btn" style="margin-top:10px" onclick="saveProfileSettings()">Save profile</button> <span style="font-size:13px;color:var(--muted)">Tap the avatar (top right) any time to change your photo.</span></div>';
+ h+='<div class="panel"><h3>🎨 Themes — 10 fresh</h3><div class="grid">'+THEMES.map(t=>'<div class="card" style="cursor:pointer;'+(p.theme===t[0]?'outline:3px solid var(--accent)':'')+'" onclick="setTheme(\''+t[0]+'\')"><div class="ic">'+t[1].split(' ')[0]+'</div><h3 style="font-size:15px">'+esc(t[1].split(' ').slice(1).join(' '))+'</h3><p>'+t[2]+'</p></div>').join('')+'</div>'
+ +'<label style="margin-top:12px">Custom accent colour</label><div style="display:flex;gap:8px"><input type="color" id="pf_accent" value="'+(p.accent||'#2E7D5B')+'" style="width:64px;padding:2px"><button class="btn soft" onclick="setAccent()">Apply accent</button><button class="btn ghost" onclick="S.profile.accent=\'\';save();applyTheme();render()">Reset</button></div>'
+ +'<label>Background photo</label><input type="file" accept="image/*" onchange="setBgPhoto(this)"><label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-size:14.5px"><input type="checkbox" style="width:auto" '+(p.colourful===false?'':'checked')+' onchange="S.profile.colourful=this.checked;save();applyTheme()"> Colourful mode (second accent colour on)</label></div>';
+ h+='<div class="panel"><h3>📊 Grade weights (Gradebook averages)</h3><div style="display:flex;gap:10px;flex-wrap:wrap">'+CATS.map(c=>'<div><label>'+c+' %</label><input type="number" id="w_'+c+'" value="'+S.weights[c]+'" style="width:90px"></div>').join('')+'</div><button class="btn" style="margin-top:10px" onclick="saveWeights()">Save weights</button></div>';
+ h+='<div class="panel"><h3>⏰ Bell schedule</h3>'+S.bell.map((b,i)=>'<div style="display:flex;gap:7px;align-items:center;margin:6px 0;flex-wrap:wrap"><input value="'+esc(b.label)+'" style="flex:2;min-width:120px" onchange="bellEdit('+i+',\'label\',this.value)"><input type="time" value="'+esc(b.start)+'" onchange="bellEdit('+i+',\'start\',this.value)"><input type="time" value="'+esc(b.end)+'" onchange="bellEdit('+i+',\'end\',this.value)"><button class="mini" onclick="bellDel('+i+')">🗑️</button></div>').join('')+'<button class="btn soft" style="margin-top:8px" onclick="bellAdd()">➕ Add period</button></div>';
+ return h; }
+function saveProfileSettings(){ S.profile.name=$('#pf_name').value; S.profile.school=$('#pf_school').value; S.profile.yearTerm=$('#pf_term').value; save(); applyTheme(); toast('💾 Profile saved'); render(); }
+function setAccent(){ S.profile.accent=$('#pf_accent').value; save(); applyTheme(); toast('🎨 Accent applied'); }
+function setBgPhoto(inp){ const f=inp.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ S.profile.bgphoto=r.result; save(); applyTheme(); toast('🖼️ Background set'); }; r.readAsDataURL(f); }
+function saveWeights(){ CATS.forEach(c=> S.weights[c]=Math.max(0,+$('#w_'+c).value||0)); save(); toast('📊 Weights saved — averages updated'); }
+function bellEdit(i,k,v){ S.bell[i][k]=v; save(); }
+function bellDel(i){ S.bell.splice(i,1); save(); render(); }
+function bellAdd(){ S.bell.push({n:S.bell.length+1,label:'Period '+(S.bell.length+1),start:'15:00',end:'15:50'}); save(); render(); }
+/* ============ BOOT ============ */
+load();
+if(DEMO){ S=sampleState(); }
+currentSection= DEMO? 'home' : (S.lastSection && RENDERERS[S.lastSection]? S.lastSection : 'home');
+applyTheme(); buildSidebar(); render();
+if(!DEMO && !S.profile.onboarded) showOnboarding();
+if(DEMO){ const b=document.createElement('div'); b.className='demobanner'; b.textContent='🍎 FREE DEMO — Ms Rivera’s worked-example class · nothing you change here is saved · the full version saves everything'; document.body.prepend(b); }
+document.getElementById('menubtn').onclick=()=> $('#sidebar').classList.toggle('open');
+document.getElementById('themebtn').onclick=()=>{ const i=THEMES.findIndex(t=>t[0]===S.profile.theme); setTheme(THEMES[(i+1)%THEMES.length][0]); toast('🎨 '+THEMES[(i+1)%THEMES.length][1]); };
+document.getElementById('printbtn').onclick=()=> window.print();
+document.getElementById('avatar').onclick=()=> $('#avatarFile').click();
+document.getElementById('avatarFile').addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ S.profile.photo=r.result; save(); applyTheme(); toast('📷 Photo set'); }; r.readAsDataURL(f); });
+</script>
+</body>
+</html>
