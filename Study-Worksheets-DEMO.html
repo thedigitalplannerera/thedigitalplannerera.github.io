@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="sprintcream">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEMO — Study Worksheets — Practice & Revision Engine — The Digital Planner Era</title>
+<style>
+:root{
+  --bg:#FAF7EE; --card:#FFFFFF; --ink:#16294D; --muted:#66779A; --line:#E3DCC8;
+  --accent:#1D4ED8; --accent2:#A3C614; --accent-soft:#E3EBFD; --good:#1E9E6A; --bad:#D64545; --warn:#E8871E;
+  --grad:linear-gradient(120deg,#1D4ED8,#3B82F6); --shadow:0 8px 24px rgba(20,50,120,.10); --radius:16px;
+}
+html[data-theme="midnightlibrary"]{--bg:#0E1830;--card:#18264A;--ink:#EAF0FF;--muted:#9DB1DC;--line:#27386B;--accent:#7CA6FF;--accent2:#C6E265;--accent-soft:#1F3160;--shadow:0 8px 24px rgba(0,0,0,.35)}
+html[data-theme="royalink"]{--bg:#131022;--card:#211A3E;--ink:#F0EDFF;--muted:#AEA4DC;--line:#352B5E;--accent:#A78BFA;--accent2:#A3C614;--accent-soft:#2A2150;--shadow:0 8px 24px rgba(0,0,0,.35)}
+html[data-theme="forestacademia"]{--bg:#0F241A;--card:#1A3A2A;--ink:#EBF7EF;--muted:#9DC4AC;--line:#2A5240;--accent:#5ED598;--accent2:#E9C46A;--accent-soft:#21452F;--shadow:0 8px 24px rgba(0,0,0,.35)}
+html[data-theme="charcoalchalk"]{--bg:#1C1C1E;--card:#2A2A2E;--ink:#F4F4F0;--muted:#B5B5AC;--line:#3D3D42;--accent:#E9C46A;--accent2:#7CA6FF;--accent-soft:#33332A;--shadow:0 8px 24px rgba(0,0,0,.35)}
+html[data-theme="plumscholar"]{--bg:#2B1030;--card:#3D1745;--ink:#FBEFFD;--muted:#D3A6DC;--line:#52255E;--accent:#E58BE8;--accent2:#A3C614;--accent-soft:#481E52;--shadow:0 8px 24px rgba(0,0,0,.35)}
+html[data-theme="skylecture"]{--bg:#EDF5FF;--card:#FFFFFF;--ink:#173A5E;--muted:#64819F;--line:#D2E4F7;--accent:#2272C9;--accent2:#F5A301;--accent-soft:#DCEBFC}
+html[data-theme="mintmargin"]{--bg:#EFFAF3;--card:#FFFFFF;--ink:#14352A;--muted:#5E8A74;--line:#CFEDDB;--accent:#0E9F6E;--accent2:#1D4ED8;--accent-soft:#D9F5E4}
+html[data-theme="peachnotes"]{--bg:#FFF4EA;--card:#FFFFFF;--ink:#4A2C14;--muted:#A97E56;--line:#F5DEC4;--accent:#E85D04;--accent2:#1D4ED8;--accent-soft:#FFE8D1}
+html[data-theme="lavenderlecture"]{--bg:#F4F0FD;--card:#FFFFFF;--ink:#33255C;--muted:#8B7BB8;--line:#E0D6F5;--accent:#7C4DFF;--accent2:#A3C614;--accent-soft:#EAE2FD}
+html[data-colourful="off"]{--accent2:var(--accent)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:15px;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);border-color:transparent}
+textarea{resize:vertical;min-height:56px}
+label{font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin:12px 0 5px}
+#bgphoto{position:fixed;inset:0;background-size:cover;background-position:center;opacity:.16;pointer-events:none;z-index:0}
+#appbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--card);border-bottom:2px solid var(--line)}
+#appbar .logo{font-size:21px}
+#appbar .ttl{font-weight:800;font-size:16.5px;line-height:1.1}
+#appbar .ttl small{display:block;font-size:11px;color:var(--muted);font-weight:600}
+#appbar .sp{flex:1}
+.ava{width:40px;height:40px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;overflow:hidden;cursor:pointer;border:2.5px solid var(--accent2);flex:none;position:relative}
+.ava img{width:100%;height:100%;object-fit:cover}
+.ava:hover::after{content:'📷';position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;font-size:15px}
+.iconbtn{background:var(--accent-soft);border:none;border-radius:11px;padding:9px 12px;font-size:16px;color:var(--ink)}
+.iconbtn:hover{background:var(--accent);color:#fff}
+#shell{display:flex;max-width:1280px;margin:0 auto;position:relative;z-index:1}
+#sidebar{width:238px;flex:none;padding:16px 10px;display:none}
+#sidebar.open{display:block}
+@media(min-width:900px){#sidebar{display:block;position:sticky;top:62px;height:calc(100vh - 62px);overflow:auto}}
+@media(max-width:899px){#sidebar{position:fixed;left:0;top:62px;bottom:0;background:var(--card);z-index:35;box-shadow:var(--shadow)}}
+#sidebar a{display:flex;gap:9px;align-items:center;padding:8.5px 11px;border-radius:10px;color:var(--ink);text-decoration:none;font-size:14px;font-weight:600;margin-bottom:2px}
+#sidebar a:hover{background:var(--accent-soft)}
+#sidebar a.on{background:var(--grad);color:#fff}
+#sidebar .grp{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:1px;margin:13px 11px 5px;text-transform:uppercase}
+main{flex:1;padding:18px 16px 70px;min-width:0}
+.hero{background:var(--grad);border-radius:20px;color:#fff;padding:24px 22px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero::after{content:'🎓';position:absolute;right:14px;top:8px;font-size:64px;opacity:.22}
+.hero h1{font-size:27px;line-height:1.15}
+.hero .sub{opacity:.92;margin-top:5px;font-size:14.5px}
+.daycount{display:flex;gap:14px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.ring{width:92px;height:92px;flex:none}
+.ring circle{fill:none;stroke-width:9}
+.ring .tr{stroke:rgba(255,255,255,.3)}
+.ring .pr{stroke:#FFD166;stroke-linecap:round;transform:rotate(-90deg);transform-origin:center}
+.ring text{fill:#fff;font-weight:800;font-size:19px}
+.pacebadge{background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.5);padding:9px 14px;border-radius:12px;font-weight:800;font-size:15px}
+.quickrow{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}
+.qbtn{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:10px 15px;font-weight:700;font-size:14px;color:var(--ink);box-shadow:var(--shadow)}
+.qbtn:hover{border-color:var(--accent);color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:13px;margin-top:8px}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow);cursor:pointer;transition:transform .15s,border-color .15s;position:relative}
+.card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.card .ic{font-size:27px}
+.card h3{font-size:16px;margin:8px 0 4px}
+.card p{font-size:13px;color:var(--muted);line-height:1.45}
+.card .bar{height:7px;background:var(--accent-soft);border-radius:5px;margin-top:11px;overflow:hidden}
+.card .bar i{display:block;height:100%;background:var(--grad);border-radius:5px}
+.card .pct{font-size:11.5px;font-weight:800;color:var(--accent);margin-top:5px}
+.secttl{display:flex;align-items:center;gap:11px;margin-bottom:6px;flex-wrap:wrap}
+.secttl h2{font-size:23px}
+.secttl .sp{flex:1}
+.infobtn{margin-left:auto;background:var(--accent2);border:none;width:34px;height:34px;border-radius:50%;font-size:16px;box-shadow:var(--shadow)}
+.backbtn{background:none;border:none;font-size:15px;font-weight:700;color:var(--accent);padding:6px 0}
+.panel{background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-top:14px}
+.panel h3{font-size:16.5px;margin-bottom:8px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>*{flex:1;min-width:150px}
+.btn{background:var(--grad);color:#fff;border:none;border-radius:11px;padding:10px 18px;font-weight:800;font-size:14.5px}
+.btn.ghost{background:var(--card);color:var(--accent);border:1.5px solid var(--accent)}
+.btn.soft{background:var(--accent-soft);color:var(--ink)}
+.btn.danger{background:#D64545}
+.btn:disabled{opacity:.5}
+.chip{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:20px;padding:3.5px 11px;font-size:12px;font-weight:800;margin:2px 3px 2px 0}
+.chip.amber{background:#FDEBC8;color:#8A5A00}
+html[data-theme$="violet"] .chip.amber,html[data-theme="midnightamber"] .chip.amber,html[data-theme="plumroyale"] .chip.amber,html[data-theme="indigonight"] .chip.amber,html[data-theme="charcoalgold"] .chip.amber{background:#4A3603;color:#FFD166}
+.item{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:9px}
+.item .grow{flex:1;min-width:0}
+.item .t{font-weight:700;font-size:15px}
+.item .d{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.45}
+.mini{background:none;border:none;font-size:16px;padding:4px}
+.tick{width:27px;height:27px;flex:none;border-radius:9px;border:2px solid var(--accent);background:var(--card);font-size:15px;color:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.tick.on{background:var(--accent);color:#fff}
+.done-t{text-decoration:line-through;opacity:.55}
+.empty{border:2px dashed var(--line);border-radius:var(--radius);padding:26px;text-align:center;color:var(--muted);margin-top:14px;font-size:14.5px;line-height:1.55}
+.modal{position:fixed;inset:0;background:rgba(20,10,40,.55);display:none;align-items:center;justify-content:center;z-index:80;padding:16px}
+.modal.open{display:flex}
+.modal .box{background:var(--card);border-radius:18px;max-width:520px;width:100%;max-height:88vh;overflow:auto;padding:22px;box-shadow:var(--shadow)}
+.modal h3{font-size:19px;margin-bottom:8px}
+.modal .x{float:right;background:none;border:none;font-size:20px;color:var(--muted)}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:12px;font-weight:700;font-size:14.5px;z-index:99;transition:transform .3s;box-shadow:var(--shadow);max-width:90vw;text-align:center}
+#toast.show{transform:translateX(-50%) translateY(0)}
+.paceline{height:16px;background:var(--accent-soft);border-radius:9px;position:relative;margin:10px 0 4px}
+.paceline .ideal{position:absolute;top:-3px;bottom:-3px;width:3px;background:var(--muted);border-radius:2px}
+.paceline .actual{height:100%;background:var(--grad);border-radius:9px}
+table.cal{width:100%;border-collapse:collapse;margin-top:8px}
+table.cal th{font-size:11.5px;color:var(--muted);padding:5px 2px;text-transform:uppercase}
+table.cal td{border:1px solid var(--line);height:52px;vertical-align:top;padding:4px;font-size:12px;width:14.28%}
+table.cal td .dn{font-weight:800;font-size:13px}
+table.cal td.sprint{background:var(--accent-soft)}
+table.cal td.today{outline:2.5px solid var(--accent2);outline-offset:-2px}
+table.cal td{cursor:pointer}
+.hgrid{display:flex;flex-wrap:wrap;gap:3px;margin-top:8px}
+.hgrid .cell{width:19px;height:19px;border-radius:5px;background:var(--accent-soft);border:1px solid var(--line);cursor:pointer;font-size:0}
+.hgrid .cell.on{background:var(--accent)}
+.hgrid .cell.today{outline:2px solid var(--accent2)}
+.hgrid .cell.future{opacity:.35;cursor:default}
+.scorebig{font-size:44px;font-weight:900;line-height:1}
+.cert{background:linear-gradient(135deg,#FFFDF5,#FBF3DC);color:#2A2140;border:3px solid #C9A227;border-radius:14px;padding:34px 26px;text-align:center;position:relative}
+.cert::before{content:'';position:absolute;inset:9px;border:1.5px solid #C9A227;border-radius:9px;pointer-events:none}
+.cert h2{font-family:Georgia,serif;font-size:31px;color:#6C2BD9}
+.cert .nm{font-family:Georgia,serif;font-size:27px;font-weight:700;margin:10px 0}
+.paper{background:var(--card);border:1.5px solid var(--line);border-radius:12px;min-height:300px;padding:14px;margin-top:10px}
+.paper.lined{background-image:repeating-linear-gradient(transparent,transparent 27px,var(--line) 28px)}
+.paper.dotted{background-image:radial-gradient(var(--line) 1.3px,transparent 1.4px);background-size:22px 22px}
+.paper.gridp{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:24px 24px}
+.paper textarea{background:transparent;border:none;width:100%;min-height:280px;line-height:28px;font-size:15px}
+.paper textarea:focus{outline:none}
+.honest{text-align:center;color:var(--muted);font-size:12.5px;margin-top:34px;line-height:1.6}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:11px;margin-top:14px}
+.kpi{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px;text-align:center;box-shadow:var(--shadow)}
+.kpi b{font-size:23px;display:block}
+.kpi span{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.donutwrap{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+svg text{font-family:inherit}
+.badge{display:inline-flex;flex-direction:column;align-items:center;gap:3px;width:104px;padding:13px 6px;border-radius:14px;background:var(--card);border:1.5px solid var(--line);text-align:center;font-size:12px;font-weight:700}
+.badge .bi{font-size:29px}
+.badge.off{opacity:.38;filter:grayscale(1)}
+#timerov{position:fixed;inset:0;background:#1D1233;color:#fff;display:none;z-index:90;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+#timerov.open{display:flex}
+#timerov .clock{font-size:84px;font-weight:900;font-variant-numeric:tabular-nums}
+@media print{ #appbar,#sidebar,.quickrow,.infobtn,.backbtn,#toast,.noprint{display:none!important} body{background:#fff} main{padding:0} .panel,.card{box-shadow:none} }
+</style>
+</head>
+<body>
+<div id="bgphoto"></div>
+<header id="appbar">
+  <button class="iconbtn" id="menubtn" title="Menu">☰</button>
+  <div class="logo">🎓</div>
+  <div class="ttl">Study Engine<small>THE DIGITAL PLANNER ERA</small></div>
+  <div class="sp"></div>
+  <button class="iconbtn" id="themebtn" title="Themes & colours">🎨</button>
+  <button class="iconbtn" id="printbtn" title="Print this section">🖨️</button>
+  <div class="ava" id="avatar" title="Your profile photo — tap to change">S</div>
+  <input type="file" id="avatarFile" accept="image/*" style="display:none">
+</header>
+<div id="shell">
+  <nav id="sidebar"></nav>
+  <main id="main"></main>
+</div>
+<div class="modal" id="modal"><div class="box" id="modalbox"></div></div>
+<div class="modal" id="infomodal"><div class="box" id="infobox"></div></div>
+<div id="timerov">
+  <div style="font-size:19px;font-weight:700" id="ovlabel">Focus Sprint</div>
+  <div class="clock" id="ovclock">25:00</div>
+  <div style="opacity:.85" id="ovgoal"></div>
+  <div class="row" style="max-width:340px;width:90%">
+    <button class="btn" id="ovpause" style="flex:1">⏸ Pause</button>
+    <button class="btn ghost" id="ovend" style="flex:1;background:transparent;color:#fff;border-color:#fff">⏹ End & log</button>
+  </div>
+</div>
+<div id="toast"></div>
+<div class="modal" id="onboard"><div class="box" id="onboardbox"></div></div>
+<script>
+/* ============ STUDY ENGINE — CORE ============ */
+const LS_KEY='studyEngine_v1';
+const DEMO = document.title.includes('DEMO');
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const uid=()=> 'id'+Math.random().toString(36).slice(2,9);
+const esc=s=> String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const todayISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const fmtDate=iso=>{ if(!iso) return '—'; const d=new Date(iso+'T12:00:00'); return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); };
+const addDays=(iso,n)=>{ const d=new Date(iso+'T12:00:00'); d.setDate(d.getDate()+n); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+const daysUntil=iso=> Math.round((new Date(iso+'T12:00:00')-new Date(todayISO()+'T12:00:00'))/86400000);
+const THEMES=[
+ ['examcream','🎓 Exam Cream','light'],['midnightlibrary','🌙 Midnight Library','dark'],
+ ['skylecture','☁️ Sky Lecture','light'],['royalink','👑 Royal Ink','dark'],
+ ['mintmargin','🌿 Mint Margin','light'],['forestacademia','🌲 Forest Academia','dark'],
+ ['peachnotes','🍑 Peach Notes','light'],['charcoalchalk','🖤 Charcoal Chalk','dark'],
+ ['lavenderlecture','💜 Lavender Lecture','light'],['plumscholar','📚 Plum Scholar','dark']];
+const BOXDAYS={1:1,2:2,3:4,4:7,5:14};
+function blankState(){ return {
+ profile:{name:'',school:'',examDate:'',theme:'examcream',accent:'',colourful:true,photo:'',onboarded:false},
+ subjects:[], topics:[], cards:[], tests:[], mistakes:[], exams:[],
+ cornell:[], blurting:[], feynman:[], pqlog:[], reading:[], sessions:[],
+ mindmap:{center:'', nodes:[]}, autoPlans:{}, weekFocus:{},
+ activity:{}, stats:{reviews:0}, notes:{paper:'lined',text:''},
+ lastBackup:'', lastSection:'home', createdAt:Date.now() }; }
+let S;
+function save(){ if(DEMO) return; try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){} }
+function load(){ try{ const raw=localStorage.getItem(LS_KEY); if(raw){ S=Object.assign(blankState(), JSON.parse(raw)); return; } }catch(e){} S=blankState(); }
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2600); }
+function openModal(html){ $('#modalbox').innerHTML='<button class="x" onclick="closeModal()">✕</button>'+html; $('#modal').classList.add('open'); }
+function closeModal(){ $('#modal').classList.remove('open'); }
+function confirmBox(msg, fn){ openModal('<h3>Are you sure?</h3><p style="line-height:1.55">'+esc(msg)+'</p><div class="row" style="margin-top:16px"><button class="btn danger" id="cfYes">Yes, do it</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>'); $('#cfYes').onclick=()=>{ closeModal(); fn(); }; }
+function markActivity(){ S.activity[todayISO()]=true; }
+/* ---- study maths ---- */
+function dueCards(){ const t=todayISO(); return S.cards.filter(c=>c.due<=t); }
+function subjName(id){ const s=S.subjects.find(x=>x.id===id); return s? s.name:'General'; }
+function topicsPct(subjectId){ const ts=S.topics.filter(t=>!subjectId||t.subjectId===subjectId); if(!ts.length) return null; return Math.round(ts.filter(t=>t.status==='mastered').length/ts.length*100); }
+function boxPct(subjectId){ const cs=S.cards.filter(c=>!subjectId||c.subjectId===subjectId); if(!cs.length) return null; return Math.round(cs.reduce((a,c)=>a+c.box,0)/cs.length/5*100); }
+function testPct(subjectId){ const ts=S.tests.filter(t=>!subjectId||t.subjectId===subjectId); const scored=ts.filter(t=>t.items && t.items.length && t.items.every(i=>i.ok!==null&&i.ok!==undefined)); if(!scored.length) return null; const avgs=scored.map(t=> t.items.filter(i=>i.ok).length/t.items.length*100); return Math.round(avgs.reduce((a,b)=>a+b,0)/avgs.length); }
+function readiness(subjectId){ const parts=[[topicsPct(subjectId),0.4],[boxPct(subjectId),0.3],[testPct(subjectId),0.3]].filter(p=>p[0]!==null); if(!parts.length) return null; const wsum=parts.reduce((a,p)=>a+p[1],0); return Math.round(parts.reduce((a,p)=>a+p[0]*p[1],0)/wsum); }
+function overallReadiness(){ return readiness(null); }
+function streaks(){ let cur=0; let d=todayISO(); if(!S.activity[d]) d=addDays(d,-1); while(S.activity[d]){ cur++; d=addDays(d,-1); } let best=0,run=0; const days=Object.keys(S.activity).sort(); let prev=null; days.forEach(day=>{ if(prev && addDays(prev,1)===day) run++; else run=1; best=Math.max(best,run); prev=day; }); return {cur,best}; }
+function pqAccuracy(){ const t=S.pqlog.reduce((a,p)=>a+(+p.attempted||0),0), c=S.pqlog.reduce((a,p)=>a+(+p.correct||0),0); return t? Math.round(c/t*100):null; }
+/* ---- INFO (📝 per page) ---- */
+const INFO={
+ home:['Your Study Dashboard','This is the engine room: how many Leitner cards are due today, your Exam Readiness per subject, and what to practise next. This app is a PRACTICE engine — not a planner. Planning lives in your timetable; getting things INTO your memory happens here.','Start every study day here. Clear the due queue first — those reviews are the ones your memory is about to lose.','Memory fades on a curve. Reviewing at the right moment is the single highest-value study habit there is.'],
+ subjects:['My Subjects & Topics','Your subjects, and inside each, the topics your exam will test. Mark topics Learning or Mastered as you go — topic mastery is 40% of your Readiness Score.','Add subjects first, then topics under each. Be honest with "Mastered" — it means you could answer exam questions on it cold.','Readiness you can trust starts with an honest map of what the exam actually covers.'],
+ leitner:['The Leitner Engine — Box 1 to Box 5','Every flashcard lives in a box. Answer right and it climbs (reviews get rarer: 1, 2, 4, 7, 14 days). Answer wrong and it drops back to Box 1, where you will see it tomorrow. The engine schedules every review for you.','Press Review Due Cards and be honest: Got it / Missed it. No peeking before you answer — the struggle IS the learning.','Spaced repetition is the most proven memory technique in study science. The boxes simply make it automatic.'],
+ flashcards:['Flashcards — Card Builder','Make cards from your topics: a question or cue on the front, the answer on the back. New cards start in Box 1, due today.','Keep cards tiny — one fact per card. "Explain photosynthesis" is a topic; "What gas do plants release?" is a card.','Small cards reviewed often beat big notes read once. Your future self will thank you at Box 5.'],
+ tests:['Recall Tests — Self-Checking','Build a test from questions, write YOUR answer from memory, then check it against the key and mark yourself honestly. Scores feed your Readiness automatically.','Write answers BEFORE looking at the key — that is the whole point. Mark strictly; a generous mark today is a lost mark in the exam hall.','Testing yourself is not measuring learning — it IS learning. Retrieval practice beats re-reading by a wide margin.'],
+ mistakes:['Mistake Log → Retest Queue','Every mistake you log can become a Box-1 flashcard with one tap. It keeps resurfacing until you clear it twice in a row — then it is officially beaten.','Log mistakes the day you make them (from tests, homework, past papers). Tap "Make retest card" and let the loop do its work.','A mistake you revisit is tuition paid once. A mistake you ignore is tuition you will pay again in the exam.'],
+ readiness:['Exam Readiness — Live %','One forward-looking number per exam: topics mastered (40%) + Leitner box levels (30%) + recall test scores (30%), against the days left. Rivals\' scores look back at grades; this one looks forward at the exam.','Nothing to fill in — study in the other sections and watch it move. A subject with no data shows "—": add topics and cards to wake it.','You cannot manage what you cannot see. Readiness turns "I should study more" into "Biology is at 62% — fix that first".'],
+ autoplan:['Countdown Auto-Plan','Pick an exam and the engine builds your count-back: 4 weeks out (cover everything), 2 weeks (tests + mistake loop), 1 week (box reviews only), exam eve (light + logistics).','Generate the plan, then tick phases as you complete them. Regenerate any time your exam date changes.','Exams are lost in the last month, not the last night. A count-back plan makes the last month boring — in the best way.'],
+ cornell:['Cornell Notes','The classic split page: notes on the right, questions/cues on the left, a summary at the bottom written in your own words.','Take notes in the big area during class; add cue questions later; write the summary last — that summary is where understanding happens.','Cornell works because the cue column turns your notes into a self-test — the engine\'s favourite trick.'],
+ blurting:['Blurting Practice','Close the book. Write EVERYTHING you remember about a topic, in any order, without stopping. Then open the book and write what you missed — those gaps are your next cards.','Pick a topic, set your own pace (5–10 minutes is plenty), blurt, then record the gaps honestly.','Blurting feels messy because it is honest. The gaps it exposes are exactly what revision should target.'],
+ feynman:['Feynman Studio — Teach It Back','Explain a topic in simple words, as if teaching a 12-year-old. Where your explanation gets wobbly is exactly where your understanding is thin.','Write the simple explanation, note the stuck points, then go back to your notes for just those points and try again.','If you cannot explain it simply, you do not know it yet — you only recognise it. Feynman closes that gap.'],
+ pqlog:['Practice-Question Log','Track the questions you attempt from past papers and workbooks: how many, how many right. Accuracy over time is the truest exam predictor you own.','Log a line after each practice set — source, attempted, correct. Watch accuracy climb per subject.','Exams are questions. Practising questions, and counting honestly, is practising the exam itself.'],
+ reading:['Reading Log','Pages and chapters read, with minutes. Reading builds the base that cards and tests then lock in.','Log each reading session. Pair it with 2–3 new flashcards while the chapter is fresh.','Reading without retrieval fades; reading followed by cards becomes knowledge. Log both halves.'],
+ mindmap:['Mind-Map Canvas','A simple board for connecting ideas: one centre topic, branches you add around it. Seeing the shape of a topic helps you recall its parts under pressure.','Set the centre, add branches (double-tap a spot in your head, type the branch). Keep it to one topic per map — screenshot or print it for your wall.','Exams reward connected knowledge, not lists. A map shows you the connections before the examiner asks for them.'],
+ sessions:['Study Sessions & Focus Timer','A Pomodoro timer (25/5/15) with Focus Mode, plus a session log with a focus rating for every session — because an honest hour beats three distracted ones.','Start the timer, study one thing, rate your focus when it ends. Timer sessions log themselves; add manual sessions too.','Focus is a skill with a score. Rating it makes it visible — and what is visible improves.'],
+ schedule:['Weekly Study Schedule','Your week, driven by the queue: how many cards fall due each day, your exam countdowns, and a focus line for the week. 16 weekly pages per term, generated for you.','Glance each morning; set the week focus on Monday. Heavy due-days deserve lighter new material.','A schedule built from what is actually due beats a timetable built from wishes.'],
+ exams:['Exam Centre','Every exam in one place: date, countdown, room, seat, and the materials checklist — so exam morning has zero surprises left in it.','Add each exam as soon as you know it. Fill logistics when the school publishes them, not the night before.','Calm is a competitive advantage. Logistics settled early frees your last week for pure revision.'],
+ marks:['Marks Calculator — What Do I Need?','Enter your current coursework %, how much the final is worth, and the grade you want. The calculator tells you exactly what the final must be — and whether it is still possible.','Use real numbers from your school portal. If the answer is over 100%, the honest move is to re-target early, not to hope.','A clear target turns anxiety into arithmetic — and arithmetic into a plan.'],
+ progress:['Progress & Wins','Your story so far: test-score history, study streaks, cards reviewed, and badges earned from real data.','Visit on hard days. This page is the evidence that the work is working.','Motivation follows proof. Small wins, counted, compound into exam-day confidence.'],
+ notes:['Notes','Free paper in three styles — lined, dotted, grid — for workings, lists and thinking on paper.','Switch styles any time; your text stays. Prints cleanly too.','Not every thought needs a system. Some need a blank page and five quiet minutes.'],
+ calendar:['Study Calendar','Your term at a glance: exams, and how many reviews fall due each day. Tap an exam day to jump to the Exam Centre.','Export exams as .ics to drop them into your phone calendar.','Seeing the whole term keeps one bad day in proportion — and one exam from ambushing you.'],
+ guide:['Guide & Worked Example','How this engine works, the five methods inside it, and how a worked example subject is set up in the free demo file.','Read once at the start. When a method confuses you later, its 📝 guide (top corner of every page) explains it again, in place.','Systems beat willpower. Ten minutes understanding the system saves ten hours of random revision.'],
+ settings:['Settings','Themes, accent colour, background photo, backups and printing. Your data lives only in this browser, on this device — export a backup to keep it safe.','Export a backup every few weeks (the app reminds you after 30 days). Import restores everything.','Tools serve the student. Set it once, then get back to the books.']};
+/* ---- navigation ---- */
+const SECTIONS=[
+ ['home','🏠','Home','Due queue + readiness'],
+ ['subjects','📚','My Subjects & Topics','The exam map'],
+ ['leitner','🗂️','Leitner Engine','Box 1–5 reviews'],
+ ['flashcards','🃏','Flashcards','Card builder'],
+ ['tests','✍️','Recall Tests','Self-checking'],
+ ['mistakes','🔁','Mistake → Retest','The loop that fixes errors'],
+ ['readiness','📈','Exam Readiness','Live % per exam'],
+ ['autoplan','⏳','Countdown Auto-Plan','4/2/1-week count-back'],
+ ['cornell','📓','Cornell Notes','Cues · notes · summary'],
+ ['blurting','💭','Blurting Practice','Write it all from memory'],
+ ['feynman','🎤','Feynman Studio','Teach it back'],
+ ['pqlog','❓','Practice-Question Log','Attempted vs correct'],
+ ['reading','📖','Reading Log','Pages that become cards'],
+ ['mindmap','🧠','Mind-Map Canvas','Connect the ideas'],
+ ['sessions','⏱️','Sessions & Timer','Pomodoro + focus rating'],
+ ['schedule','🗓️','Weekly Schedule','Queue-driven week'],
+ ['exams','🎓','Exam Centre','Dates + logistics'],
+ ['marks','🧮','Marks Calculator','What do I need?'],
+ ['progress','🏆','Progress & Wins','Scores · streaks · badges'],
+ ['notes','📝','Notes','Lined · dotted · grid'],
+ ['calendar','📆','Calendar','Term at a glance'],
+ ['guide','📖','Guide & Example','How the engine works'],
+ ['settings','⚙️','Settings','Themes · backup · print']];
+let navStack=[];
+let currentSection='home';
+function go(id, push=true){ if(push && currentSection && currentSection!==id) navStack.push(currentSection); currentSection=id; S.lastSection=id; save(); render(); window.scrollTo(0,0); $('#sidebar').classList.remove('open'); }
+function backNav(){ const prev=navStack.pop(); currentSection= prev || 'home'; S.lastSection=currentSection; save(); render(); window.scrollTo(0,0); }
+function infoBtn(id){ return '<button class="infobtn" title="About this page" onclick="showInfo(\''+id+'\')">📝</button>'; }
+function showInfo(id){ const t=INFO[id]||INFO.home; $('#infobox').innerHTML='<button class="x" onclick="document.querySelector(\'#infomodal\').classList.remove(\'open\')">✕</button><h3>📝 '+esc(t[0])+'</h3><p style="line-height:1.6;margin-top:6px">'+esc(t[1])+'</p><p style="line-height:1.6;margin-top:10px"><b>How to use it:</b> '+esc(t[2])+'</p><p style="line-height:1.6;margin-top:10px"><b>Why it helps:</b> '+esc(t[3])+'</p>'; $('#infomodal').classList.add('open'); }
+function secHead(id, icon, title, extra){ return '<div class="secttl">'+(id!=='home'?'<button class="backbtn" onclick="backNav()">← Back</button>':'')+'<h2>'+icon+' '+esc(title)+'</h2>'+(extra||'')+infoBtn(id)+'</div>'; }
+function buildSidebar(){ const groups=[['ENGINE',['home','leitner','flashcards','tests','mistakes']],['SCORE',['readiness','autoplan','exams','marks']],['METHODS',['subjects','cornell','blurting','feynman','mindmap']],['PRACTICE',['pqlog','reading','sessions','schedule']],['MORE',['progress','notes','calendar','guide','settings']]];
+ $('#sidebar').innerHTML= groups.map(([g,ids])=>'<div class="grp">'+g+'</div>'+ids.map(id=>{ const s=SECTIONS.find(x=>x[0]===id); return '<a href="#" data-sec="'+id+'" class="'+(currentSection===id?'on':'')+'" onclick="go(\''+id+'\');return false">'+s[1]+' '+esc(s[2])+'</a>'; }).join('')).join(''); }
+function applyTheme(){ document.documentElement.dataset.theme=S.profile.theme||'examcream'; document.documentElement.dataset.colourful=S.profile.colourful?'on':'off'; if(S.profile.accent) document.documentElement.style.setProperty('--accent', S.profile.accent); else document.documentElement.style.removeProperty('--accent');
+ $('#bgphoto').style.backgroundImage= S.profile.photo? 'url('+S.profile.photo+')':'';
+ const av=$('#avatar'); av.innerHTML= S.profile.photo? '<img src="'+S.profile.photo+'">': esc((S.profile.name||'S').trim().charAt(0).toUpperCase()||'S'); }
+/* ============ HOME ============ */
+function sectionProgress(id){ switch(id){
+ case 'subjects': { const p=topicsPct(null); return p===null?0:p/100; }
+ case 'leitner': case 'flashcards': { const p=boxPct(null); return p===null?0:p/100; }
+ case 'tests': { const p=testPct(null); return p===null?0:p/100; }
+ case 'mistakes': { if(!S.mistakes.length) return 0; return S.mistakes.filter(m=>m.status==='cleared').length/S.mistakes.length; }
+ case 'readiness': { const r=overallReadiness(); return r===null?0:r/100; }
+ case 'exams': return Math.min(1,S.exams.length/2);
+ case 'pqlog': { const a=pqAccuracy(); return a===null?0:a/100; }
+ case 'sessions': return Math.min(1, S.sessions.length/10);
+ case 'cornell': return Math.min(1,S.cornell.length/3);
+ case 'blurting': return Math.min(1,S.blurting.length/3);
+ case 'feynman': return Math.min(1,S.feynman.length/3);
+ case 'reading': return Math.min(1,S.reading.length/5);
+ default: return 0; } }
+function ringSVG(pct, label){ const C=2*Math.PI*40; return '<div style="text-align:center"><svg class="ring" viewBox="0 0 92 92" style="width:84px;height:84px"><circle class="tr" cx="46" cy="46" r="40" style="stroke:var(--accent-soft)"></circle><circle class="pr" cx="46" cy="46" r="40" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-(pct||0)/100))+'" style="stroke:var(--accent2)"></circle><text x="46" y="52" text-anchor="middle" style="fill:var(--ink);font-size:19px">'+(pct===null||pct===undefined?'—':pct+'%')+'</text></svg><div style="font-size:12.5px;font-weight:700;color:var(--muted)">'+esc(label)+'</div></div>'; }
+function renderHome(){ const due=dueCards(); const st=streaks(); const nextExam=[...S.exams].filter(e=>daysUntil(e.date)>=0).sort((a,b)=>a.date<b.date?-1:1)[0];
+ let attention=[]; if(!S.subjects.length) attention.push('📚 No subjects yet — add your first subject to start the engine.');
+ if(due.length) attention.push('🗂️ '+due.length+' Leitner card'+(due.length===1?' is':'s are')+' due today — memory fades; review first.');
+ if(S.mistakes.filter(m=>m.status!=='cleared').length) attention.push('🔁 '+S.mistakes.filter(m=>m.status!=='cleared').length+' mistake(s) still in the retest loop.');
+ if(nextExam && daysUntil(nextExam.date)<=14) attention.push('🎓 '+esc(nextExam.title)+' in '+daysUntil(nextExam.date)+' days — Countdown Auto-Plan time.');
+ if(!attention.length) attention.push('✅ Queue clear. Add new cards or take a recall test to keep the engine fed.');
+ let h='<div class="hero"><h1>'+(S.profile.name? 'Keep going, '+esc(S.profile.name.split(' ')[0]) : 'Your Practice Engine')+'</h1><div class="sub">Not a planner — an engine that puts the work INTO your memory. '+(S.profile.school? esc(S.profile.school)+' · ':'')+'🔥 '+st.cur+'-day study streak</div>'
+ +'<div class="daycount"><div class="pacebadge">🗂️ DUE TODAY: '+due.length+' card'+(due.length===1?'':'s')+'</div><div class="pacebadge">📈 READINESS: '+(overallReadiness()===null?'—':overallReadiness()+'%')+'</div>'+(nextExam? '<div class="pacebadge">🎓 '+esc(nextExam.title)+': '+daysUntil(nextExam.date)+' days</div>':'')+'</div></div>';
+ h+='<div class="quickrow"><button class="qbtn" onclick="go(\'leitner\')">🗂️ Review Due ('+due.length+')</button><button class="qbtn" onclick="quickAddCard()">➕ Quick Add Card</button><button class="qbtn" onclick="go(\'sessions\')">⏱️ Focus Timer</button><button class="qbtn" onclick="window.print()">🖨️ Print</button><input id="homesearch" placeholder="🔍 Search sections…" style="flex:1;min-width:170px" oninput="filterCards(this.value)"></div>';
+ if(S.subjects.length){ h+='<div class="panel"><h3>📈 Readiness by subject</h3><div style="display:flex;gap:20px;flex-wrap:wrap">'+S.subjects.map(s=>ringSVG(readiness(s.id), s.name)).join('')+'</div></div>'; }
+ h+='<div class="panel"><h3>⚠️ Today\'s queue & attention</h3>'+attention.map(a=>'<div style="font-size:14.5px;padding:3px 0">'+a+'</div>').join('')+'</div>';
+ h+='<div class="grid" id="cardgrid">'+SECTIONS.filter(s=>s[0]!=='home').map(s=>{ const pr=Math.round(sectionProgress(s[0])*100); return '<div class="card" data-name="'+esc(s[2].toLowerCase())+'" onclick="go(\''+s[0]+'\')"><div class="ic">'+s[1]+'</div><h3>'+esc(s[2])+'</h3><p>'+esc(s[3])+'</p><div class="bar"><i style="width:'+pr+'%"></i></div><div class="pct">'+pr+'%</div></div>'; }).join('')+'</div>';
+ h+='<p class="honest">A study tool, not a promise — your results depend on the work you put in. Your data stays in this browser, on your device; export a backup from Settings to keep it safe. The Digital Planner Era.</p>';
+ return h; }
+function filterCards(q){ q=q.toLowerCase(); $$('#cardgrid .card').forEach(c=>{ c.style.display= c.dataset.name.includes(q)? '':'none'; }); }
+function quickAddCard(){ openModal('<h3>➕ Quick Add Flashcard</h3><label>Subject</label><select id="qa_s">'+S.subjects.map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join('')+'</select><label>Front (question / cue)</label><input id="qa_f" placeholder="e.g. What gas do plants release?"><label>Back (answer)</label><input id="qa_b" placeholder="e.g. Oxygen"><div class="row" style="margin-top:16px"><button class="btn" onclick="quickAddCardSave()">Add to Box 1</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>'); if(!S.subjects.length){ closeModal(); toast('Add a subject first'); go('subjects'); } }
+function quickAddCardSave(){ const f=$('#qa_f').value.trim(), b=$('#qa_b').value.trim(); if(!f||!b){ toast('Write both sides'); return; } S.cards.push({id:uid(), subjectId:$('#qa_s').value, front:f, back:b, box:1, due:todayISO(), clears:0}); markActivity(); save(); closeModal(); toast('🃏 Card added to Box 1 — due today'); render(); }
+/* ============ SUBJECTS & TOPICS ============ */
+function renderSubjects(){ let h=secHead('subjects','📚','My Subjects & Topics');
+ if(!S.subjects.length) h+='<div class="empty">No subjects yet.<br>Add a subject (Biology, History, Maths…), then list its topics — the map your whole engine runs on.</div>';
+ S.subjects.forEach(s=>{ const ts=S.topics.filter(t=>t.subjectId===s.id); h+='<div class="panel"><div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap"><h3 style="margin:0">'+esc(s.name)+'</h3><span class="chip">📈 readiness '+(readiness(s.id)===null?'—':readiness(s.id)+'%')+'</span><span class="chip amber">'+ts.filter(t=>t.status==='mastered').length+'/'+ts.length+' topics mastered</span><span style="flex:1"></span><button class="mini" onclick="delSubject(\''+s.id+'\')">🗑️</button></div>'
+ + ts.map(t=>'<div style="display:flex;gap:8px;align-items:center;margin-top:7px"><button class="tick '+(t.status==='mastered'?'on':'')+'" title="Toggle mastered" onclick="toggleTopic(\''+t.id+'\')">'+(t.status==='mastered'?'✓':'')+'</button><span class="'+(t.status==='mastered'?'done-t':'')+'" style="font-size:14.5px;flex:1">'+esc(t.title)+'</span><span class="chip">'+(t.status==='mastered'?'Mastered':'Learning')+'</span><button class="mini" onclick="delTopic(\''+t.id+'\')">🗑️</button></div>').join('')
+ +'<div style="display:flex;gap:7px;margin-top:10px"><input id="tp_'+s.id+'" placeholder="Add a topic…" style="flex:1" onkeydown="if(event.key===\'Enter\')addTopic(\''+s.id+'\')"><button class="btn soft" onclick="addTopic(\''+s.id+'\')">+ Topic</button></div></div>'; });
+ h+='<div class="panel"><h3>Add a subject</h3><div style="display:flex;gap:8px"><input id="sj_n" placeholder="e.g. Biology" onkeydown="if(event.key===\'Enter\')addSubject()"><button class="btn" onclick="addSubject()">➕ Add</button></div></div>'; return h; }
+function addSubject(){ const t=$('#sj_n').value.trim(); if(!t) return; S.subjects.push({id:uid(), name:t}); save(); render(); }
+function delSubject(id){ confirmBox('Delete this subject? Its topics, cards and data stay orphaned — topics/cards keep the old label.', ()=>{ S.subjects=S.subjects.filter(x=>x.id!==id); save(); render(); }); }
+function addTopic(sid){ const inp=$('#tp_'+sid); const t=inp.value.trim(); if(!t) return; S.topics.push({id:uid(), subjectId:sid, title:t, status:'learning'}); save(); render(); }
+function toggleTopic(id){ const t=S.topics.find(x=>x.id===id); t.status= t.status==='mastered'? 'learning':'mastered'; markActivity(); save(); render(); }
+function delTopic(id){ S.topics=S.topics.filter(x=>x.id!==id); save(); render(); }
+/* ============ LEITNER ENGINE ============ */
+let reviewIdx=0, reviewFlipped=false;
+function renderLeitner(){ let h=secHead('leitner','🗂️','Leitner Engine — Box 1 to Box 5'); const due=dueCards();
+ h+='<div class="grid">'+[1,2,3,4,5].map(b=>{ const n=S.cards.filter(c=>c.box===b).length; const dn=S.cards.filter(c=>c.box===b&&c.due<=todayISO()).length; return '<div class="card" style="cursor:default"><div class="ic">'+['📥','📤','🗄️','🏛️','👑'][b-1]+'</div><h3>Box '+b+'</h3><p>'+n+' cards · review every '+BOXDAYS[b]+' day'+(BOXDAYS[b]>1?'s':'')+(dn?' · <b>'+dn+' due</b>':'')+'</p><div class="bar"><i style="width:'+(S.cards.length? n/S.cards.length*100:0)+'%"></i></div></div>'; }).join('')+'</div>';
+ if(!S.cards.length) h+='<div class="empty">No cards yet — build some in Flashcards, and the engine starts scheduling.</div>';
+ else if(!due.length) h+='<div class="panel" style="text-align:center"><div style="font-size:36px">🎉</div><h3>Queue clear — nothing due today</h3><p style="color:var(--muted)">Next reviews: '+esc(fmtDate(S.cards.map(c=>c.due).sort()[0]))+'. Add new cards or come back then.</p></div>';
+ else { if(reviewIdx>=due.length) reviewIdx=0; const c=due[reviewIdx];
+  h+='<div class="panel" style="text-align:center"><span class="chip">'+esc(subjName(c.subjectId))+'</span> <span class="chip amber">Box '+c.box+'</span> <span class="chip">Card '+(reviewIdx+1)+' of '+due.length+' due</span>'
+  +'<div style="font-size:24px;font-weight:800;line-height:1.35;padding:26px 12px;min-height:110px">'+esc(reviewFlipped? c.back : c.front)+'</div>'
+  +(!reviewFlipped? '<button class="btn" onclick="reviewFlipped=true;render()">👀 Flip — see the answer</button>' : '<div style="display:flex;gap:9px;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="answerCard(\''+c.id+'\',true)">✅ Got it — up a box</button><button class="btn danger" onclick="answerCard(\''+c.id+'\',false)">❌ Missed it — back to Box 1</button></div>')
+  +'<p style="font-size:13px;color:var(--muted);margin-top:12px">Answer in your head (or out loud) BEFORE flipping. The struggle is the learning.</p></div>'; }
+ h+='<div class="kpis"><div class="kpi"><b>'+S.cards.length+'</b><span>Total cards</span></div><div class="kpi"><b>'+S.stats.reviews+'</b><span>Reviews done</span></div><div class="kpi"><b>'+S.cards.filter(c=>c.box===5).length+'</b><span>At Box 5 👑</span></div><div class="kpi"><b>'+due.length+'</b><span>Due today</span></div></div>'; return h; }
+function answerCard(id, right){ const c=S.cards.find(x=>x.id===id); if(!c) return;
+ if(right){ c.box=Math.min(5, c.box+1); c.clears=(c.clears||0)+1; const mk=S.mistakes.find(m=>m.retestCardId===id && m.status!=='cleared'); if(mk){ mk.clears=(mk.clears||0)+1; if(mk.clears>=2){ mk.status='cleared'; toast('🔁 Mistake beaten — cleared twice!'); } } }
+ else { c.box=1; c.clears=0; const mk=S.mistakes.find(m=>m.retestCardId===id && m.status!=='cleared'); if(mk) mk.clears=0; }
+ c.due=addDays(todayISO(), BOXDAYS[c.box]); S.stats.reviews++; markActivity(); reviewFlipped=false; save(); render(); if(right) toast('✅ Box '+c.box+' — next review in '+BOXDAYS[c.box]+' day'+(BOXDAYS[c.box]>1?'s':'')); }
+/* ============ FLASHCARDS ============ */
+function renderFlashcards(){ let h=secHead('flashcards','🃏','Flashcards — Card Builder');
+ if(!S.cards.length) h+='<div class="empty">No cards yet.<br>One fact per card: a question on the front, the answer on the back. New cards start in Box 1, due today.</div>';
+ const bySubj={}; S.cards.forEach(c=>{ (bySubj[c.subjectId]=bySubj[c.subjectId]||[]).push(c); });
+ Object.keys(bySubj).forEach(sid=>{ h+='<div class="panel"><h3>'+esc(subjName(sid))+' ('+bySubj[sid].length+')</h3>'+bySubj[sid].map(c=>'<div class="item"><div class="grow"><div class="t">'+esc(c.front)+'</div><div class="d">→ '+esc(c.back)+'</div></div><span class="chip">Box '+c.box+'</span><span class="chip amber">due '+fmtDate(c.due)+'</span><button class="mini" onclick="delCard(\''+c.id+'\')">🗑️</button></div>').join('')+'</div>'; });
+ h+='<div class="panel"><h3>Add a card</h3><label>Subject</label><select id="fc_s">'+S.subjects.map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join('')+'</select><label>Front (question / cue)</label><input id="fc_f" placeholder="One fact, as a question…"><label>Back (answer)</label><input id="fc_b" placeholder="Short and exact…"><div style="margin-top:12px"><button class="btn" onclick="addCard()">➕ Add to Box 1</button></div></div>'; return h; }
+function addCard(){ if(!S.subjects.length){ toast('Add a subject first'); go('subjects'); return; } const f=$('#fc_f').value.trim(), b=$('#fc_b').value.trim(); if(!f||!b){ toast('Write both sides'); return; } S.cards.push({id:uid(), subjectId:$('#fc_s').value, front:f, back:b, box:1, due:todayISO(), clears:0}); markActivity(); save(); toast('🃏 Added — due today'); render(); }
+function delCard(id){ S.cards=S.cards.filter(x=>x.id!==id); save(); render(); }
+/* ============ RECALL TESTS ============ */
+let activeTest=null;
+function renderTests(){ let h=secHead('tests','✍️','Recall Tests — Self-Checking');
+ if(activeTest){ const t=S.tests.find(x=>x.id===activeTest); if(t){ h+='<button class="backbtn" onclick="activeTest=null;render()">← All tests</button><div class="panel"><h3>'+esc(t.title)+' — '+esc(subjName(t.subjectId))+'</h3><p style="font-size:14px;color:var(--muted);line-height:1.55">Write YOUR answer from memory first, then reveal the key and mark yourself honestly. Strict marking today = real marks in the exam.</p>'
+  + t.items.map((it,i)=>'<div class="item"><div class="grow"><div class="t">Q'+(i+1)+'. '+esc(it.q)+'</div><label style="margin-top:8px">My answer (from memory)</label><input data-test="'+t.id+'" data-item="'+i+'" data-f="mine" value="'+esc(it.mine||'')+'" placeholder="Write before you peek…"><div class="d" style="margin-top:7px">🔑 Key: '+esc(it.key)+'</div></div><div style="display:flex;flex-direction:column;gap:6px"><button class="btn '+(it.ok===true?'':'soft')+'" style="padding:7px 12px" onclick="markItem(\''+t.id+'\','+i+',true)">✅ Right</button><button class="btn '+(it.ok===false?'danger':'soft')+'" style="padding:7px 12px" onclick="markItem(\''+t.id+'\','+i+',false)">❌ Wrong</button></div></div>').join('')
+  +'<div style="margin-top:12px;font-size:15px">Score so far: <b>'+t.items.filter(i=>i.ok===true).length+' / '+t.items.filter(i=>i.ok!==null&&i.ok!==undefined).length+' marked</b>'+(t.items.length&&t.items.every(i=>i.ok!==null&&i.ok!==undefined)? ' — <b>'+Math.round(t.items.filter(i=>i.ok).length/t.items.length*100)+'%</b> 🎉 (this feeds your Readiness)':'')+'</div></div>'; return h; } activeTest=null; }
+ if(!S.tests.length) h+='<div class="empty">No tests yet.<br>Build one from any topic: questions + the correct key. Then take it from memory.</div>';
+ S.tests.forEach(t=>{ const marked=t.items.filter(i=>i.ok!==null&&i.ok!==undefined).length; const sc= t.items.length&&marked===t.items.length? Math.round(t.items.filter(i=>i.ok).length/t.items.length*100):null; h+='<div class="item"><div class="grow"><div class="t">'+esc(t.title)+'</div><div class="d">'+esc(subjName(t.subjectId))+' · '+t.items.length+' questions · '+fmtDate(t.date)+(sc!==null? ' · scored <b>'+sc+'%</b>':' · not finished')+'</div></div><button class="btn soft" onclick="activeTest=\''+t.id+'\';render()">Take / view</button><button class="mini" onclick="delTest(\''+t.id+'\')">🗑️</button></div>'; });
+ h+='<div class="panel"><h3>Build a test</h3><label>Title</label><input id="ts_t" placeholder="e.g. Cell Biology — recall test 1"><label>Subject</label><select id="ts_s">'+S.subjects.map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join('')+'</select><label>Questions — one per line, format: Question | Correct answer</label><textarea id="ts_q" style="min-height:110px" placeholder="What gas do plants release? | Oxygen&#10;Where does photosynthesis happen? | Chloroplasts"></textarea><div style="margin-top:12px"><button class="btn" onclick="addTest()">➕ Create test</button></div></div>'; return h; }
+function addTest(){ if(!S.subjects.length){ toast('Add a subject first'); go('subjects'); return; } const title=$('#ts_t').value.trim(); const lines=$('#ts_q').value.split('\n').map(l=>l.trim()).filter(Boolean); if(!title||!lines.length){ toast('Add a title and at least one question'); return; } const items=lines.map(l=>{ const [q,...rest]=l.split('|'); return {q:q.trim(), key:(rest.join('|')||'').trim(), mine:'', ok:null}; }); S.tests.push({id:uid(), title, subjectId:$('#ts_s').value, date:todayISO(), items}); markActivity(); save(); toast('✍️ Test created — take it from memory'); render(); }
+function markItem(tid,i,val){ const t=S.tests.find(x=>x.id===tid); t.items[i].ok=val; markActivity(); save(); render(); }
+function delTest(id){ confirmBox('Delete this test and its scores?', ()=>{ S.tests=S.tests.filter(x=>x.id!==id); save(); render(); }); }
+/* ============ MISTAKES ============ */
+function renderMistakes(){ let h=secHead('mistakes','🔁','Mistake Log → Retest Queue'); const open=S.mistakes.filter(m=>m.status!=='cleared'), done=S.mistakes.filter(m=>m.status==='cleared');
+ if(!S.mistakes.length) h+='<div class="empty">No mistakes logged — yet.<br>Every error from tests, homework and past papers belongs here. Log it, turn it into a retest card, beat it twice.</div>';
+ if(open.length){ h+='<div class="panel"><h3>🔁 In the loop ('+open.length+')</h3>'+open.map(m=>'<div class="item"><div class="grow"><div class="t">'+esc(m.what)+'</div><div class="d">'+esc(subjName(m.subjectId))+(m.topic? ' · '+esc(m.topic):'')+' · logged '+fmtDate(m.date)+' · cleared '+(m.clears||0)+'/2 times</div></div>'+(m.retestCardId? '<span class="chip">🃏 retest card live</span>':'<button class="btn soft" onclick="makeRetest(\''+m.id+'\')">🃏 Make retest card</button>')+'<button class="mini" onclick="delMistake(\''+m.id+'\')">🗑️</button></div>').join('')+'</div>'; }
+ if(done.length){ h+='<div class="panel"><h3>🏆 Beaten ('+done.length+')</h3>'+done.map(m=>'<div class="item"><div class="grow"><div class="t done-t">'+esc(m.what)+'</div><div class="d">Cleared twice — officially beaten.</div></div></div>').join('')+'</div>'; }
+ h+='<div class="panel"><h3>Log a mistake</h3><label>What went wrong?</label><input id="mk_w" placeholder="e.g. Mixed up mitosis and meiosis stages"><label>Subject</label><select id="mk_s">'+S.subjects.map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join('')+'</select><label>Topic (optional)</label><input id="mk_t" placeholder="e.g. Cell division"><div style="margin-top:12px"><button class="btn" onclick="addMistake()">➕ Log mistake</button></div></div>'; return h; }
+function addMistake(){ if(!S.subjects.length){ toast('Add a subject first'); go('subjects'); return; } const w=$('#mk_w').value.trim(); if(!w){ toast('Describe the mistake'); return; } S.mistakes.push({id:uid(), subjectId:$('#mk_s').value, topic:$('#mk_t').value.trim(), what:w, date:todayISO(), clears:0, status:'open', retestCardId:''}); markActivity(); save(); render(); }
+function makeRetest(mid){ const m=S.mistakes.find(x=>x.id===mid); const c={id:uid(), subjectId:m.subjectId, front:'RETEST: '+m.what+' — can you get it right now?', back:m.what, box:1, due:todayISO(), clears:0}; S.cards.push(c); m.retestCardId=c.id; save(); toast('🃏 Retest card created in Box 1 — it will keep coming back'); render(); }
+function delMistake(id){ S.mistakes=S.mistakes.filter(x=>x.id!==id); save(); render(); }
+/* ============ READINESS ============ */
+function renderReadiness(){ let h=secHead('readiness','📈','Exam Readiness — Live %');
+ if(!S.exams.length && !S.subjects.length) h+='<div class="empty">Add subjects and an exam, and your forward-looking readiness appears here.</div>';
+ const rows= S.exams.length? S.exams.map(e=>({label:e.title+' — '+subjName(e.subjectId), sid:e.subjectId, days:daysUntil(e.date)})) : S.subjects.map(s=>({label:s.name, sid:s.id, days:null}));
+ rows.forEach(r=>{ const rd=readiness(r.sid); h+='<div class="panel"><div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">'+ringSVG(rd, r.label)+'<div style="flex:1;min-width:220px">'
+ +[['📚 Topics mastered',topicsPct(r.sid),40],['🗂️ Leitner box levels',boxPct(r.sid),30],['✍️ Recall test scores',testPct(r.sid),30]].map(p=>'<div style="display:flex;align-items:center;gap:9px;margin-top:7px"><span style="width:170px;font-size:13.5px;font-weight:700">'+p[0]+' ('+p[2]+'%)</span><div class="paceline" style="flex:1;margin:0"><div class="actual" style="width:'+(p[1]||0)+'%"></div></div><span style="width:44px;font-size:13px">'+(p[1]===null?'—':p[1]+'%')+'</span></div>').join('')
+ +(r.days!==null? '<p style="margin-top:10px;font-size:14px">🎓 <b>'+r.days+' days</b> to the exam — '+(rd===null?'add topics & cards to start the score.': rd>=80?'you are in strong shape; protect it with reviews.': rd>=50?'solid base — tests and the mistake loop move this fastest now.':'early days — topics first, then cards; the number climbs quickly at the start.')+'</p>':'')+'</div></div></div>'; });
+ h+='<div class="panel"><h3>How Readiness is calculated</h3><p style="line-height:1.6;font-size:14.5px"><b>Topics mastered 40%</b> (your honest map) · <b>Leitner boxes 30%</b> (average box level — proof of memory) · <b>Recall tests 30%</b> (self-checked scores — proof under pressure). Missing parts are left out and the rest re-weighted, so the score is always honest about what exists.</p></div>'; return h; }
+/* ============ COUNTDOWN AUTO-PLAN ============ */
+function renderAutoplan(){ let h=secHead('autoplan','⏳','Countdown Auto-Plan');
+ if(!S.exams.length) h+='<div class="empty">Add an exam in the Exam Centre first — the Auto-Plan counts back from its date.</div>';
+ S.exams.forEach(e=>{ const plan=S.autoPlans[e.id]; const d=daysUntil(e.date);
+  h+='<div class="panel"><div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap"><h3 style="margin:0">'+esc(e.title)+'</h3><span class="chip">'+fmtDate(e.date)+'</span><span class="chip amber">'+(d<0?'done':d+' days left')+'</span><span style="flex:1"></span>'+(plan? '<button class="btn soft" onclick="genPlan(\''+e.id+'\')">↺ Regenerate</button>':'<button class="btn" onclick="genPlan(\''+e.id+'\')">⏳ Build my count-back plan</button>')+'</div>'
+  +(plan? plan.phases.map((p,i)=>'<div style="display:flex;gap:9px;align-items:flex-start;margin-top:11px"><button class="tick '+(p.done?'on':'')+'" onclick="tickPhase(\''+e.id+'\','+i+')">'+(p.done?'✓':'')+'</button><div><div class="t" style="font-weight:700;'+(p.done?'text-decoration:line-through;opacity:.55':'')+'">'+esc(p.label)+'</div><div class="d" style="font-size:13.5px;color:var(--muted);line-height:1.5">'+esc(p.tasks)+'</div></div></div>').join('') : '<p style="color:var(--muted);margin-top:8px;font-size:14.5px">One tap builds the 4/2/1-week count-back for this exam and loads your review rhythm into it.</p>')+'</div>'; });
+ return h; }
+function genPlan(eid){ const e=S.exams.find(x=>x.id===eid); const subj=subjName(e.subjectId); S.autoPlans[eid]={generated:todayISO(), phases:[
+ {label:'📅 4+ weeks out — COVER', tasks:'Finish learning every '+subj+' topic once. Turn each topic into flashcards as you go. Mark topics honestly in Subjects.', done:false},
+ {label:'📅 2 weeks out — TEST', tasks:'Recall tests on every topic. Log EVERY mistake and make its retest card the same day. Blurting practice twice a week.', done:false},
+ {label:'📅 1 week out — REVIEW', tasks:'No new material. Leitner queue daily, mistake loop until all cleared twice, one full past paper under time.', done:false},
+ {label:'🌙 Exam eve — LIGHT + LOGISTICS', tasks:'Box reviews only, early night. Pack materials, check room & seat in the Exam Centre. The work is done — trust the engine.', done:false}]};
+ markActivity(); save(); toast('⏳ Count-back plan built for '+e.title); render(); }
+function tickPhase(eid,i){ const p=S.autoPlans[eid]; p.phases[i].done=!p.phases[i].done; save(); render(); }
+/* ============ CORNELL ============ */
+let activeCornell=null;
+function renderCornell(){ let h=secHead('cornell','📓','Cornell Notes');
+ if(activeCornell){ const n=S.cornell.find(x=>x.id===activeCornell); if(n){ h+='<button class="backbtn" onclick="activeCornell=null;render()">← All notes</button><div class="panel"><h3>'+esc(n.title)+' — '+esc(subjName(n.subjectId))+'</h3><div class="row"><div style="flex:.85"><label>❓ Cues / questions</label><textarea data-corn="'+n.id+'" data-f="cues" style="min-height:220px" placeholder="Questions these notes answer…">'+esc(n.cues)+'</textarea></div><div style="flex:2"><label>📝 Notes</label><textarea data-corn="'+n.id+'" data-f="notes" style="min-height:220px" placeholder="The lesson, in order…">'+esc(n.notes)+'</textarea></div></div><label>⭐ Summary (in your own words — this is where learning happens)</label><textarea data-corn="'+n.id+'" data-f="summary" placeholder="In short…">'+esc(n.summary)+'</textarea></div>'; return h; } activeCornell=null; }
+ if(!S.cornell.length) h+='<div class="empty">No Cornell notes yet.<br>Notes on the right, cue questions on the left, a summary at the bottom in your own words.</div>';
+ S.cornell.forEach(n=>{ h+='<div class="item"><div class="grow"><div class="t">'+esc(n.title)+'</div><div class="d">'+esc(subjName(n.subjectId))+' · '+fmtDate(n.date)+'</div></div><button class="btn soft" onclick="activeCornell=\''+n.id+'\';render()">Open</button><button class="mini" onclick="delCornell(\''+n.id+'\')">🗑️</button></div>'; });
+ h+='<div class="panel"><h3>New Cornell note</h3><label>Title</label><input id="cn_t" placeholder="e.g. Photosynthesis — lesson notes"><label>Subject</label><select id="cn_s">'+S.subjects.map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join('')+'</select><div style="margin-top:12px"><button class="btn" onclick="addCornell()">➕ Create</button></div></div>'; return h; }
+function addCornell(){ if(!S.subjects.length){ toast('Add a subject first'); go('subjects'); return; } const t=$('#cn_t').value.trim(); if(!t){ toast('Give it a title'); return; } const n={id:uid(), subjectId:$('#cn_s').value, title:t, date:todayISO(), cues:'', notes:'', summary:''}; S.cornell.push(n); activeCornell=n.id; markActivity(); save(); render(); }
+function delCornell(id){ S.cornell=S.cornell.filter(x=>x.id!==id); save(); render(); }
+/* ============ BLURTING ============ */
+function renderBlurting(){ let h=secHead('blurting','💭','Blurting Practice');
+ h+='<div class="panel"><h3>New blurt</h3><label>Topic</label><input id="bl_t" placeholder="e.g. The causes of WW1"><label>Subject</label><select id="bl_s">'+S.subjects.map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join('')+'</select><label>✍️ BLURT — everything you remember, book closed, no stopping</label><textarea id="bl_w" style="min-height:130px" placeholder="Write fast, write messy, write it ALL…"></textarea><label>🔍 GAPS — after checking the book, what did you miss? (these become cards)</label><textarea id="bl_g" placeholder="What was missing or wrong…"></textarea><div style="margin-top:12px"><button class="btn" onclick="addBlurt()">💾 Save blurt</button></div></div>';
+ S.blurting.slice().reverse().forEach(b=>{ h+='<div class="item"><div class="grow"><div class="t">'+esc(b.topic)+'</div><div class="d">'+esc(subjName(b.subjectId))+' · '+fmtDate(b.date)+'</div><div class="d" style="white-space:pre-wrap">'+esc(b.wrote.slice(0,220))+(b.wrote.length>220?'…':'')+'</div>'+(b.gaps? '<div class="d">🔍 Gaps: '+esc(b.gaps.slice(0,160))+'</div>':'')+'</div><button class="mini" onclick="S.blurting=S.blurting.filter(x=>x.id!==\''+b.id+'\');save();render()">🗑️</button></div>'; }); return h; }
+function addBlurt(){ if(!S.subjects.length){ toast('Add a subject first'); go('subjects'); return; } const t=$('#bl_t').value.trim(), w=$('#bl_w').value.trim(); if(!t||!w){ toast('Pick a topic and blurt something first'); return; } S.blurting.push({id:uid(), subjectId:$('#bl_s').value, topic:t, date:todayISO(), wrote:w, gaps:$('#bl_g').value.trim()}); markActivity(); save(); toast('💭 Blurt saved — turn the gaps into cards'); render(); }
+/* ============ FEYNMAN ============ */
+function renderFeynman(){ let h=secHead('feynman','🎤','Feynman Studio — Teach It Back');
+ h+='<div class="panel"><h3>Teach a topic</h3><label>Topic</label><input id="fy_t" placeholder="e.g. Why the sky is blue"><label>Subject</label><select id="fy_s">'+S.subjects.map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join('')+'</select><label>🗣️ Your simple explanation (as if to a 12-year-old — no jargon)</label><textarea id="fy_e" style="min-height:120px" placeholder="So basically…"></textarea><label>🧱 Where did you get stuck?</label><textarea id="fy_k" placeholder="The parts where the explanation wobbled — study exactly those next"></textarea><div style="margin-top:12px"><button class="btn" onclick="addFeynman()">💾 Save explanation</button></div></div>';
+ S.feynman.slice().reverse().forEach(f=>{ h+='<div class="item"><div class="grow"><div class="t">'+esc(f.topic)+'</div><div class="d">'+esc(subjName(f.subjectId))+' · '+fmtDate(f.date)+'</div><div class="d" style="white-space:pre-wrap">'+esc(f.explain.slice(0,240))+(f.explain.length>240?'…':'')+'</div>'+(f.stuck? '<div class="d">🧱 Stuck at: '+esc(f.stuck.slice(0,160))+'</div>':'')+'</div><button class="mini" onclick="S.feynman=S.feynman.filter(x=>x.id!==\''+f.id+'\');save();render()">🗑️</button></div>'; }); return h; }
+function addFeynman(){ if(!S.subjects.length){ toast('Add a subject first'); go('subjects'); return; } const t=$('#fy_t').value.trim(), e=$('#fy_e').value.trim(); if(!t||!e){ toast('Pick a topic and explain it'); return; } S.feynman.push({id:uid(), subjectId:$('#fy_s').value, topic:t, date:todayISO(), explain:e, stuck:$('#fy_k').value.trim()}); markActivity(); save(); toast('🎤 Saved — now fix the stuck points'); render(); }
+/* ============ PQ LOG ============ */
+function renderPqlog(){ let h=secHead('pqlog','❓','Practice-Question Log'); const acc=pqAccuracy();
+ h+='<div class="kpis"><div class="kpi"><b>'+S.pqlog.reduce((a,p)=>a+(+p.attempted||0),0)+'</b><span>Attempted</span></div><div class="kpi"><b>'+S.pqlog.reduce((a,p)=>a+(+p.correct||0),0)+'</b><span>Correct</span></div><div class="kpi"><b>'+(acc===null?'—':acc+'%')+'</b><span>Accuracy</span></div></div>';
+ h+='<div class="panel"><h3>Log a practice set</h3><div class="row"><div><label>Source</label><input id="pq_src" placeholder="e.g. 2023 past paper"></div><div><label>Subject</label><select id="pq_s">'+S.subjects.map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join('')+'</select></div><div><label>Attempted</label><input id="pq_a" type="number" min="0" value="10"></div><div><label>Correct</label><input id="pq_c" type="number" min="0" value="0"></div></div><div style="margin-top:12px"><button class="btn" onclick="addPq()">➕ Log set</button></div></div>';
+ S.pqlog.slice().reverse().forEach(p=>{ h+='<div class="item"><div class="grow"><div class="t">'+esc(p.source)+'</div><div class="d">'+esc(subjName(p.subjectId))+' · '+fmtDate(p.date)+' · '+p.correct+'/'+p.attempted+' ('+Math.round(p.correct/Math.max(1,p.attempted)*100)+'%)</div></div><button class="mini" onclick="S.pqlog=S.pqlog.filter(x=>x.id!==\''+p.id+'\');save();render()">🗑️</button></div>'; }); return h; }
+function addPq(){ if(!S.subjects.length){ toast('Add a subject first'); go('subjects'); return; } const src=$('#pq_src').value.trim(), a=+$('#pq_a').value||0, c=Math.min(a, +$('#pq_c').value||0); if(!src||a<=0){ toast('Add a source and attempts'); return; } S.pqlog.push({id:uid(), subjectId:$('#pq_s').value, source:src, date:todayISO(), attempted:a, correct:c}); markActivity(); save(); render(); }
+/* ============ READING LOG ============ */
+function renderReading(){ let h=secHead('reading','📖','Reading Log');
+ h+='<div class="panel"><h3>Log reading</h3><div class="row"><div><label>What did you read?</label><input id="rd_t" placeholder="e.g. Textbook ch. 4 — Cells"></div><div><label>Subject</label><select id="rd_s">'+S.subjects.map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join('')+'</select></div><div><label>Pages</label><input id="rd_p" type="number" min="0" value="10"></div><div><label>Minutes</label><input id="rd_m" type="number" min="0" value="25"></div></div><div style="margin-top:12px"><button class="btn" onclick="addReading()">➕ Log reading</button></div><p style="font-size:13.5px;color:var(--muted);margin-top:9px">💡 While it is fresh: make 2–3 flashcards from this chapter in the Card Builder.</p></div>';
+ h+='<div class="kpis"><div class="kpi"><b>'+S.reading.reduce((a,r)=>a+(+r.pages||0),0)+'</b><span>Pages read</span></div><div class="kpi"><b>'+S.reading.reduce((a,r)=>a+(+r.minutes||0),0)+'</b><span>Reading minutes</span></div></div>';
+ S.reading.slice().reverse().forEach(r=>{ h+='<div class="item"><div class="grow"><div class="t">'+esc(r.title)+'</div><div class="d">'+esc(subjName(r.subjectId))+' · '+fmtDate(r.date)+' · '+r.pages+' pages · '+r.minutes+' min</div></div><button class="mini" onclick="S.reading=S.reading.filter(x=>x.id!==\''+r.id+'\');save();render()">🗑️</button></div>'; }); return h; }
+function addReading(){ if(!S.subjects.length){ toast('Add a subject first'); go('subjects'); return; } const t=$('#rd_t').value.trim(); if(!t){ toast('Name what you read'); return; } S.reading.push({id:uid(), subjectId:$('#rd_s').value, title:t, date:todayISO(), pages:+$('#rd_p').value||0, minutes:+$('#rd_m').value||0}); markActivity(); save(); render(); }
+/* ============ MIND MAP ============ */
+function renderMindmap(){ const mm=S.mindmap; let h=secHead('mindmap','🧠','Mind-Map Canvas');
+ h+='<div class="panel"><label>Centre topic</label><input data-bind="mindmap.center" value="'+esc(mm.center)+'" placeholder="e.g. The Water Cycle"><div style="position:relative;height:430px;background:var(--accent-soft);border-radius:14px;margin-top:14px;overflow:hidden" id="mmboard">'
+ +'<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--accent);color:#fff;font-weight:800;padding:13px 20px;border-radius:14px;max-width:230px;text-align:center">'+esc(mm.center||'Your topic')+'</div>'
+ + mm.nodes.map((n,i)=>{ const ang=(i/Math.max(1,mm.nodes.length))*Math.PI*2; const x=50+Math.cos(ang)*36, y=50+Math.sin(ang)*38; return '<div style="position:absolute;left:'+x+'%;top:'+y+'%;transform:translate(-50%,-50%);background:var(--card);border:2px solid var(--accent2);font-weight:700;padding:9px 13px;border-radius:12px;font-size:13.5px;max-width:190px;text-align:center">'+esc(n.text)+' <button class="mini" onclick="delNode(\''+n.id+'\')">✕</button></div>'; }).join('')+'</div>'
+ +'<div style="display:flex;gap:8px;margin-top:12px"><input id="mm_n" placeholder="Add a branch — a connected idea…" onkeydown="if(event.key===\'Enter\')addNode()"><button class="btn" onclick="addNode()">➕ Branch</button></div></div>'; return h; }
+function addNode(){ const t=$('#mm_n').value.trim(); if(!t) return; S.mindmap.nodes.push({id:uid(), text:t}); markActivity(); save(); render(); }
+function delNode(id){ S.mindmap.nodes=S.mindmap.nodes.filter(x=>x.id!==id); save(); render(); }
+/* ============ SESSIONS & TIMER ============ */
+let timer={left:25*60, total:25*60, run:false, iv:null, mode:'Focus'};
+function renderSessions(){ let h=secHead('sessions','⏱️','Study Sessions & Focus Timer');
+ h+='<div class="panel" style="text-align:center"><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn soft" onclick="setTimer(25,\'Focus\')">🍅 25 Focus</button><button class="btn soft" onclick="setTimer(5,\'Short break\')">☕ 5 Break</button><button class="btn soft" onclick="setTimer(15,\'Long break\')">🌴 15 Long break</button></div>'
+ +'<div class="scorebig" style="font-size:64px;margin:16px 0" id="clock">'+fmtClock()+'</div><div style="color:var(--muted)" id="tmode">'+timer.mode+' session</div>'
+ +'<div style="display:flex;gap:9px;justify-content:center;margin-top:16px;flex-wrap:wrap"><button class="btn" onclick="toggleTimer()">▶ Start / Pause</button><button class="btn ghost" onclick="resetTimer()">↺ Reset</button><button class="btn ghost" onclick="openFocus()">🖥️ Focus Mode</button></div>'
+ +'<p style="font-size:13.5px;color:var(--muted);margin-top:13px">Finished focus sessions log themselves below — rate the focus honestly.</p></div>';
+ h+='<div class="panel"><h3>Log a manual session</h3><div class="row"><div><label>Subject</label><select id="ss_s">'+S.subjects.map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join('')+'</select></div><div><label>Minutes</label><input id="ss_m" type="number" min="1" value="25"></div><div><label>Focus rating</label><select id="ss_f"><option value="5">⭐⭐⭐⭐⭐ Locked in</option><option value="4">⭐⭐⭐⭐ Good</option><option value="3" selected>⭐⭐⭐ Okay</option><option value="2">⭐⭐ Distracted</option><option value="1">⭐ Barely</option></select></div></div><div style="margin-top:12px"><button class="btn" onclick="addSession()">➕ Log session</button></div></div>';
+ h+='<div class="kpis"><div class="kpi"><b>'+S.sessions.reduce((a,x)=>a+x.min,0)+'</b><span>Total minutes</span></div><div class="kpi"><b>'+S.sessions.length+'</b><span>Sessions</span></div><div class="kpi"><b>'+(S.sessions.length? (S.sessions.reduce((a,x)=>a+(+x.focus||0),0)/S.sessions.length).toFixed(1):'—')+'</b><span>Avg focus /5</span></div></div>';
+ S.sessions.slice().reverse().slice(0,14).forEach(x=>{ h+='<div class="item"><div class="grow"><div class="t">'+x.min+' min — '+esc(subjName(x.subjectId))+'</div><div class="d">'+fmtDate(x.date)+' · focus '+'⭐'.repeat(Math.max(1,+x.focus||3))+'</div></div><button class="mini" onclick="S.sessions=S.sessions.filter(y=>y.id!==\''+x.id+'\');save();render()">🗑️</button></div>'; }); return h; }
+function addSession(){ if(!S.subjects.length){ toast('Add a subject first'); go('subjects'); return; } S.sessions.push({id:uid(), subjectId:$('#ss_s').value, date:todayISO(), min:+$('#ss_m').value||25, focus:+$('#ss_f').value||3}); markActivity(); save(); render(); }
+function fmtClock(){ const m=Math.floor(timer.left/60), s=timer.left%60; return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); }
+function setTimer(min,mode){ stopTimer(); timer.total=timer.left=min*60; timer.mode=mode; render(); }
+function resetTimer(){ stopTimer(); timer.left=timer.total; render(); }
+function stopTimer(){ if(timer.iv) clearInterval(timer.iv); timer.iv=null; timer.run=false; }
+function toggleTimer(){ if(timer.run){ stopTimer(); render(); return; } timer.run=true; timer.iv=setInterval(()=>{ timer.left--; const c=$('#clock'); if(c) c.textContent=fmtClock(); const oc=$('#ovclock'); if(oc) oc.textContent=fmtClock(); if(timer.left<=0) finishTimer(); },1000); render(); }
+function finishTimer(){ stopTimer(); const mins=Math.round(timer.total/60); if(timer.mode==='Focus'){ S.sessions.push({id:uid(), subjectId:S.subjects[0]?S.subjects[0].id:'', date:todayISO(), min:mins, focus:3}); markActivity(); save(); } $('#timerov').classList.remove('open'); timer.left=timer.total; toast('⏱️ '+timer.mode+' done'+(timer.mode==='Focus'?' — '+mins+' min logged (rate it in the list any time)':'')); render(); }
+function openFocus(){ $('#ovlabel').textContent=timer.mode+' — study engine running'; $('#ovclock').textContent=fmtClock(); $('#ovgoal').textContent='Due today: '+dueCards().length+' cards · Readiness '+(overallReadiness()===null?'—':overallReadiness()+'%'); $('#timerov').classList.add('open'); if(!timer.run) toggleTimer(); }
+function bindTimerOverlay(){ $('#ovpause').onclick=()=>{ toggleTimer(); $('#ovpause').textContent=timer.run?'⏸ Pause':'▶ Resume'; }; $('#ovend').onclick=()=>{ $('#timerov').classList.remove('open'); if(timer.mode==='Focus' && timer.left<timer.total){ const done=Math.round((timer.total-timer.left)/60); if(done>0){ S.sessions.push({id:uid(), subjectId:S.subjects[0]?S.subjects[0].id:'', date:todayISO(), min:done, focus:3}); markActivity(); save(); toast('⏱️ '+done+' min logged'); } } stopTimer(); timer.left=timer.total; render(); }; }
+/* ============ WEEKLY SCHEDULE ============ */
+let weekOff=0;
+function renderSchedule(){ const base=new Date(todayISO()+'T12:00:00'); const dow=(base.getDay()+6)%7; const mon=addDays(todayISO(), -dow + weekOff*7); let h=secHead('schedule','🗓️','Weekly Study Schedule');
+ h+='<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn soft" onclick="weekOff--;render()">◀ Week</button><span class="chip">Week of '+fmtDate(mon)+'</span><button class="btn soft" onclick="weekOff++;render()">Week ▶</button></div>';
+ h+='<div class="panel"><label>🎯 This week\'s focus</label><input data-weekfocus="'+mon+'" value="'+esc(S.weekFocus[mon]||'')+'" placeholder="e.g. Finish Biology topics, tests on Friday">'
+ +'<div class="grid" style="margin-top:14px">'+[0,1,2,3,4,5,6].map(i=>{ const iso=addDays(mon,i); const dueN=S.cards.filter(c=>c.due===iso).length; const sess=S.sessions.filter(x=>x.date===iso).reduce((a,x)=>a+x.min,0); return '<div class="card" style="cursor:default;'+(iso===todayISO()?'border-color:var(--accent2);border-width:2.5px':'')+'"><h3>'+['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]+' '+iso.slice(8)+'</h3><p>🗂️ '+dueN+' reviews due<br>⏱️ '+sess+' min studied'+(iso===todayISO()?'<br><b>TODAY</b>':'')+'</p></div>'; }).join('')+'</div>'
+ +'<p style="font-size:13.5px;color:var(--muted);margin-top:10px">Queue-driven: heavy due-days deserve lighter new material. This page is generated from your real Leitner queue — 16 weekly pages per term.</p></div>'; return h; }
+/* ============ EXAM CENTRE ============ */
+function renderExams(){ let h=secHead('exams','🎓','Exam Centre');
+ if(!S.exams.length) h+='<div class="empty">No exams yet.<br>Add each exam the day you learn about it — date, countdown and logistics all live here.</div>';
+ [...S.exams].sort((a,b)=>a.date<b.date?-1:1).forEach(e=>{ const d=daysUntil(e.date); h+='<div class="item"><div class="grow"><div class="t">'+esc(e.title)+'</div><div class="d">'+esc(subjName(e.subjectId))+' · '+fmtDate(e.date)+' · <b>'+(d<0?'done':d===0?'TODAY!':d+' days left')+'</b></div><div class="d">🏫 Room: '+esc(e.room||'—')+' · 💺 Seat: '+esc(e.seat||'—')+' · 🎒 Materials: '+esc(e.materials||'—')+'</div><div class="d">📈 Readiness: '+(readiness(e.subjectId)===null?'—':readiness(e.subjectId)+'%')+'</div></div><button class="mini" onclick="editExam(\''+e.id+'\')">✏️</button><button class="mini" onclick="delExam(\''+e.id+'\')">🗑️</button></div>'; });
+ h+='<div style="margin-top:14px"><button class="btn" onclick="editExam()">➕ Add an exam</button></div>'; return h; }
+function editExam(id){ const e=S.exams.find(x=>x.id===id)||{title:'',subjectId:'',date:'',room:'',seat:'',materials:''}; openModal('<h3>'+(id?'Edit exam':'Add an exam')+'</h3><label>Exam title</label><input id="ex_t" value="'+esc(e.title)+'" placeholder="e.g. Biology Final"><label>Subject</label><select id="ex_s">'+S.subjects.map(s=>'<option value="'+s.id+'" '+(e.subjectId===s.id?'selected':'')+'>'+esc(s.name)+'</option>').join('')+'</select><label>Date</label><input id="ex_d" type="date" value="'+esc(e.date)+'"><label>Room</label><input id="ex_r" value="'+esc(e.room)+'"><label>Seat</label><input id="ex_se" value="'+esc(e.seat)+'"><label>Materials to bring</label><input id="ex_m" value="'+esc(e.materials)+'" placeholder="e.g. Calculator, ID, 2 pens"><div class="row" style="margin-top:16px"><button class="btn" onclick="saveExam(\''+(id||'')+'\')">Save exam</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>'); if(!S.subjects.length){ closeModal(); toast('Add a subject first'); go('subjects'); } }
+function saveExam(id){ const t=$('#ex_t').value.trim(), d=$('#ex_d').value; if(!t||!d){ toast('Title and date needed'); return; } const data={title:t, subjectId:$('#ex_s').value, date:d, room:$('#ex_r').value.trim(), seat:$('#ex_se').value.trim(), materials:$('#ex_m').value.trim()}; if(id) Object.assign(S.exams.find(x=>x.id===id), data); else S.exams.push(Object.assign({id:uid()}, data)); markActivity(); save(); closeModal(); toast('🎓 Exam saved'); render(); }
+function delExam(id){ confirmBox('Delete this exam? Its Auto-Plan goes too.', ()=>{ S.exams=S.exams.filter(x=>x.id!==id); delete S.autoPlans[id]; save(); render(); }); }
+/* ============ MARKS CALCULATOR ============ */
+function renderMarks(){ let h=secHead('marks','🧮','Marks Calculator — What Do I Need on the Final?');
+ h+='<div class="panel"><div class="row"><div><label>My current coursework %</label><input id="mc_cur" type="number" min="0" max="100" value="72"></div><div><label>Final exam is worth (% of grade)</label><input id="mc_w" type="number" min="1" max="100" value="40"></div><div><label>Grade I want overall %</label><input id="mc_tg" type="number" min="0" max="100" value="80"></div></div><div style="margin-top:14px"><button class="btn" onclick="calcMarks()">🧮 Calculate</button></div><div id="mc_out" style="margin-top:16px"></div></div>';
+ h+='<div class="panel"><h3>How to read the answer</h3><p style="line-height:1.6;font-size:14.5px">Under 100% — it is possible, and now it is a target, not a worry. Exactly around your current level — steady work holds it. Over 100% — that grade is no longer reachable; the smart move is to re-target one grade lower TODAY and protect that instead.</p></div>'; return h; }
+function calcMarks(){ const cur=+$('#mc_cur').value||0, w=(+$('#mc_w').value||0)/100, tg=+$('#mc_tg').value||0; if(w<=0||w>1){ toast('Final weight must be 1–100%'); return; } const need=(tg - cur*(1-w))/w; const out=$('#mc_out');
+ if(need>100) out.innerHTML='<div class="scorebig" style="color:var(--bad)">'+need.toFixed(1)+'%</div><p style="margin-top:6px;line-height:1.55">That is over 100% — this grade is <b>no longer reachable</b>. Re-target now: with a perfect final you would land at <b>'+(cur*(1-w)+100*w).toFixed(1)+'%</b>. Protect that instead — and let the Auto-Plan rebuild around it.</p>';
+ else if(need<=0) out.innerHTML='<div class="scorebig" style="color:var(--good)">0%</div><p style="margin-top:6px">You have already secured this grade on coursework alone. Everything on the final is upside — aim higher?</p>';
+ else out.innerHTML='<div class="scorebig" style="color:var(--accent)">'+need.toFixed(1)+'%</div><p style="margin-top:6px;line-height:1.55">You need <b>'+need.toFixed(1)+'%</b> on the final to finish at '+tg+'%. '+(need<=cur?'That is at or below your current level — steady revision holds it.':'Above your current level — the Leitner queue + mistake loop is exactly how you close that gap.')+'</p>'; markActivity(); save(); }
+/* ============ PROGRESS & WINS ============ */
+function studyBadges(){ const st=streaks(); return [ ['🌱','First Steps', Object.keys(S.activity).length>0, 'Study on any day'],
+ ['🃏','Card Maker', S.cards.length>=25, S.cards.length+'/25 cards'],
+ ['👑','Box-5 Royalty', S.cards.filter(c=>c.box===5).length>=5, S.cards.filter(c=>c.box===5).length+'/5 at Box 5'],
+ ['🔥','7-Day Streak', st.best>=7, 'Best streak: '+st.best],
+ ['🔁','Mistake Slayer', S.mistakes.filter(m=>m.status==='cleared').length>=3, S.mistakes.filter(m=>m.status==='cleared').length+'/3 beaten'],
+ ['🎯','Test Ace', S.tests.some(t=>t.items.length&&t.items.every(i=>i.ok!==null&&i.ok!==undefined)&&t.items.filter(i=>i.ok).length/t.items.length>=0.9), 'Score 90%+ on a recall test'],
+ ['📈','Ready 80', (overallReadiness()||0)>=80, 'Overall readiness '+(overallReadiness()===null?'—':overallReadiness()+'%')],
+ ['💯','Century Club', S.stats.reviews>=100, S.stats.reviews+'/100 reviews'] ]; }
+function renderProgress(){ const st=streaks(); let h=secHead('progress','🏆','Progress & Wins');
+ h+='<div class="kpis"><div class="kpi"><b>'+st.cur+'</b><span>Day streak 🔥</span></div><div class="kpi"><b>'+S.stats.reviews+'</b><span>Reviews done</span></div><div class="kpi"><b>'+(overallReadiness()===null?'—':overallReadiness()+'%')+'</b><span>Readiness</span></div><div class="kpi"><b>'+S.sessions.reduce((a,x)=>a+x.min,0)+'</b><span>Study minutes</span></div></div>';
+ h+='<div class="panel" style="text-align:center"><div style="display:flex;gap:11px;flex-wrap:wrap;justify-content:center">'+studyBadges().map(b=>'<div class="badge'+(b[2]?'':' off')+'"><span class="bi">'+b[0]+'</span>'+b[1]+'<span style="font-weight:500;color:var(--muted);font-size:11px">'+esc(b[3])+'</span></div>').join('')+'</div></div>';
+ h+='<div class="panel"><h3>✍️ Test-score history</h3>'+(S.tests.filter(t=>t.items.length&&t.items.every(i=>i.ok!==null&&i.ok!==undefined)).length? S.tests.filter(t=>t.items.length&&t.items.every(i=>i.ok!==null&&i.ok!==undefined)).map(t=>'<div style="display:flex;align-items:center;gap:9px;margin-top:6px"><span style="width:170px;font-size:13px;font-weight:700">'+esc(t.title)+'</span><div class="paceline" style="flex:1;margin:0"><div class="actual" style="width:'+Math.round(t.items.filter(i=>i.ok).length/t.items.length*100)+'%"></div></div><span style="font-size:13px">'+Math.round(t.items.filter(i=>i.ok).length/t.items.length*100)+'%</span></div>').join('') : '<p style="color:var(--muted)">Finish a recall test and its score appears here — your proof line.</p>')+'</div>'; return h; }
+/* ============ NOTES ============ */
+function renderNotes(){ const n=S.notes; let h=secHead('notes','📝','Notes');
+ h+='<div style="display:flex;gap:7px;flex-wrap:wrap">'+[['lined','≣ Lined'],['dotted','⁙ Dotted'],['gridp','⊞ Grid'],['plain','□ Plain']].map(p=>'<button class="chip" style="cursor:pointer;'+(n.paper===p[0]?'background:var(--accent);color:#fff':'')+'" onclick="S.notes.paper=\''+p[0]+'\';save();render()">'+p[1]+'</button>').join('')+'</div>';
+ h+='<div class="paper '+n.paper+'"><textarea data-bind="notes.text" placeholder="Think on paper…">'+esc(n.text)+'</textarea></div>'; return h; }
+/* ============ CALENDAR ============ */
+let calMonthOff=0;
+function renderCalendar(){ const base=new Date(); const mDate=new Date(base.getFullYear(), base.getMonth()+calMonthOff, 1); const y=mDate.getFullYear(), mo=mDate.getMonth(); const first=new Date(y,mo,1); let startCol=(first.getDay()+6)%7; const daysIn=new Date(y,mo+1,0).getDate();
+ let h=secHead('calendar','📆','Study Calendar — '+first.toLocaleDateString('en-GB',{month:'long',year:'numeric'}));
+ h+='<div style="display:flex;gap:8px"><button class="btn soft" onclick="calMonthOff--;render()">◀ Month</button><button class="btn soft" onclick="calMonthOff++;render()">Month ▶</button><span style="flex:1"></span><button class="btn ghost" onclick="exportICS()">⬇ Exams .ics</button></div>';
+ let cells=''; for(let i=0;i<startCol;i++) cells+='<td></td>'; for(let d=1; d<=daysIn; d++){ const iso=y+'-'+String(mo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'); const ex=S.exams.filter(e=>e.date===iso); const dueN=S.cards.filter(c=>c.due===iso).length; cells+='<td class="'+(ex.length?'sprint':'')+(iso===todayISO()?' today':'')+'" onclick="'+(ex.length?'go(\'exams\')':'')+'"><span class="dn">'+d+'</span>'+(ex.length? '<div>🎓 '+esc(ex[0].title)+'</div>':'')+(dueN? '<div>🗂️ '+dueN+' due</div>':'')+'</td>'; if((startCol+d)%7===0) cells+='</tr><tr>'; }
+ h+='<table class="cal"><tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr><tr>'+cells+'</tr></table><p style="font-size:13px;color:var(--muted);margin-top:8px">🎓 = exam day (tap to open Exam Centre) · 🗂️ = reviews due that day.</p>'; return h; }
+function exportICS(){ if(!S.exams.length){ toast('Add exams first'); return; } let ics='BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//TheDigitalPlannerEra//StudyEngine//EN\r\n'; S.exams.forEach(e=>{ const dt=e.date.replace(/-/g,''); ics+='BEGIN:VEVENT\r\nUID:'+e.id+'@studyengine\r\nDTSTART;VALUE=DATE:'+dt+'\r\nSUMMARY:🎓 Exam: '+String(e.title).replace(/,/g,'\\,')+(e.room?' ('+String(e.room).replace(/,/g,'\\,')+')':'')+'\r\nEND:VEVENT\r\n'; }); ics+='END:VCALENDAR\r\n'; const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'})); a.download='my-exams.ics'; a.click(); toast('⬇ Exams exported as .ics'); }
+/* ============ GUIDE ============ */
+function renderGuide(){ let h=secHead('guide','📖','Guide & Worked Example');
+ h+='<div class="panel"><h3>🎓 This is a PRACTICE ENGINE — not a planner</h3><p style="line-height:1.65;font-size:14.5px">A planner decides <i>when</i> you study. This engine decides <i>what your memory keeps</i>. Five methods do the work:</p>'
+ +[['🗂️ Leitner Engine','Cards climb Box 1→5; reviews schedule themselves at 1/2/4/7/14 days. Wrong answer = back to Box 1.'],['✍️ Recall Tests','Answer from memory, check against the key, mark honestly. Scores feed Readiness.'],['🔁 Mistake → Retest Loop','A logged mistake becomes a card that resurfaces until you clear it twice.'],['💭 Blurting + 🎤 Feynman','Write everything from memory; then teach it simply. The gaps and wobbles are your real study list.'],['⏳ Countdown Auto-Plan','Pick the exam date; the 4/2/1-week count-back builds itself.']].map(m=>'<p style="line-height:1.6;font-size:14.5px;margin-top:9px"><b>'+m[0]+'</b> — '+m[1]+'</p>').join('')+'</div>';
+ h+='<div class="panel"><h3>🧪 The worked example (free DEMO file)</h3><p style="line-height:1.65;font-size:14.5px">The demo opens with a worked example: <b>Biology — Cell Biology</b>, mid-term. Topics are partly mastered, cards sit in Boxes 1–4, one recall test is scored, two mistakes are in the retest loop, and the Biology Final exam is loaded with a Countdown Auto-Plan. Readiness shows live at a realistic mid-term number. Copy the shape with your own subjects — that is the whole system.</p><p style="line-height:1.65;font-size:14.5px;margin-top:8px"><b>Your daily rhythm:</b> Home → clear the due queue → one method session (test, blurt or Feynman) → log practice questions → done. Fifteen focused minutes in this engine beat two hours of re-reading.</p></div>'; return h; }
+/* ============ SETTINGS ============ */
+function renderSettings(){ const p=S.profile; const stale=S.lastBackup && (Date.now()-S.lastBackup>30*86400000);
+ let h=secHead('settings','⚙️','Settings');
+ h+='<div class="panel"><h3>👤 Student profile</h3><label>Your name</label><input data-bind="profile.name" value="'+esc(p.name)+'"><label>School / level</label><input data-bind="profile.school" value="'+esc(p.school)+'" placeholder="e.g. Year 11 · GCSE"><label>Main exam date</label><input data-bind="profile.examDate" type="date" value="'+esc(p.examDate)+'"></div>';
+ h+='<div class="panel"><h3>🎨 Themes — 10 fresh colours for this app</h3><div style="display:flex;gap:8px;flex-wrap:wrap">'+THEMES.map(t=>'<button class="chip" style="cursor:pointer;padding:9px 14px;'+(p.theme===t[0]?'background:var(--accent);color:#fff':'')+'" onclick="setTheme(\''+t[0]+'\')">'+t[1]+'</button>').join('')+'</div>'
+ +'<label>Custom accent colour</label><input type="color" value="'+(p.accent||'#1D4ED8')+'" onchange="S.profile.accent=this.value;save();applyTheme()" style="max-width:110px;padding:3px;height:42px"> <button class="btn soft" onclick="S.profile.accent=\'\';save();applyTheme();render()">Reset accent</button>'
+ +'<label style="margin-top:14px">Colourful mode</label><button class="btn soft" onclick="S.profile.colourful=!S.profile.colourful;save();applyTheme();render()">Colourful: '+(p.colourful?'ON':'OFF')+'</button>'
+ +'<label style="margin-top:14px">Background photo</label><input type="file" accept="image/*" onchange="setPhoto(this)"></div>';
+ h+='<div class="panel"><h3>💾 Backup & data</h3>'+(stale? '<p style="color:var(--warn);font-weight:700">⏰ Over 30 days since your last backup — export one now.</p>':'')+'<p style="font-size:14px;color:var(--muted);line-height:1.55">Last backup: '+(S.lastBackup? new Date(S.lastBackup).toLocaleDateString():'never')+'. Your data lives only in this browser — a backup file is your safety copy.</p><div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:11px"><button class="btn" onclick="exportBackup()">⬇ Export backup (JSON)</button><label class="btn ghost" style="margin:0;text-transform:none;letter-spacing:0;font-size:14.5px;cursor:pointer">⬆ Import backup<input type="file" accept=".json" style="display:none" onchange="importBackup(this)"></label>'+(DEMO? '<button class="btn soft" onclick="restoreSample()">↺ Restore sample</button>':'')+'<button class="btn danger" onclick="resetAll()">🗑️ Archive & reset everything</button></div></div>';
+ h+='<div class="panel"><h3>🖨️ Print</h3><p style="font-size:14px;color:var(--muted);line-height:1.55">Print the section you are viewing with the 🖨️ button (top bar) — Readiness and Progress pages make great wall proof.</p><button class="btn soft" onclick="window.print()">🖨️ Print this page</button></div>'; return h; }
+function setTheme(id){ S.profile.theme=id; save(); applyTheme(); render(); }
+function setPhoto(inp){ const f=inp.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ S.profile.photo=r.result; save(); applyTheme(); toast('🖼️ Photo set'); render(); }; r.readAsDataURL(f); }
+function download(name, text){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type:'application/json'})); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),2000); }
+function exportBackup(){ S.lastBackup=Date.now(); save(); download('study-engine-backup.json', JSON.stringify(S,null,2)); toast('⬇ Backup downloaded'); }
+function importBackup(inp){ const f=inp.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const j=JSON.parse(r.result); if(!j.profile) throw 0; S=Object.assign(blankState(), j); save(); applyTheme(); toast('⬆ Backup restored'); go('home'); }catch(e){ toast('That file is not a study backup'); } }; r.readAsText(f); }
+function resetAll(){ confirmBox('Archive & reset? All subjects, cards, tests and scores will be cleared. Export a backup first if you want to keep them.', ()=>{ const keepTheme=S.profile.theme; localStorage.removeItem(LS_KEY); S=blankState(); S.profile.theme=keepTheme; S.profile.onboarded=true; save(); applyTheme(); toast('🗑️ Fresh start — blank and ready'); go('home'); }); }
+function restoreSample(){ localStorage.removeItem(LS_KEY); S=sampleState(); save(); applyTheme(); toast('↺ Sample restored'); go('home'); }
+/* ============ RENDER ============ */
+const RENDERERS={ home:renderHome, subjects:renderSubjects, leitner:renderLeitner, flashcards:renderFlashcards, tests:renderTests, mistakes:renderMistakes, readiness:renderReadiness, autoplan:renderAutoplan, cornell:renderCornell, blurting:renderBlurting, feynman:renderFeynman, pqlog:renderPqlog, reading:renderReading, mindmap:renderMindmap, sessions:renderSessions, schedule:renderSchedule, exams:renderExams, marks:renderMarks, progress:renderProgress, notes:renderNotes, calendar:renderCalendar, guide:renderGuide, settings:renderSettings };
+function render(){ $('#main').innerHTML= RENDERERS[currentSection](); buildSidebar(); }
+/* ============ SAMPLES (demo) ============ */
+function sampleState(){ const t=todayISO(); const sb='sbio', sh='shist'; const examBio='exbio', examHist='exhist';
+ const cards=[ ['cb1',sb,'What gas do plants release during photosynthesis?','Oxygen',3,addDays(t,1)],
+ ['cb2',sb,'Where in the cell does respiration happen?','Mitochondria',4,addDays(t,4)],
+ ['cb3',sb,'What is the green pigment in chloroplasts called?','Chlorophyll',2,t],
+ ['cb4',sb,'Name the enzyme that breaks down starch in the mouth.','Amylase (salivary amylase)',1,t],
+ ['cb5',sb,'What does DNA stand for?','Deoxyribonucleic acid',2,addDays(t,1)],
+ ['cb6',sb,'Which organelle controls the cell\'s activities?','The nucleus',5,addDays(t,9)],
+ ['cb7',sb,'RETEST: Mitosis vs meiosis — which one makes identical copies?','Mitosis makes identical copies; meiosis makes varied sex cells',1,t],
+ ['ch1',sh,'Which alliance was Germany part of in 1914?','The Triple Alliance (with Austria-Hungary and Italy)',2,t],
+ ['ch2',sh,'What do the letters M.A.I.N. stand for (causes of WW1)?','Militarism, Alliances, Imperialism, Nationalism',3,addDays(t,2)],
+ ['ch3',sh,'Who was assassinated in Sarajevo in June 1914?','Archduke Franz Ferdinand',1,addDays(t,1)] ].map(a=>({id:a[0],subjectId:a[1],front:a[2],back:a[3],box:a[4],due:a[5],clears:a[4]>=2?1:0}));
+ const act={}; [-6,-5,-3,-2,-1,0].forEach(d=> act[addDays(t,d)]=true);
+ return { profile:{name:'Alex Morgan', school:'Year 11 · GCSE', examDate:addDays(t,26), theme:'examcream', accent:'', colourful:true, photo:'', onboarded:true},
+ subjects:[{id:sb,name:'Biology'},{id:sh,name:'History'}],
+ topics:[{id:'t1',subjectId:sb,title:'Cell structure & organelles',status:'mastered'},{id:'t2',subjectId:sb,title:'Enzymes',status:'mastered'},{id:'t3',subjectId:sb,title:'Photosynthesis',status:'learning'},{id:'t4',subjectId:sb,title:'Respiration',status:'learning'},{id:'t5',subjectId:sb,title:'Genetics — DNA & inheritance',status:'learning'},{id:'t6',subjectId:sh,title:'Causes of WW1',status:'mastered'},{id:'t7',subjectId:sh,title:'Trench warfare',status:'learning'}],
+ cards,
+ tests:[{id:'test1', title:'Cell Biology — recall test 1', subjectId:sb, date:addDays(t,-2), items:[{q:'What is the function of the ribosome?',key:'Protein synthesis (makes proteins)',mine:'Makes proteins',ok:true},{q:'Which structure lets substances in and out of the cell?',key:'Cell membrane',mine:'Cell membrane',ok:true},{q:'What is the word equation for photosynthesis?',key:'Carbon dioxide + water → glucose + oxygen',mine:'Water + CO2 → glucose',ok:false},{q:'Where are mitochondria most numerous — muscle or skin cells? Why?',key:'Muscle cells — they need more energy',mine:'Muscle, they need energy',ok:true},{q:'What does an enzyme do to activation energy?',key:'Lowers it',mine:'Lowers it',ok:true}]}],
+ mistakes:[{id:'m1',subjectId:sb,topic:'Cell division',what:'Mixed up mitosis and meiosis — said meiosis makes identical copies',date:addDays(t,-3),clears:1,status:'open',retestCardId:'cb7'},{id:'m2',subjectId:sb,topic:'Photosynthesis',what:'Forgot oxygen in the photosynthesis word equation',date:addDays(t,-2),clears:0,status:'open',retestCardId:''},{id:'m3',subjectId:sh,topic:'Alliances',what:'Swapped Triple Alliance and Triple Entente members',date:addDays(t,-6),clears:2,status:'cleared',retestCardId:''}],
+ exams:[{id:examBio,subjectId:sb,title:'Biology Final',date:addDays(t,26),room:'Hall B',seat:'14',materials:'Calculator, black pen, ruler'},{id:examHist,subjectId:sh,title:'History Paper 1',date:addDays(t,33),room:'Gym Hall',seat:'—',materials:'Black pen'}],
+ cornell:[{id:'cn1',subjectId:sb,title:'Photosynthesis — lesson notes',date:addDays(t,-4),cues:'Where does it happen?\nWhat 3 things go in?\nWhat 2 things come out?\nWhat limits the rate?',notes:'Photosynthesis happens in chloroplasts, which contain chlorophyll. Inputs: carbon dioxide (from air, via stomata), water (from roots) and light energy. Outputs: glucose (stored as starch or used in respiration) and oxygen (released). Rate is limited by light intensity, CO2 concentration and temperature — whichever is in shortest supply.',summary:'Plants turn light + CO2 + water into glucose + oxygen inside chloroplasts; the slowest input sets the speed.'}],
+ blurting:[{id:'b1',subjectId:sb,topic:'Cell structure',date:addDays(t,-1),wrote:'Nucleus controls the cell and holds DNA. Mitochondria release energy in respiration. Ribosomes make proteins. Cell membrane controls what enters and leaves. Chloroplasts do photosynthesis in plant cells. Cell wall gives support. Vacuole stores cell sap…',gaps:'Forgot: cytoplasm is where most reactions happen; permanent vacuole only in plant cells.'}],
+ feynman:[{id:'f1',subjectId:sb,topic:'Enzymes',date:addDays(t,-5),explain:'An enzyme is like a lock shaped for one key. It grabs its one special molecule, helps change it, then lets go and does it again — thousands of times. Heat it too much and the lock bends out of shape (denatures) and the key no longer fits.',stuck:'Why does pH change the shape too? Need to re-read the active-site part.'}],
+ pqlog:[{id:'pq1',subjectId:sb,source:'2024 Paper 1 — Cells section',date:addDays(t,-2),attempted:12,correct:9},{id:'pq2',subjectId:sh,source:'WW1 source questions pack',date:addDays(t,-3),attempted:8,correct:6}],
+ reading:[{id:'r1',subjectId:sb,title:'Textbook ch. 3 — Photosynthesis',date:addDays(t,-1),pages:14,minutes:30},{id:'r2',subjectId:sh,title:'Revision guide — Causes of WW1',date:addDays(t,-3),pages:9,minutes:20}],
+ sessions:[{id:'ss1',subjectId:sb,date:addDays(t,-1),min:25,focus:4},{id:'ss2',subjectId:sb,date:addDays(t,-2),min:50,focus:3},{id:'ss3',subjectId:sh,date:addDays(t,-3),min:25,focus:5}],
+ mindmap:{center:'Cell Biology', nodes:[{id:'n1',text:'Organelles'},{id:'n2',text:'Energy — respiration'},{id:'n3',text:'Photosynthesis'},{id:'n4',text:'Cell division'},{id:'n5',text:'DNA & genes'}]},
+ autoPlans:{ [examBio]:{generated:addDays(t,-6), phases:[{label:'📅 4+ weeks out — COVER',tasks:'Finish learning every Biology topic once. Turn each topic into flashcards as you go. Mark topics honestly in Subjects.',done:true},{label:'📅 2 weeks out — TEST',tasks:'Recall tests on every topic. Log EVERY mistake and make its retest card the same day. Blurting practice twice a week.',done:false},{label:'📅 1 week out — REVIEW',tasks:'No new material. Leitner queue daily, mistake loop until all cleared twice, one full past paper under time.',done:false},{label:'🌙 Exam eve — LIGHT + LOGISTICS',tasks:'Box reviews only, early night. Pack materials, check room & seat in the Exam Centre. The work is done — trust the engine.',done:false}] } },
+ weekFocus:{}, activity:act, stats:{reviews:87},
+ notes:{paper:'lined', text:'Exam rhythm:\n• Morning: clear the Leitner queue FIRST\n• Then one method (test / blurt / Feynman)\n• Log practice questions before bed\n\nBiology weak spot: genetics — start cards this week.'},
+ lastBackup:'', lastSection:'home', createdAt:Date.now() }; }
+/* ============ ONBOARDING ============ */
+function showOnboarding(){ $('#onboard').innerHTML='<div class="obcard"><h2>🎓 Welcome to your Practice Engine</h2><p style="line-height:1.6;color:var(--muted)">Not a planner — an engine that puts the work into your memory: Leitner boxes, self-checking tests and a mistake loop. Sixty seconds to set up.</p>'
+ +'<label>Your name (optional)</label><input id="ob_name" placeholder="e.g. Alex">'
+ +'<label>School / level (optional)</label><input id="ob_school" placeholder="e.g. Year 11 · GCSE">'
+ +'<label>Main exam date (optional)</label><input id="ob_exam" type="date">'
+ +'<label>Pick your starting theme</label><select id="ob_theme">'+THEMES.map(t=>'<option value="'+t[0]+'">'+t[1]+(t[2]==='dark'?' — dark':'')+'</option>').join('')+'</select>'
+ +'<label>Profile photo (optional)</label><input id="ob_photo" type="file" accept="image/*">'
+ +'<p style="font-size:13px;color:var(--muted);margin-top:12px;line-height:1.55">🔒 Privacy: everything stays in this browser, on this device. Nothing is uploaded anywhere.</p>'
+ +'<div class="row" style="margin-top:18px"><button class="btn" onclick="finishOnboarding(false)">Start practising →</button><button class="btn ghost" onclick="finishOnboarding(true)">Skip setup</button></div></div>';
+ $('#onboard').classList.add('open'); }
+function finishOnboarding(skip){ if(!skip){ S.profile.name=$('#ob_name').value.trim(); S.profile.school=$('#ob_school').value.trim(); S.profile.examDate=$('#ob_exam').value; S.profile.theme=$('#ob_theme').value; const f=$('#ob_photo').files[0]; if(f){ const r=new FileReader(); r.onload=()=>{ S.profile.photo=r.result; save(); applyTheme(); }; r.readAsDataURL(f); } }
+ S.profile.onboarded=true; save(); applyTheme(); $('#onboard').classList.remove('open'); toast('🎓 Engine ready — add your first subject'); render(); }
+/* ============ BINDINGS ============ */
+function setPath(path,val){ const parts=path.split('.'); let o=S; for(let i=0;i<parts.length-1;i++) o=o[parts[i]]; o[parts[parts.length-1]]=val; }
+document.addEventListener('input', e=>{ const b=e.target.dataset.bind; if(b){ setPath(b, e.target.value); save(); if(b==='mindmap.center') {} return; }
+ const cn=e.target.dataset.corn; if(cn){ const n=S.cornell.find(x=>x.id===cn); if(n){ n[e.target.dataset.f]=e.target.value; save(); } return; }
+ const wf=e.target.dataset.weekfocus; if(wf!==undefined && wf!==null && e.target.hasAttribute('data-weekfocus')){ S.weekFocus[wf]=e.target.value; save(); return; }
+ const tt=e.target.dataset.test; if(tt){ const t=S.tests.find(x=>x.id===tt); if(t){ t.items[+e.target.dataset.item][e.target.dataset.f]=e.target.value; save(); } return; } });
+/* ============ INIT ============ */
+document.getElementById('menubtn').onclick=()=> $('#sidebar').classList.toggle('open');
+document.getElementById('themebtn').onclick=()=>{ const i=THEMES.findIndex(t=>t[0]===S.profile.theme); setTheme(THEMES[(i+1)%THEMES.length][0]); toast('🎨 '+THEMES[(i+1)%THEMES.length][1]); };
+document.getElementById('printbtn').onclick=()=> window.print();
+document.getElementById('avatar').onclick=()=> go('settings');
+document.getElementById('modal').addEventListener('click', e=>{ if(e.target.id==='modal') closeModal(); });
+document.getElementById('infomodal').addEventListener('click', e=>{ if(e.target.id==='infomodal') e.target.classList.remove('open'); });
+if(DEMO){ S=sampleState(); currentSection='home'; }
+else { load(); currentSection= S.lastSection && RENDERERS[S.lastSection]? S.lastSection:'home'; }
+applyTheme(); buildSidebar(); render(); bindTimerOverlay();
+if(!DEMO && !S.profile.onboarded) showOnboarding();
+if(DEMO){ const b=document.createElement('div'); b.className='demobanner'; b.textContent='🎓 FREE DEMO — sample data shown · nothing you change here is saved · the full version saves everything'; document.body.prepend(b); }
+</script>
+</body>
+</html>
